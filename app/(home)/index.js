@@ -46,17 +46,34 @@ export default function  Homepage() {
     }
     setRefresh(true);
   }
+
+  const handleDelete = async () => {
+    setErrMsg('');
+    setLoading(true);
+    await supabase.from('dates').delete().eq('date', input);
+    setLoading(false);
+    setRefresh(true);
+  }
+
   return (
       <View style={ {flex: 1, alignItems: "center", justifyContent: "center"}}>
         <FlatList 
           data = {dates} 
-          renderItem={({item}) => <Text>{item.date}</Text>}
+          renderItem={
+            ({item}) => 
+            <View style={{flexDirection: 'row'}}>
+              <Text>{item.date}</Text>
+            </View>
+          }
           refreshing = {refresh}
         />
         <Text> New input: </Text>
         <TextInput value={input} onChangeText={setInput} />
-        {errMsg !== '' && <Text> {errMsg} </Text>}
-        <Button onPress={handleAdd}> + </Button> 
+        {errMsg !== '' && <Text style={{color:'red'}}> {errMsg}! </Text>}
+        <View style={{flexDirection:'row'}}>
+          <Button onPress={handleAdd}> + </Button> 
+          <Button onPress={handleDelete}> - </Button>
+        </View>
         {loading && <ActivityIndicator />}
       </View>
   );
