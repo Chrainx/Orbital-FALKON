@@ -42,37 +42,43 @@ export default function  Homepage() {
     setLoading(false);
     if (error != null) {
       setErrMsg(error.message + "!");
+      if (error.message == 'new row for relation "dates" violates check constraint "todos_task_check"'){
+        setErrMsg("Input must be longer than 3 character");
+      }
       return;
     }
     setRefresh(true);
   }
 
-  const handleDelete = async () => {
+  const handleDelete = async (itemId) => {
     setErrMsg('');
     setLoading(true);
-    await supabase.from('dates').delete().eq('date', input);
+    await supabase.from('dates').delete().eq("id", itemId);
     setLoading(false);
     setRefresh(true);
   }
 
   return (
-      <View style={ {flex: 1, alignItems: "center", justifyContent: "center"}}>
+      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
         <FlatList 
           data = {dates} 
+          style = {{flexDirection: 'row', width:300}}
           renderItem={
             ({item}) => 
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between", width:300}}>
               <Text>{item.date}</Text>
+              <Button onPress={() => handleDelete(item.id)}> - </Button> 
             </View>
           }
           refreshing = {refresh}
         />
         <Text> New input: </Text>
-        <TextInput value={input} onChangeText={setInput} />
-        {errMsg !== '' && <Text style={{color:'red'}}> {errMsg}! </Text>}
-        <View style={{flexDirection:'row'}}>
-          <Button onPress={handleAdd}> + </Button> 
-          <Button onPress={handleDelete}> - </Button>
+        <View style={{flexDirection:'row', width: 300, alignItems:'center', justifyContent:'center'}}>
+          <View style={{flexDirection:'column', width:240}}>
+            <TextInput value={input} onChangeText={setInput} />
+            {errMsg !== '' && <Text style={{color:'red'}}> {errMsg}! </Text>}
+          </View>
+          <Button style={{width:60}} onPress={handleAdd}> + </Button>
         </View>
         {loading && <ActivityIndicator />}
       </View>
