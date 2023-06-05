@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Moma",
-    "scheme": "Moma",
+    "scheme": "moma",
     "slug": "Moma",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -16,16 +16,23 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.chrainx.Moma"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.chrainx.Moma"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "529b2336-0908-47fc-858b-5ab166b06ed4"
+      }
     }
   }
 }

@@ -1,12 +1,16 @@
-import { useState, useEffect } from "react";
-import { FlatList, View } from "react-native";
+import { useState, useEffect, useRef } from "react";
+import { FlatList, View, DrawerLayoutAndroid } from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 
 export default function  Homepage() { 
   const [dates, setDates] = useState([]);
-  const [input, setInput] = useState('');
+  const [name, setName] = useState('');
+  const [category, setCategory] = useState('');
+  const [amount, setAmount] = useState(0);
+  const [errNameMsg, setErrNameMsg] = useState('');
+  const [errCategoryMsg, setErrCategoryMsg] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -29,14 +33,23 @@ export default function  Homepage() {
   }, [refresh]);
 
   const handleAdd = async () => {
+    setErrNameMsg('');
     setErrMsg('');
-    if (input == '') {
-      setErrMsg("Input cannot be empty");
+    setErrCategoryMsg('');
+    if (name == '') {
+      setErrNameMsg("Name cannot be empty");
+      if (category == '') {
+        setErrCategoryMsg("Category cannot be empty");
+      } 
       return;
     }
+    if (category == '') {
+      setErrCategoryMsg("Category cannot be empty");
+      return;
+    } 
     setLoading(true);
     const { error } = await supabase.from('dates').
-      insert({date: input, user_id: user.id, time:[100000]})
+      insert({name: name, category: category, amount: parseFloat(amount), user_id: user.id, time:[100000]})
       .select()
       .single();
     setLoading(false);
@@ -58,29 +71,57 @@ export default function  Homepage() {
     setRefresh(true);
   }
 
+  const drawer = useRef(null);
+  const navigationView = () => (
+    <View>
+      <Button onPress={() => supabase.auth.signOut()}> Logout</Button> 
+      <Button
+        textColor="red"
+        onPress={() => drawer.current.closeDrawer()}
+      >
+        close
+      </Button>
+    </View>
+  );
+
   return (
+    <DrawerLayoutAndroid
+      ref = {drawer}
+      drawerWidth = {300}
+      drawerPosition = {'left'}
+      renderNavigationView = {navigationView}>
       <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+        <Button style ={{alignItems: 'flex-start'}} onPress={() => drawer.current.openDrawer()}>
+          Profile
+        </Button>
         <FlatList 
           data = {dates} 
           style = {{flexDirection: 'row', width:300}}
           renderItem={
             ({item}) => 
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between", width:300}}>
-              <Text>{item.date}</Text>
+              <Text>{item.name}</Text>
+              <Text>{item.category}</Text>
+              <Text>{item.amount}</Text>
               <Button onPress={() => handleDelete(item.id)}> - </Button> 
             </View>
           }
           refreshing = {refresh}
         />
-        <Text> New input: </Text>
+        <Text> New Input: </Text>
         <View style={{flexDirection:'row', width: 300, alignItems:'center', justifyContent:'center'}}>
           <View style={{flexDirection:'column', width:240}}>
-            <TextInput value={input} onChangeText={setInput} />
+            <TextInput value={name} onChangeText={setName} />
+            {errNameMsg !== '' && <Text style={{color:'red'}}> {errNameMsg}! </Text>}
+            <TextInput value={category} onChangeText={setCategory} />
+            {errCategoryMsg !== '' && <Text style={{color:'red'}}> {errCategoryMsg}! </Text>}
+            <TextInput value={amount} onChangeText={setAmount} />
             {errMsg !== '' && <Text style={{color:'red'}}> {errMsg}! </Text>}
           </View>
           <Button style={{width:60}} onPress={handleAdd}> + </Button>
         </View>
         {loading && <ActivityIndicator />}
       </View>
+    </DrawerLayoutAndroid>
   );
 }

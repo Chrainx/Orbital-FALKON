@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
-import { Logo } from "./components/logo";
+import { Logo } from "../components/logo";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RegisterPage() {

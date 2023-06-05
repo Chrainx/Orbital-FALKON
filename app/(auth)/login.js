@@ -3,7 +3,7 @@ import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
 import { useState } from "react";
 import { Link } from "expo-router";
 import { supabase } from "../../lib/supabase";
-import { Logo } from "../(auth)/components/logo";
+import { Logo } from "../components/logo";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginPage() {
