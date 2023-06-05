@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
 import { useState } from "react";
 import { supabase } from "../../lib/supabase";
@@ -41,25 +41,45 @@ export default function RegisterPage() {
       <Text> Register Page </Text>
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
-        <Text> Email </Text>
+        <Text style = {style.text}> Email </Text>
         <TextInput 
+          style = {style.input}
+          placeholder = 'Enter your email here'
+          mode = 'outlined'
           autoCapitalize="none"
           textContentType="emailAddress"
           value={email}
           onChangeText={setEmail} />
-          {errEmailMsg !== "" && <Text style = {{color:'red'}}>{errEmailMsg} </Text>}
-        <Text> Password </Text>
+          {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
+        <Text style = {style.text}> Password </Text>
         <TextInput
+          style = {style.input}
+          placeholder = 'Enter your password here'
+          mode = 'outlined'
           secureTextEntry
           autoCapitalize="none"
           textContentType="password"
           value={password}
           onChangeText={setPassword} />
-          {errPasswordMsg !== "" && <Text style = {{color:'red'}}>{errPasswordMsg} </Text>}
+          {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
         <Button onPress = {handleRegister}> Register </Button>
-        {errMsg !== "" && <Text style = {{color:'red'}}> {errMsg} </Text>}
+        {errMsg !== "" && <Text style = {style.error}>{errMsg}</Text>}
         {loading && <ActivityIndicator />}
       </View>
     </SafeAreaView>
   )
 }
+
+const style = StyleSheet.create({
+  input: {
+    
+  },
+
+  text: {
+    marginTop: 10
+  },
+
+  error: {
+    color: 'red'
+  },
+})

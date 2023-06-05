@@ -108,15 +108,30 @@ export default function  Homepage() {
           }
           refreshing = {refresh}
         />
-        <Text> New Input: </Text>
+        <Text>Insert a new data:</Text>
         <View style={{flexDirection:'row', width: 300, alignItems:'center', justifyContent:'center'}}>
           <View style={{flexDirection:'column', width:240}}>
-            <TextInput value={name} onChangeText={setName} />
+            <TextInput 
+              mode = 'outlined'
+              placeholder= 'Activity'
+              value={name} 
+              onChangeText={setName} />
             {errNameMsg !== '' && <Text style={{color:'red'}}> {errNameMsg}! </Text>}
-            <TextInput value={category} onChangeText={setCategory} />
+
+            <TextInput 
+              mode = 'outlined'
+              placeholder = 'Category'
+              value={category} 
+              onChangeText={setCategory} />
             {errCategoryMsg !== '' && <Text style={{color:'red'}}> {errCategoryMsg}! </Text>}
-            <TextInput value={amount} onChangeText={setAmount} />
+
+            <TextInput
+              mode = 'outlined' 
+              placeholder = 'Amount'
+              value={amount} 
+              onChangeText={setAmount} />
             {errMsg !== '' && <Text style={{color:'red'}}> {errMsg}! </Text>}
+
           </View>
           <Button style={{width:60}} onPress={handleAdd}> + </Button>
         </View>
