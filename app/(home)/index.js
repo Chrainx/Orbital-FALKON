@@ -11,7 +11,7 @@ export default function  Homepage() {
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
-  const [limit, setLimit] = useState('');
+  const [limit, setLimit] = useState(false);
   const [errNameMsg, setErrNameMsg] = useState('');
   const [errCategoryMsg, setErrCategoryMsg] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -21,20 +21,25 @@ export default function  Homepage() {
   
   async function fetchData() {
     let {data} = await supabase.from('data').select('*');
-    let {dailyLimit} = await supabase.from('limit').select('*');
-    console.log(dailyLimit);
     setData(data);
-    setDailyLimit(dailyLimit);
+    setRefresh(false);
+  }
+
+  async function fetchLimit(){
+    let {data} = await supabase.from('limit').select('*');
+    setDailyLimit(data);
     setRefresh(false);
   }
   
   useEffect(() => {
     fetchData()
+    fetchLimit()
   }, []);
 
   useEffect(() => {
     if (refresh) {
       fetchData()
+      fetchLimit()
     }
   }, [refresh]);
 
@@ -80,7 +85,11 @@ export default function  Homepage() {
   const handleChange = async () => {
     setErrMsg('');
     setLoading(true);
-    await supabase.from('limit').insert({daily_limit: parseFloat(limit), user_id: user.id});
+    if (limit == false) {
+      await supabase.from('limit').insert({daily_limit: parseFloat(limit), user_id: user.id});
+    } else {
+      await supabase.from('limit').update({daily_limit: parseFloat(limit), user_id: user.id}).eq("user_id", user.id);
+    }
     setLoading(false);
     setRefresh(true);
   }
@@ -95,7 +104,7 @@ export default function  Homepage() {
             renderItem = {
               ({item}) => 
               <View>
-                <Text>{item.limit}</Text>
+                <Text>{item.daily_limit}</Text>
               </View>
             }
             refreshing = {refresh}
