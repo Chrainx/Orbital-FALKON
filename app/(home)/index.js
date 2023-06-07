@@ -1,14 +1,17 @@
-import { useState, useEffect, useRef } from "react";
-import { FlatList, View, DrawerLayoutAndroid } from "react-native";
+import { useState, useEffect } from "react";
+import { FlatList, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 
 export default function  Homepage() { 
-  const [dates, setDates] = useState([]);
+  const [data, setData] = useState([]);
+  const [dailyLimit, setDailyLimit] = useState([]);
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState('');
+  const [limit, setLimit] = useState('');
   const [errNameMsg, setErrNameMsg] = useState('');
   const [errCategoryMsg, setErrCategoryMsg] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -16,19 +19,22 @@ export default function  Homepage() {
   const [refresh, setRefresh] = useState(false);
   const {user} = useAuth();
   
-  async function fetchDates() {
-    let {data} = await supabase.from('dates').select('*');
-    setDates(data);
+  async function fetchData() {
+    let {data} = await supabase.from('data').select('*');
+    let {dailyLimit} = await supabase.from('limit').select('*');
+    console.log(dailyLimit);
+    setData(data);
+    setDailyLimit(dailyLimit);
     setRefresh(false);
   }
   
   useEffect(() => {
-    fetchDates()
+    fetchData()
   }, []);
 
   useEffect(() => {
     if (refresh) {
-      fetchDates()
+      fetchData()
     }
   }, [refresh]);
 
@@ -48,8 +54,8 @@ export default function  Homepage() {
       return;
     } 
     setLoading(true);
-    const { error } = await supabase.from('dates').
-      insert({name: name, category: category, amount: parseFloat(amount), user_id: user.id, time:[100000]})
+    const { error } = await supabase.from('data').
+      insert({name: name, category: category, amount: parseFloat(amount), user_id: user.id})
       .select()
       .single();
     setLoading(false);
@@ -66,38 +72,47 @@ export default function  Homepage() {
   const handleDelete = async (itemId) => {
     setErrMsg('');
     setLoading(true);
-    await supabase.from('dates').delete().eq("id", itemId);
+    await supabase.from('data').delete().eq("id", itemId);
     setLoading(false);
     setRefresh(true);
   }
 
-  const drawer = useRef(null);
-  const navigationView = () => (
-    <View>
-      <Button onPress={() => supabase.auth.signOut()}> Logout</Button> 
-      <Button
-        textColor="red"
-        onPress={() => drawer.current.closeDrawer()}
-      >
-        close
-      </Button>
-    </View>
-  );
+  const handleChange = async () => {
+    setErrMsg('');
+    setLoading(true);
+    await supabase.from('limit').insert({daily_limit: parseFloat(limit), user_id: user.id});
+    setLoading(false);
+    setRefresh(true);
+  }
 
   return (
-    <DrawerLayoutAndroid
-      ref = {drawer}
-      drawerWidth = {300}
-      drawerPosition = {'left'}
-      renderNavigationView = {navigationView}>
-      <View style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-        <Button style ={{alignItems: 'flex-start'}} onPress={() => drawer.current.openDrawer()}>
-          Profile
-        </Button>
+      <SafeAreaView style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
+         <View style = {{flexDirection: 'row', alignItems: "center", justifyContent:"center"}}>
+          <Text style ={{flexDirection: 'row', alignItems: "center", justifyContent:"center"}}> Daily Limit: </Text>
+          <FlatList 
+            data = {dailyLimit}
+            style = {{flexDirection: 'row', width:300}}
+            renderItem = {
+              ({item}) => 
+              <View>
+                <Text>{item.limit}</Text>
+              </View>
+            }
+            refreshing = {refresh}
+          />
+         </View>
+        <View style = {{flexDirection: 'row'}}>
+          <TextInput 
+              mode = 'outlined'
+              placeholder = 'Daily Limit'
+              value={limit} 
+              onChangeText={setLimit} />
+          <Button onPress={handleChange}> Change </Button>
+        </View>
         <FlatList 
-          data = {dates} 
+          data = {data} 
           style = {{flexDirection: 'row', width:300}}
-          renderItem={
+          renderItem = {
             ({item}) => 
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between", width:300}}>
               <Text>{item.name}</Text>
@@ -136,7 +151,7 @@ export default function  Homepage() {
           <Button style={{width:60}} onPress={handleAdd}> + </Button>
         </View>
         {loading && <ActivityIndicator />}
-      </View>
-    </DrawerLayoutAndroid>
+        <Button onPress={() => supabase.auth.signOut()}> Logout</Button> 
+      </SafeAreaView>
   );
 }
