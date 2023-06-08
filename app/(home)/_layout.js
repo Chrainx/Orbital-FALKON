@@ -7,7 +7,7 @@ export default function AuthLayout() {
       style = {style.tabs}
       screenOptions={
         {
-          headerTitle: "Moma",
+          headerTitle: "MOMA",
           // headerBackground: add the logo
           headerStyle: {backgroundColor: "yellow"}
         }
@@ -16,7 +16,7 @@ export default function AuthLayout() {
     <Tabs.Screen name = "expense" options = {{
       tabBarIcon: ({focused}) => (
         <Image 
-        source={require('./expense.png')}
+        source={require('./tab-icons/expense.png')}
         resizeMode="contain"
         style={{
           width: 25,
@@ -32,7 +32,7 @@ export default function AuthLayout() {
       options = {{
         tabBarIcon: ({focused}) => (
           <Image 
-          source={require('./bar-chart.png')}
+          source={require('./tab-icons/bar-chart.png')}
           resizeMode="contain"
           style={{
             width: 25,
@@ -47,7 +47,7 @@ export default function AuthLayout() {
     <Tabs.Screen name = "add" options = {{
       tabBarIcon: ({focused}) => (
         <Image 
-        source={require('./add.png')}
+        source={require('./tab-icons/add.png')}
         resizeMode="contain"
         style={{
           width: 25,
@@ -61,7 +61,7 @@ export default function AuthLayout() {
     <Tabs.Screen name = "setting" options = {{
       tabBarIcon: ({focused}) => (
         <Image 
-        source={require('./setting.png')}
+        source={require('./tab-icons/setting.png')}
         resizeMode="contain"
         style={{
           width: 25,
