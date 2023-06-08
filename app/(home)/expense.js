@@ -5,13 +5,11 @@ import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 
-export default function  Homepage() { 
+export default function Expense() { 
   const [data, setData] = useState([]);
-  const [dailyLimit, setDailyLimit] = useState([]);
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
-  const [limit, setLimit] = useState(false);
   const [errNameMsg, setErrNameMsg] = useState('');
   const [errCategoryMsg, setErrCategoryMsg] = useState('');
   const [errMsg, setErrMsg] = useState('');
@@ -24,22 +22,14 @@ export default function  Homepage() {
     setData(data);
     setRefresh(false);
   }
-
-  async function fetchLimit(){
-    let {data} = await supabase.from('limit').select('*');
-    setDailyLimit(data);
-    setRefresh(false);
-  }
   
   useEffect(() => {
     fetchData()
-    fetchLimit()
   }, []);
 
   useEffect(() => {
     if (refresh) {
       fetchData()
-      fetchLimit()
     }
   }, [refresh]);
 
@@ -60,7 +50,7 @@ export default function  Homepage() {
     } 
     setLoading(true);
     const { error } = await supabase.from('data').
-      insert({name: name, category: category, amount: parseFloat(amount), user_id: user.id})
+      insert({name: name, inserted_at: new Date(), category: category, amount: parseFloat(amount), user_id: user.id})
       .select()
       .single();
     setLoading(false);
@@ -82,48 +72,15 @@ export default function  Homepage() {
     setRefresh(true);
   }
 
-  const handleChange = async () => {
-    setErrMsg('');
-    setLoading(true);
-    if (limit == false) {
-      await supabase.from('limit').insert({daily_limit: parseFloat(limit), user_id: user.id});
-    } else {
-      await supabase.from('limit').update({daily_limit: parseFloat(limit), user_id: user.id}).eq("user_id", user.id);
-    }
-    setLoading(false);
-    setRefresh(true);
-  }
-
   return (
       <SafeAreaView style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-         <View style = {{flexDirection: 'row', alignItems: "center", justifyContent:"center"}}>
-          <Text style ={{flexDirection: 'row', alignItems: "center", justifyContent:"center"}}> Daily Limit: </Text>
-          <FlatList 
-            data = {dailyLimit}
-            style = {{flexDirection: 'row', width:300}}
-            renderItem = {
-              ({item}) => 
-              <View>
-                <Text>{item.daily_limit}</Text>
-              </View>
-            }
-            refreshing = {refresh}
-          />
-         </View>
-        <View style = {{flexDirection: 'row'}}>
-          <TextInput 
-              mode = 'outlined'
-              placeholder = 'Daily Limit'
-              value={limit} 
-              onChangeText={setLimit} />
-          <Button onPress={handleChange}> Change </Button>
-        </View>
         <FlatList 
           data = {data} 
           style = {{flexDirection: 'row', width:300}}
           renderItem = {
             ({item}) => 
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between", width:300}}>
+              <Text>{item.inserted_at}</Text>
               <Text>{item.name}</Text>
               <Text>{item.category}</Text>
               <Text>{item.amount}</Text>

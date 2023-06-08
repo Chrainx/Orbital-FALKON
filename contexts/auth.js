@@ -20,7 +20,7 @@ function useProtectedRoute(user) {
             console.log(`inAuthGroup: ${inAuthGroup}`);
             router.replace("/login");
         } else if (user && inAuthGroup) {
-            router.replace("/");
+            router.replace("/expense");
         }
     }, [user, segments, router]);
 }
