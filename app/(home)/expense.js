@@ -117,7 +117,6 @@ export default function Expense() {
           <Button style={{width:60}} onPress={handleAdd}> + </Button>
         </View>
         {loading && <ActivityIndicator />}
-        <Button onPress={() => supabase.auth.signOut()}> Logout</Button> 
       </SafeAreaView>
   );
 }
