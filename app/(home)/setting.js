@@ -4,11 +4,9 @@ import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { useRouter } from 'expo-router';
 
 // Use Modal to choose Category
-export default function report () {
-  const router = useRouter();
+export default function setting () {
   const {user} = useAuth();
   const [loading, setLoading] = useState(false);
   const [errCategoryMsg, setErrCategoryMsg] = useState('');
@@ -44,8 +42,6 @@ export default function report () {
     }
     if (errCategoryMsg == '') {
       setCategoryDetail(false);
-      router.
-      router.push("/(home)/expense");
     }
   }
   
@@ -61,7 +57,6 @@ export default function report () {
             onPress: async () => { 
               await supabase.from('data').delete().eq("user_id", user.id);
               await supabase.from('category').delete().eq("user_id", user.id);
-              router.push("/(home)/expense");
             } 
           },
         ]

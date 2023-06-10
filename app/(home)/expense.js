@@ -4,8 +4,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
+import { useIsFocused } from "@react-navigation/native";
 
-export default function Expense() { 
+export default function Expense({route}) { 
   const [data, setData] = useState([]);
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
@@ -16,12 +17,15 @@ export default function Expense() {
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const {user} = useAuth();
-  
+  const isFocused = useIsFocused();
+
   async function fetchData() {
     let {data} = await supabase.from('data').select('*');
     setData(data);
     setRefresh(false);
   }
+
+  useEffect(() => { fetchData() }, [isFocused]);
   
   useEffect(() => {
     fetchData()
