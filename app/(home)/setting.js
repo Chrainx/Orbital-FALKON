@@ -4,8 +4,10 @@ import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { useRouter } from 'expo-router';
 
 export default function report () {
+  const router = useRouter();
   const {user} = useAuth();
   const [loading, setLoading] = useState(false);
   const [errCategoryMsg, setErrCategoryMsg] = useState('');
@@ -15,19 +17,33 @@ export default function report () {
   const [CurrencyDetail, setCurrencyDetail] = useState(false);
 
   const handleAdd = async () => {
+    setErrCategoryMsg('');
     if (newCategory == '') {
       setErrCategoryMsg("New category cannot be empty");
+      setCategoryDetail(false);
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from('category').
+    const { data, count, error } = await supabase.from('category').select('*', {count: 'exact'}).eq("user_id", user.id).eq("category", newCategory);
+    if (count != 0) {
+      setErrCategoryMsg(newCategory + " already exist");
+      setLoading(false);
+      setCategoryDetail(false);
+      return;
+    } else {
+      const { error } = await supabase.from('category').
       insert({inserted_at: new Date(), category: newCategory, user_id: user.id})
-      .select()
-      .single();
+      .select();
+    }
     setLoading(false);
     if (error != null) {
       setErrCategoryMsg(error.message);
+      setCategoryDetail(false);
       return;
+    }
+    if (errCategoryMsg == '') {
+      setCategoryDetail(false);
+      router.push("/(home)/expense");
     }
   }
 
@@ -60,6 +76,7 @@ export default function report () {
             </View>
             : undefined}
           action = {() => {
+            setErrCategoryMsg('');
             if (CategoryDetail) {
               setCategoryDetail(false);
             } else {
