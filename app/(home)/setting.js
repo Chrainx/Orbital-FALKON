@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, Image, } from 'react-native';
+import { SafeAreaView, View, Text, Image, Alert } from 'react-native';
 import { NewItem } from './newItem';
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useRouter } from 'expo-router';
 
+// Use Modal to choose Category
 export default function report () {
   const router = useRouter();
   const {user} = useAuth();
@@ -43,9 +44,44 @@ export default function report () {
     }
     if (errCategoryMsg == '') {
       setCategoryDetail(false);
+      router.
       router.push("/(home)/expense");
     }
   }
+  
+  const alertDelete = () => {
+      setCategoryDetail(false);
+      Alert.alert(
+        "Are you sure to erase all data?",
+        "This action is irreversible", 
+        [
+          {text: "Cancel"},
+          {
+            text: "Delete", 
+            onPress: async () => { 
+              await supabase.from('data').delete().eq("user_id", user.id);
+              await supabase.from('category').delete().eq("user_id", user.id);
+              router.push("/(home)/expense");
+            } 
+          },
+        ]
+      );
+  }
+  const alertLogout = () => {
+    Alert.alert(
+      "Are you sure want yo logout?",
+      "", 
+      [
+        {text: "Cancel"},
+        {
+          text: "Logout", 
+          onPress: async () => { 
+            supabase.auth.signOut();
+          } 
+        },
+      ]
+    );
+}
 
   return (
     <SafeAreaView>
@@ -124,11 +160,12 @@ export default function report () {
           title= 'Erase all data' 
           isDestructive 
           icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
+          action = {alertDelete}
         />
         <NewItem 
           title= 'Logout' 
           icon= {<Image source={require('./tab-icons/logout.png')} resizeMode="contain" style={{ width: 20, height: 20, }}/>}
-          action= {() => supabase.auth.signOut()} 
+          action= {alertLogout} 
         />
          {loading && <ActivityIndicator />}
     </SafeAreaView>
