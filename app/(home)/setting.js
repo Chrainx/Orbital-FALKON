@@ -1,5 +1,5 @@
 import { SafeAreaView, View, Text, Image, Alert } from 'react-native';
-import { NewItem } from './newItem';
+import { NewItem, NewSetting } from './newSetting';
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
 import { useState } from 'react';
@@ -81,7 +81,7 @@ export default function setting () {
   return (
     <SafeAreaView>
         <Text> Settings </Text>
-        <NewItem
+        <NewSetting
           title = 'Add Category'
           icon = { 
             CategoryDetail
@@ -116,10 +116,10 @@ export default function setting () {
           }
         />
         {errCategoryMsg !== '' && <Text style={{color:'red'}}> {errCategoryMsg}! </Text>}
-        <NewItem 
+        <NewSetting
             title= 'Test' 
         />
-        <NewItem 
+        <NewSetting 
           title= 'Currency Type' 
           icon={CurrencyDetail
             ? <Text style={{color: 'red'}}> Cancel </Text> 
@@ -151,13 +151,13 @@ export default function setting () {
             }
           }
         />
-        <NewItem 
+        <NewSetting
           title= 'Erase all data' 
           isDestructive 
           icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
           action = {alertDelete}
         />
-        <NewItem 
+        <NewSetting
           title= 'Logout' 
           icon= {<Image source={require('./tab-icons/logout.png')} resizeMode="contain" style={{ width: 20, height: 20, }}/>}
           action= {alertLogout} 

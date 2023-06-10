@@ -1,5 +1,5 @@
 import { SafeAreaView, View, Text, TextInput, Button, TouchableOpacity} from 'react-native';
-export const NewItem = props => {
+export const NewAdd = props => {
   return (
     <View>
       <TouchableOpacity
