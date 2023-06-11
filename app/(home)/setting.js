@@ -46,7 +46,6 @@ export default function setting () {
   }
   
   const alertDelete = () => {
-      setCategoryDetail(false);
       Alert.alert(
         "Are you sure to erase all data?",
         "This action is irreversible", 
