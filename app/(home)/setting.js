@@ -1,5 +1,5 @@
 import { SafeAreaView, View, Text, Image, Alert } from 'react-native';
-import { NewItem, NewSetting } from './newSetting';
+import { NewSetting } from './newSetting';
 import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
 import { useState } from 'react';
@@ -108,10 +108,7 @@ export default function setting () {
             : undefined}
           action = {() => {
             setErrCategoryMsg('');
-            if (CategoryDetail) {
-              setCategoryDetail(false);
-            } else {
-              setCategoryDetail(true)}
+            setCategoryDetail(!CategoryDetail);
             }
           }
         />
@@ -143,13 +140,7 @@ export default function setting () {
               <Button onPress={() => undefined}> + </Button> 
             </View>
             : undefined}
-          action = {() => {
-            if (CurrencyDetail) {
-              setCurrencyDetail(false);
-            } else {
-              setCurrencyDetail(true)}
-            }
-          }
+          action = {() => {setCurrencyDetail(!CurrencyDetail)}}
         />
         <NewSetting
           title= 'Erase all data' 
