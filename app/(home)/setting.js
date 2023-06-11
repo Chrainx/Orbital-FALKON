@@ -47,8 +47,8 @@ export default function setting () {
   
   const alertDelete = () => {
       Alert.alert(
-        "Are you sure to erase all data?",
-        "This action is irreversible", 
+        "Are you sure you want to erase all data?",
+        "This action is irreversible.", 
         [
           {text: "Cancel"},
           {
@@ -63,7 +63,7 @@ export default function setting () {
   }
   const alertLogout = () => {
     Alert.alert(
-      "Are you sure want yo logout?",
+      "Are you sure want to logout?",
       "", 
       [
         {text: "Cancel"},

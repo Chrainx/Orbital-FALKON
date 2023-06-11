@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, FlatList} from 'react-native';
+import { SafeAreaView, View, Text, Image, FlatList} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
 import { useState, useEffect } from 'react';
@@ -7,8 +7,10 @@ import { useIsFocused } from "@react-navigation/native";
 
 export default function add () {
   const [expense, setExpense] = useState('');
+  const [amount, setAmount] = useState('');
   const [expenseDetail, setExpenseDetail] = useState(false);
   const [categoryDetail, setCategoryDetail] = useState(false);
+  const [amountDetail, setAmountDetail] = useState(false);
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
 
@@ -30,7 +32,7 @@ export default function add () {
           ? <Text style={{color: 'white'}}> Cancel </Text>
           : expense != ''
           ? <Text style={{color: 'white'}}> {expense} </Text>
-          : <Text style={{color: 'white'}}> Gambar Arrow ke bawah </Text>
+          : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
         }
         action= { () => { 
           if (expenseDetail) {
@@ -65,8 +67,8 @@ export default function add () {
         title= 'Category'
         icon={
           categoryDetail 
-          ? <Text style={{color: 'white'}}> Gambar Arrow ke atas </Text>
-          : <Text style={{color: 'white'}}> Gambar Arrow ke bawah </Text>
+          ? <Image source={require('./tab-icons/arrowup.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
+          : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
         }
         action={ () => setCategoryDetail(!categoryDetail)}
         detail={ 
@@ -79,6 +81,45 @@ export default function add () {
             }
           />
           : undefined
+        }
+      />
+
+<NewAdd
+        title= 'Amount'
+        icon= {
+          amountDetail 
+          ? <Text style={{color: 'white'}}> Cancel </Text>
+          : amount != ''
+          ? <Text style={{color: 'white'}}> {amount} </Text>
+          : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
+        }
+        action= { () => { 
+          if (amountDetail) {
+            setAmount('');
+            setAmountDetail(false);
+          } else {
+            setAmountDetail(true);
+          }
+        }}
+        detail= {
+          amountDetail 
+          ? <View style = {{flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent:'space-between', backgroundColor:'black'}}>
+              <TextInput
+                placeholder= 'Insert Amount'
+                value={amount} 
+                onChangeText={setAmount}
+                style={{ 
+                  height:50,
+                  color: 'white',
+                  backgroundColor:'black',
+                  marginLeft: 10,
+                  width: '82%'
+                }}
+              /> 
+              <Button onPress={() => setAmountDetail(false)}> insert </Button> 
+            </View>
+
+          : undefined 
         }
       />
     </SafeAreaView>
