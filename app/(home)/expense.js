@@ -5,13 +5,25 @@ import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
+import { Filter } from "./Column";
+import { Row, Table } from "react-native-table-component";
 
 export default function Expense() { 
   const [data, setData] = useState([]);
+  const [number, setNumber] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const {user} = useAuth();
   const isFocused = useIsFocused();
+  const tableTitle = [
+    {
+      'amount': "Amount",
+      'category': "Category",
+      'name': "Expense",
+      'inserted_at': "Date",
+      'no': "No",
+    }
+  ]
 
   async function fetchData() {
     let {data} = await supabase.from('data').select('*');
@@ -39,23 +51,24 @@ export default function Expense() {
   }
 
   return (
-      <SafeAreaView style={{flex: 1, alignItems: "center", justifyContent: "center"}}>
-        <FlatList 
-          data = {data} 
-          style = {{flexDirection: 'row', width:300}}
-          renderItem = {
-            ({item}) => 
-            <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between", width:300}}>
+      <View style={{flexDirecton: 'row',justifyContent: "space-between", width: '100%'}}>
+        <FlatList
+          data= {[...tableTitle, ...data]}
+          style = {{flexDirection: 'row', width: '100%'}}
+          renderItem ={({item}) => 
+            <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between"}}>                
+              <Text>{item.no}</Text>
               <Text>{item.inserted_at}</Text>
-              <Text>{item.name}</Text>
-              <Text>{item.category}</Text>
-              <Text>{item.amount}</Text>
-              <Button onPress={() => handleDelete(item.id)}> - </Button> 
+              <Text>{item.name} </Text>
+              <Text>{item.category} </Text>
+              <Text>{item.amount} </Text>
+              <Button onPress={() => handleDelete(item.id)}> - </Button>               
             </View>
           }
           refreshing = {refresh}
         />
+        
         {loading && <ActivityIndicator />}
-      </SafeAreaView>
+      </View>
   );
 }

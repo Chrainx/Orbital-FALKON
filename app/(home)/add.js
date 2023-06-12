@@ -14,6 +14,8 @@ export default function add () {
   const [categoryDetail, setCategoryDetail] = useState(false);
   const [amountDetail, setAmountDetail] = useState(false);
   const [data, setData] = useState([]);
+  const [count, setCount] = useState(0);
+  const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
   const [errExpenseMsg, setErrExpenseMsg] = useState('');
   const [errAmountMsg, setErrAmountMsg] = useState('');
@@ -42,7 +44,7 @@ const handleSubmit = async () => {
       return;
     }
     const { error } = await supabase.from('data').
-      insert({name: expense, inserted_at: new Date(), category: null, amount: amt, user_id: user.id})
+      insert({name: expense, inserted_at: new Date(), category: 'None', amount: amt, user_id: user.id, no: count})
       .select()
       .single();
 
@@ -50,18 +52,26 @@ const handleSubmit = async () => {
     setAmount('');
     setExpenseDetail(false);
     setAmountDetail(false);
+    setRefresh(true);
   }
 
-
-
+  async function getCount() {
+    let {count} = await supabase.from('data').select('*', {count: 'exact'});
+    setCount(count);
+  }
 
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('category');
     setData(data);
   }
 
-  useEffect(() => {fetchCategory()} ,[]);
+  useEffect(() => {fetchCategory(), getCount()} ,[]);
   useEffect(() => {fetchCategory()}, [isFocused]);
+  useEffect(() => {
+    if (refresh) {
+      getCount()
+    }
+  }, [refresh]);
 
   return (
     <SafeAreaView>
