@@ -21,14 +21,26 @@ export default function add () {
 const handleSubmit = async () => {
     setErrExpenseMsg('');
     setErrAmountMsg('');
+    var amt = parseFloat(amount).toFixed(2);
     if (expense == '') {
       setErrExpenseMsg("Expense cannot be empty");
       if (amount == '') {
-        setErrAmountMsg("Amount cannot be empty");
+      setErrAmountMsg("Amount cannot be empty");
+      return;
+      }
+      if (isNaN(amt)) {
+        setErrAmountMsg("Amount must be a number");
       } 
       return;
     }
-    var amt = parseFloat(amount).toFixed(2)
+    if (amount == '') {
+      setErrAmountMsg("Amount cannot be empty");
+      return;
+    }
+    if (isNaN(amt)) {
+      setErrAmountMsg("Amount must be a number");
+      return;
+    }
     const { error } = await supabase.from('data').
       insert({name: expense, inserted_at: new Date(), category: null, amount: amt, user_id: user.id})
       .select()
@@ -151,7 +163,10 @@ const handleSubmit = async () => {
         onPress = {handleSubmit}>
         <Text style= {{color: 'white'}}>Submit</Text>
       </TouchableOpacity>
-
+      <View style = {{alignItems: 'center'}}>
+      {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
+      {errExpenseMsg && <Text style= {style.warning}> {errExpenseMsg} </Text>}
+      </View>
     </SafeAreaView>
   );
 }
@@ -169,5 +184,9 @@ const style = StyleSheet.create({
     backgroundColor:'black',
     marginLeft: 10,
     width: '82%'
-  }
+  },
+
+  warning: {
+    color: 'red',
+  },
 })
