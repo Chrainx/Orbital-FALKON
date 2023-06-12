@@ -1,11 +1,13 @@
-import { SafeAreaView, View, Text, Image, FlatList} from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
+import { useAuth } from '../../contexts/auth';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
 
 export default function add () {
+  const {user} = useAuth();
   const [expense, setExpense] = useState('');
   const [amount, setAmount] = useState('');
   const [expenseDetail, setExpenseDetail] = useState(false);
@@ -13,6 +15,33 @@ export default function add () {
   const [amountDetail, setAmountDetail] = useState(false);
   const [data, setData] = useState([]);
   const isFocused = useIsFocused();
+  const [errExpenseMsg, setErrExpenseMsg] = useState('');
+  const [errAmountMsg, setErrAmountMsg] = useState('');
+
+const handleSubmit = async () => {
+    setErrExpenseMsg('');
+    setErrAmountMsg('');
+    if (expense == '') {
+      setErrExpenseMsg("Expense cannot be empty");
+      if (amount == '') {
+        setErrAmountMsg("Amount cannot be empty");
+      } 
+      return;
+    }
+    var amt = parseFloat(amount).toFixed(2)
+    const { error } = await supabase.from('data').
+      insert({name: expense, inserted_at: new Date(), category: null, amount: amt, user_id: user.id})
+      .select()
+      .single();
+
+    setExpense('');
+    setAmount('');
+    setExpenseDetail(false);
+    setAmountDetail(false);
+  }
+
+
+
 
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('category');
@@ -84,7 +113,7 @@ export default function add () {
         }
       />
 
-<NewAdd
+      <NewAdd
         title= 'Amount'
         icon= {
           amountDetail 
@@ -108,13 +137,7 @@ export default function add () {
                 placeholder= 'Insert Amount'
                 value={amount} 
                 onChangeText={setAmount}
-                style={{ 
-                  height:50,
-                  color: 'white',
-                  backgroundColor:'black',
-                  marginLeft: 10,
-                  width: '82%'
-                }}
+                style={style.textInput}
               /> 
               <Button onPress={() => setAmountDetail(false)}> insert </Button> 
             </View>
@@ -122,6 +145,29 @@ export default function add () {
           : undefined 
         }
       />
+     
+      <TouchableOpacity 
+        style = {style.button}
+        onPress = {handleSubmit}>
+        <Text style= {{color: 'white'}}>Submit</Text>
+      </TouchableOpacity>
+
     </SafeAreaView>
   );
 }
+
+const style = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    backgroundColor: 'black',
+    padding: 10,
+  },
+
+  textInput: {
+    height:50,
+    color: 'white',
+    backgroundColor:'black',
+    marginLeft: 10,
+    width: '82%'
+  }
+})
