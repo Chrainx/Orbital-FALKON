@@ -8,6 +8,7 @@ import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
 
 export default function add () {
+  
   //For supabase
   const {user} = useAuth();
 
