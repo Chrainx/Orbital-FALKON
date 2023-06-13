@@ -1,22 +1,39 @@
 import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
+import { Picker } from '@react-native-picker/picker'
 import { useAuth } from '../../contexts/auth';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
 
 export default function add () {
+  //For supabase
   const {user} = useAuth();
-  const [expense, setExpense] = useState('');
-  const [amount, setAmount] = useState('');
-  const [expenseDetail, setExpenseDetail] = useState(false);
-  const [categoryDetail, setCategoryDetail] = useState(false);
-  const [amountDetail, setAmountDetail] = useState(false);
-  const [data, setData] = useState([]);
-  const [count, setCount] = useState(0);
+
+  //For Refresh
   const [refresh, setRefresh] = useState(false);
-  const isFocused = useIsFocused();
+  const isFocused = useIsFocused()
+  
+  //For Expense
+  const [expense, setExpense] = useState('');
+  const [expenseDetail, setExpenseDetail] = useState(false);
+
+  //For Category
+  const [category, setCategory] = useState('');
+  const [categoryDetail, setCategoryDetail] = useState(false);
+
+  //For Amount
+  const [amount, setAmount] = useState('');
+  const [amountDetail, setAmountDetail] = useState(false);
+
+  //fetching
+  const [data, setData] = useState([]);
+
+  //For No
+  const [count, setCount] = useState(0);
+
+  //For error
   const [errExpenseMsg, setErrExpenseMsg] = useState('');
   const [errAmountMsg, setErrAmountMsg] = useState('');
 
@@ -63,6 +80,7 @@ const handleSubmit = async () => {
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('category');
     setData(data);
+    console.log(data);
   }
 
   useEffect(() => {fetchCategory(), getCount()} ,[]);
@@ -72,6 +90,13 @@ const handleSubmit = async () => {
       getCount()
     }
   }, [refresh]);
+
+  const renderCategoryList = () => {
+    return data.map(
+      (item, index) => {
+        return <Picker key={index} label={item.category} value={item.category}/>}
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -114,6 +139,7 @@ const handleSubmit = async () => {
           : undefined 
         }
       />
+
       <NewAdd
         title= 'Category'
         icon={
@@ -124,13 +150,18 @@ const handleSubmit = async () => {
         action={ () => setCategoryDetail(!categoryDetail)}
         detail={ 
           categoryDetail 
-          ? <FlatList
-            data={ data }
-            style= {{flexDirection: 'row', backgroundColor: 'black'}}
-            renderItem = {
-              ({item}) => <Text style={{color: 'white', width: 300, alignItems: 'center'}}> {item.category} </Text>
-            }
-          />
+          ? <View>
+            <TouchableOpacity
+              onPress={() => onOpen('category')}>
+              <Text> {category} </Text>
+            </TouchableOpacity>
+            <Picker
+              selectedValue={category}
+              onValueChange={item => setCategory(item)}
+            >
+            {renderCategoryList()}
+            </Picker>
+          </View>
           : undefined
         }
       />
@@ -173,6 +204,7 @@ const handleSubmit = async () => {
         onPress = {handleSubmit}>
         <Text style= {{color: 'white'}}>Submit</Text>
       </TouchableOpacity>
+      
       <View style = {{alignItems: 'center'}}>
       {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
       {errExpenseMsg && <Text style= {style.warning}> {errExpenseMsg} </Text>}
