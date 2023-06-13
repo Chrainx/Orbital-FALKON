@@ -26,7 +26,6 @@ export default function Expense() {
     let {data} = await supabase.from('data').select('*');
     setData(data);
     setTotal(data.reduce((a, b) => a + b.amount, 0));
-    console.log(Total);
     setRefresh(false);
   }
 

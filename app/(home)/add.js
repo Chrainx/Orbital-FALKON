@@ -81,7 +81,6 @@ const handleSubmit = async () => {
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('category');
     setData(data);
-    console.log(data);
   }
 
   useEffect(() => {fetchCategory(), getCount()} ,[]);
@@ -162,6 +161,7 @@ const handleSubmit = async () => {
             >
             {renderCategoryList()}
             </Picker>
+            <Text>{''}</Text>
           </View>
           : undefined
         }
