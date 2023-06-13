@@ -17,6 +17,7 @@ export default function setting () {
 
   const handleAdd = async () => {
     setErrCategoryMsg('');
+    setNewCategory('');
     if (newCategory == '') {
       setErrCategoryMsg("New category cannot be empty");
       setCategoryDetail(false);

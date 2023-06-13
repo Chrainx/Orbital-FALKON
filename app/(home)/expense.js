@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { FlatList, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
-import { Filter } from "./Column";
-import { Row, Table } from "react-native-table-component";
 
 export default function Expense() { 
   const [data, setData] = useState([]);
-  const [number, setNumber] = useState([]);
+  const [Total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const {user} = useAuth();
@@ -28,6 +25,8 @@ export default function Expense() {
   async function fetchData() {
     let {data} = await supabase.from('data').select('*');
     setData(data);
+    setTotal(data.reduce((a, b) => a + b.amount, 0));
+    console.log(Total);
     setRefresh(false);
   }
 
@@ -67,8 +66,8 @@ export default function Expense() {
           }
           refreshing = {refresh}
         />
-        
         {loading && <ActivityIndicator />}
+        <Text> Total: {Total}</Text>
       </View>
   );
 }

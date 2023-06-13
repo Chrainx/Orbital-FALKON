@@ -61,7 +61,7 @@ const handleSubmit = async () => {
       return;
     }
     const { error } = await supabase.from('data').
-      insert({name: expense, inserted_at: new Date(), category: 'None', amount: amt, user_id: user.id, no: count})
+      insert({name: expense, inserted_at: new Date(), category: 'None', amount: amt, user_id: user.id, no: count + 1})
       .select()
       .single();
 
