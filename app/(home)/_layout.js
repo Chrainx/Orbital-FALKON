@@ -7,9 +7,12 @@ export default function AuthLayout() {
       style = {style.tabs}
       screenOptions={
         {
-          headerTitle: "MOMA",
-          // headerBackground: add the logo
-          headerStyle: {backgroundColor: "yellow"}
+          headerTitle: () => (
+            <Image source={require('./tab-icons/MOMA.png')} 
+                  resizeMode="contain" 
+                  style={{ width: 100, height: 30, }}/>
+                  ),
+          headerStyle: {backgroundColor: "#DAF7A6"}
         }
       }
     >
