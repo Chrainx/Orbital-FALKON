@@ -12,15 +12,6 @@ export default function Expense() {
   const [refresh, setRefresh] = useState(false);
   const {user} = useAuth();
   const isFocused = useIsFocused();
-  const tableTitle = [
-    {
-      'amount': "Amount",
-      'category': "Category",
-      'name': "Expense",
-      'inserted_at': "Date",
-      'no': "No",
-    }
-  ]
 
   async function fetchData() {
     let {data} = await supabase.from('data').select('*');
@@ -51,11 +42,10 @@ export default function Expense() {
   return (
       <View style={{flexDirecton: 'row',justifyContent: "space-between", width: '100%'}}>
         <FlatList
-          data= {[...tableTitle, ...data]}
+          data= {data}
           style = {{flexDirection: 'row', width: '100%'}}
           renderItem ={({item}) => 
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between"}}>                
-              <Text>{item.no}</Text>
               <Text>{item.inserted_at}</Text>
               <Text>{item.name} </Text>
               <Text>{item.category} </Text>

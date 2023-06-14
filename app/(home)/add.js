@@ -1,19 +1,17 @@
 import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
-import { Picker } from '@react-native-picker/picker'
 import { useAuth } from '../../contexts/auth';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
+import { BottomSheet } from '@rneui/themed';
 
 export default function add () {
-  
   //For supabase
   const {user} = useAuth();
 
   //For Refresh
-  const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused()
   
   //For Expense
@@ -23,6 +21,7 @@ export default function add () {
   //For Category
   const [category, setCategory] = useState('');
   const [categoryDetail, setCategoryDetail] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   //For Amount
   const [amount, setAmount] = useState('');
@@ -31,14 +30,11 @@ export default function add () {
   //fetching
   const [data, setData] = useState([]);
 
-  //For No
-  const [count, setCount] = useState(0);
-
   //For error
   const [errExpenseMsg, setErrExpenseMsg] = useState('');
   const [errAmountMsg, setErrAmountMsg] = useState('');
 
-const handleSubmit = async () => {
+  const handleSubmit = async () => {
     setErrExpenseMsg('');
     setErrAmountMsg('');
     var amt = parseFloat(amount).toFixed(2);
@@ -61,21 +57,23 @@ const handleSubmit = async () => {
       setErrAmountMsg("Amount must be a number");
       return;
     }
+    if (category == '') {
+      setCategory("None")
+    }
     const { error } = await supabase.from('data').
-      insert({name: expense, inserted_at: new Date(), category: 'None', amount: amt, user_id: user.id, no: count + 1})
+      insert({name: expense, inserted_at: new Date(), category: category, amount: amt, user_id: user.id})
       .select()
       .single();
 
+    if (error != null) {
+      setErrAmountMsg(error.message);
+      return;
+    }
     setExpense('');
     setAmount('');
+    setCategory('');
     setExpenseDetail(false);
     setAmountDetail(false);
-    setRefresh(true);
-  }
-
-  async function getCount() {
-    let {count} = await supabase.from('data').select('*', {count: 'exact'});
-    setCount(count);
   }
 
   async function fetchCategory() {
@@ -83,20 +81,8 @@ const handleSubmit = async () => {
     setData(data);
   }
 
-  useEffect(() => {fetchCategory(), getCount()} ,[]);
+  useEffect(() => {fetchCategory()} ,[]);
   useEffect(() => {fetchCategory()}, [isFocused]);
-  useEffect(() => {
-    if (refresh) {
-      getCount()
-    }
-  }, [refresh]);
-
-  const renderCategoryList = () => {
-    return data.map(
-      (item, index) => {
-        return <Picker key={index} label={item.category} value={item.category}/>}
-    );
-  }
 
   return (
     <SafeAreaView>
@@ -143,28 +129,11 @@ const handleSubmit = async () => {
       <NewAdd
         title= 'Category'
         icon={
-          categoryDetail 
-          ? <Image source={require('./tab-icons/arrowup.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
+          visible || category != ''
+          ? <Text style = {{color: 'white'}}>{category}</Text>
           : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
         }
-        action={ () => setCategoryDetail(!categoryDetail)}
-        detail={ 
-          categoryDetail 
-          ? <View>
-            <TouchableOpacity
-              onPress={() => onOpen('category')}>
-              <Text> {category} </Text>
-            </TouchableOpacity>
-            <Picker
-              selectedValue={category}
-              onValueChange={item => setCategory(item)}
-            >
-            {renderCategoryList()}
-            </Picker>
-            <Text>{''}</Text>
-          </View>
-          : undefined
-        }
+        action={() => {setVisible(true)}}
       />
 
       <NewAdd
@@ -210,6 +179,36 @@ const handleSubmit = async () => {
       {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
       {errExpenseMsg && <Text style= {style.warning}> {errExpenseMsg} </Text>}
       </View>
+
+      <BottomSheet
+        isVisible = {visible}
+        modalProps ={{}}
+        containerStyle={{color:'black', height: 100}}
+      >
+        <Text style = {{color:'white', backgroundColor:'black'}}> Please Select a Category </Text>
+        <View
+          style = {{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}
+        >
+        {data.map((item) => 
+          <Button 
+            key={item.category} 
+            onPress={ ()=> {
+              setVisible(false);
+              setCategory(item.category);
+            }}
+          > 
+            {item.category}
+          </Button> 
+        )}        
+        <Button 
+          style = {{color: 'white'}} 
+          onPress={() => {
+            setVisible(false);
+            setCategory('');  
+          }}> Close </Button>
+        </View>
+      </BottomSheet>
+
     </SafeAreaView>
   );
 }
