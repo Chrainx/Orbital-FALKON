@@ -15,8 +15,8 @@ export default function Expense() {
 
   async function fetchData() {
     let {data} = await supabase.from('data').select('*');
-    setData(data);
     setTotal(data.reduce((a, b) => a + b.amount, 0));
+    setData(data);
     setRefresh(false);
   }
 
@@ -46,7 +46,7 @@ export default function Expense() {
           style = {{flexDirection: 'row', width: '100%'}}
           renderItem ={({item}) => 
             <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between"}}>                
-              <Text>{item.inserted_at}</Text>
+              <Text>{item.inserted_at} </Text>
               <Text>{item.name} </Text>
               <Text>{item.category} </Text>
               <Text>{item.amount} </Text>

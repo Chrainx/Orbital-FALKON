@@ -38,7 +38,6 @@ export default function RegisterPage() {
   }
   return (
     <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
-      <Text> Register Page </Text>
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
         <Text style = {style.text}> Email </Text>

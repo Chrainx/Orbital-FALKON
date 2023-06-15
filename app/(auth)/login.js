@@ -43,10 +43,9 @@ export default function LoginPage() {
 
   return (
     <SafeAreaView style= {{flex: 1, alignItems: 'center'}}>
-      <Text> Login Page </Text>
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
-        <Text>  Email</Text>
+        <Text>  Email </Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'

@@ -113,9 +113,6 @@ export default function setting () {
           }
         />
         {errCategoryMsg !== '' && <Text style={{color:'red'}}> {errCategoryMsg}! </Text>}
-        <NewSetting
-            title= 'Test' 
-        />
         <NewSetting 
           title= 'Currency Type' 
           icon={CurrencyDetail
