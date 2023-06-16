@@ -1,6 +1,5 @@
 import React from 'react';
 import { useAuth } from "../../contexts/auth";
-import { Tabs } from "expo-router";
 import { Text, View, Image, TouchableOpacity, StyleSheet} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -8,6 +7,7 @@ import Expense from './expense';
 import Setting from './setting';
 import Report from './report';
 import Add from './add';
+import Category from './category';
 
 export default function Home() {
 
