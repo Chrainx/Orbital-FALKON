@@ -4,6 +4,9 @@ import { TextInput, Button, ActivityIndicator } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { useNavigation } from '@react-navigation/native';
+import Category from './category';
+
 
 // Use Modal to choose Category
 export default function Setting () {
@@ -14,6 +17,7 @@ export default function Setting () {
   const [CategoryDetail, setCategoryDetail] = useState(false);
   const [newCurrency, setNewCurrency] = useState('');
   const [CurrencyDetail, setCurrencyDetail] = useState(false);
+  const navigation = useNavigation();
 
   const handleAdd = async () => {
     setErrCategoryMsg('');
@@ -108,8 +112,9 @@ export default function Setting () {
             : undefined}
           action = {
             () => {
-            setErrCategoryMsg('');
-            setCategoryDetail(!CategoryDetail);
+            navigation.navigate("Category");
+            //setErrCategoryMsg('');
+            //setCategoryDetail(!CategoryDetail);
             }
           }
         />

@@ -18,7 +18,7 @@ function useProtectedRoute(user) {
         if (!user && !inAuthGroup) {
             router.replace("/login");
         } else if (user && inAuthGroup) {
-            router.replace("/home");
+            router.replace("/app");
         }
     }, [user, segments, router]);
 }
