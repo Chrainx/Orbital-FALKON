@@ -7,7 +7,7 @@ import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
 import { BottomSheet } from '@rneui/themed';
 
-export default function add () {
+export default function Add () {
   //For supabase
   const {user} = useAuth();
 

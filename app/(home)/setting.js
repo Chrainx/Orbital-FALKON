@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
 // Use Modal to choose Category
-export default function setting () {
+export default function Setting () {
   const {user} = useAuth();
   const [loading, setLoading] = useState(false);
   const [errCategoryMsg, setErrCategoryMsg] = useState('');
@@ -106,7 +106,8 @@ export default function setting () {
               <Button onPress={handleAdd}> + </Button> 
             </View>
             : undefined}
-          action = {() => {
+          action = {
+            () => {
             setErrCategoryMsg('');
             setCategoryDetail(!CategoryDetail);
             }
