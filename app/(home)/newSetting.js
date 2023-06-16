@@ -6,10 +6,11 @@ export const NewSetting = props => {
         style = {{
           flexDirection: 'row',
           backgroundColor: 'black',
+          borderRadius: 10,
           justifyContent: props.icon? 'space-between': 'flex-start',
           alignItems: 'center',
-          marginTop: 1,
-          width: '100%',
+          marginHorizontal: 6,
+          marginVertical: 2,
           padding: 20,
         }}
         onPress= {props.action}

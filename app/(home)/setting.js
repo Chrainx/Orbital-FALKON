@@ -127,20 +127,36 @@ export default function Setting () {
           }
           detail = {
             CurrencyDetail 
-            ? <View style = {{flexDirection: 'row', alignItems: 'center', width: '100%', justifyContent:'space-between', backgroundColor:'black'}}>
+            ? <View style = 
+              {{
+                flexDirection: 'row', 
+                alignItems: 'center',
+                borderRadius: 8,
+                marginTop: 1,
+                marginHorizontal: 15,
+                marginBottom: 8,
+                //width: '100%', 
+                justifyContent:'space-between', 
+                backgroundColor:'#5A5A5A'
+                }}>
               <TextInput
-                placeholder= 'Mau dibikin drop-down?'
+                placeholder= 'Choose your currency'
+                textColor='white'
+                placeholderTextColor='white'
                 value={newCurrency} 
                 onChangeText={setNewCurrency}
                 style={{ 
                   height:50,
                   color: 'white',
-                  backgroundColor:'black',
+                  backgroundColor:'#5A5A5A',
                   marginLeft: 10,
                   width: '82%'
                 }}
               /> 
-              <Button onPress={() => undefined}> + </Button> 
+              <Button 
+              onPress={() => undefined}
+              textColor='white'
+              buttonColor='#6699CC'> + </Button>
             </View>
             : undefined}
           action = {() => {setCurrencyDetail(!CurrencyDetail)}}

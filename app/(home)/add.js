@@ -57,6 +57,10 @@ export default function Add () {
       setErrAmountMsg("Amount must be a number");
       return;
     }
+    if(amt < 0) {
+      setErrAmountMsg("Amount cannot be a negative value");
+      return;
+    }
     if (category == '') {
       setCategory("None")
     }
@@ -129,11 +133,12 @@ export default function Add () {
                 }
               /> 
               <Button 
+
               onPress={() => setExpenseDetail(false)}
               textColor='white'
               buttonColor='#6699CC'
               > 
-              insert </Button> 
+              Insert </Button> 
             </View>
 
           : undefined 
@@ -195,7 +200,7 @@ export default function Add () {
               onPress={() => setAmountDetail(false)}
               textColor='white'
               buttonColor='#6699CC'
-              > insert </Button>
+              > Insert </Button>
               
             </View>
 
@@ -204,6 +209,7 @@ export default function Add () {
       />
      
       <TouchableOpacity 
+        
         style = {style.button}
         onPress = {handleSubmit}>
         <Text style= {{color: 'white'}}>Submit</Text>
@@ -250,8 +256,11 @@ export default function Add () {
 const style = StyleSheet.create({
   button: {
     alignItems: 'center',
-    backgroundColor: 'black',
-    padding: 10,
+    backgroundColor: 'blue',
+    padding: 20,
+    marginHorizontal: 125,
+    marginTop: 10,
+    borderRadius: 30,
   },
 
   textInput: {
