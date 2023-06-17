@@ -12,10 +12,8 @@ export default function Category() {
   const [refresh, setRefresh] = useState(false);
   const [color, setColor] = useState('');
 
-  console.log(color);
-
   async function fetchCategory() {
-    let {data} = await supabase.from('category').select('category');
+    let {data} = await supabase.from('category').select('*');
     setData(data);
     setRefresh(false);
   }
@@ -26,13 +24,14 @@ export default function Category() {
   }
 
   const handleAdd = async () => {
+    console.log(color);
     const { error } = await supabase.from('category')
-      .insert({category: newCategory, user_id: user.id})
+      .insert({category: newCategory, user_id: user.id, color: color})
       .select()
       .single();
     setRefresh(true);
     setNewCategory('');
-    this.picker.revert();
+    setColor("#FFFFFF")
   }
 
 
@@ -46,9 +45,9 @@ export default function Category() {
         style = {{flex: 1}}
       >
         {data.map(
-          item => 
+          item =>
           <View key={item.category} style={{flexDirection:'row'}}>
-            <Text> {item.category} </Text>
+            <Text style={{backgroundColor: item.color}}> {item.category} </Text>
             <Button onPress={() => handleDelete(item.category)}> - </Button>
           </View>
         )}
