@@ -74,7 +74,7 @@ export default function Category() {
         {data.map(
           item =>
           <View key={item.category} style={{flexDirection:'row'}}>
-            <Text style={{backgroundColor: item.color}}> {item.category} </Text>
+            <Text style={{color: item.color}}> {item.category} </Text>
             <Button onPress={() => handleDelete(item.category)}> - </Button>
           </View>
         )}
