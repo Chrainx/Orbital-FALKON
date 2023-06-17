@@ -40,23 +40,49 @@ export default function Expense() {
   }
 
   return (
-      <View style={{flexDirecton: 'row',justifyContent: "space-between", width: '100%'}}>
+      <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
         <FlatList
           data= {data}
-          style = {{flexDirection: 'row', width: '100%'}}
+          //style = {{flexDirection: 'row', width: '100%', }}
           renderItem ={({item}) => 
-            <View style={{flexDirection:'row', alignItems:'center', justifyContent:"space-between"}}>                
-              <Text>{item.inserted_at} </Text>
-              <Text>{item.name} </Text>
-              <Text>{item.category} </Text>
-              <Text>{item.amount} </Text>
-              <Button onPress={() => handleDelete(item.id)}> - </Button>               
+            // <View style={{flexDirection:'row', 
+            //       alignItems:'center', 
+            //       justifyContent:"space-between", 
+            //       backgroundColor: 'gray', 
+            //       }}>                
+            //   <Text>{item.inserted_at} </Text>
+            //   <Text>{item.name} </Text>
+            //   <Text>{item.category} </Text>
+            //   <Text>{item.amount} </Text>
+            //   <Button onPress={() => handleDelete(item.id)}> - </Button>
+            <View style={{display: 'flex', flexDirection: 'column', marginBottom: 12, width: '100%', }}>
+              <View style= {{width: '100%',
+                    display:'flex', 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-between',
+                    alignItems:'center',
+                    marginBottom: 4,}}>
+                  <Text style={{fontSize: 15, backgroundColor:'lightblue'}}>{item.name} </Text>
+                  <Text style={{fontSize: 15,backgroundColor:'lightgrey'}}>Currency {item.amount} </Text>
+              </View>
+              
+              <View style= {{width: '100%',
+                    display:'flex', 
+                    flexDirection: 'row', 
+                    justifyContent: 'space-between',
+                    alignItems:'center',
+                    }}>
+                  <Text style={{fontSize: 15, backgroundColor:'yellow'}}>{item.category} </Text>
+                  <Text style={{fontSize: 15, backgroundColor: 'pink'}}>{item.inserted_at} </Text>
+              </View>
+              <View style={{marginTop: 5, borderBottomWidth: 1}}></View> 
+              <Button style = {{marginTop: 4, backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button>
             </View>
           }
           refreshing = {refresh}
         />
         {loading && <ActivityIndicator />}
-        <Text> Total: {Total}</Text>
+        <Text style={{fontSize: 20}}> Total: {Total}</Text>
       </View>
   );
 }
