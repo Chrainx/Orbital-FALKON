@@ -10,7 +10,7 @@ export default function Category() {
   const [newCategory, setNewCategory] = useState('');
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [color, setColor] = useState('');
+  const [color, setColor] = useState('#000000');
   const [colorVisible, setColorVisible] = useState(false);
 
   async function fetchCategory() {
@@ -32,7 +32,7 @@ export default function Category() {
       .single();
     setRefresh(true);
     setNewCategory('');
-    setColor("black")
+    setColor("#000000")
   }
 
 
