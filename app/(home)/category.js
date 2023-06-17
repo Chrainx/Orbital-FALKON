@@ -3,7 +3,7 @@ import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/auth';
-import ColorPicker from 'react-native-wheel-color-picker'
+import { ColorPicker } from 'react-native-color-picker'
 
 export default function Category() {
   const {user} = useAuth();
@@ -55,17 +55,13 @@ export default function Category() {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-            <ColorPicker
-              style = {{flex: 1}}
-              ref={r => {this.picker = r}}
-              color={color}
-              onColorChange={(color) => setColor(color)}
-            />
+          <View style ={{flex : 0.3, backgroundColor: 'black'}}>
+            <Text style={{marginTop: 5, color: 'white'}}> Please select a color</Text>
             <Button
-              style={{flex: 1}}
               onPress={() => setColorVisible(!colorVisible)}>
               <Text>Close</Text>
             </Button>
+          </View>
         </View>
       </Modal>
       <ScrollView
