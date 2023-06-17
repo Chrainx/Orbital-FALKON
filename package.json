@@ -32,6 +32,7 @@
     "expo-updates": "~0.16.4",
     "metro-core": "^0.76.6",
     "react": "18.2.0",
+    "react-color": "^2.17.3",
     "react-native": "0.71.8",
     "react-native-actions-sheet-picker": "^0.3.5",
     "react-native-btr": "^2.2.0",

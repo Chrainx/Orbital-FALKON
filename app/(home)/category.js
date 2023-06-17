@@ -3,7 +3,7 @@ import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/auth';
-import { ColorPicker } from 'react-native-color-picker'
+import { ColorPicker, fromHsv } from 'react-native-color-picker';
 
 export default function Category() {
   const {user} = useAuth();
@@ -50,18 +50,17 @@ export default function Category() {
           Alert.alert('Modal has been closed.');
           setColorVisible(!colorVisible);
         }}>
-        <View style = {{ 
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-          <View style ={{flex : 0.3, backgroundColor: 'black'}}>
-            <Text style={{marginTop: 5, color: 'white'}}> Please select a color</Text>
-            <Button
+        <View style={{flex: 1, backgroundColor:'white'}}>
+            <Text style={{marginTop: 5}}> Please select a color</Text>
+            <ColorPicker
+              color={color}
+              onColorChange={color => setColor(fromHsv(color))}
+              style={{ flex: 1 }}
+            />
+            <Button 
               onPress={() => setColorVisible(!colorVisible)}>
               <Text>Close</Text>
             </Button>
-          </View>
         </View>
       </Modal>
       <ScrollView
