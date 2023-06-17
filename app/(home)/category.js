@@ -1,4 +1,4 @@
-import { FlatList, View, Pressable, Text, Modal, ScrollView} from 'react-native';
+import { View, Text, Modal, ScrollView} from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -32,7 +32,7 @@ export default function Category() {
       .single();
     setRefresh(true);
     setNewCategory('');
-    setColor("#FFFFFF")
+    setColor("black")
   }
 
 
@@ -81,7 +81,7 @@ export default function Category() {
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center'}}>
-        <Button onPress={() => setColorVisible(true)}> Color </Button>
+        <Button labelStyle={{color: color}} onPress={() => setColorVisible(true)}> Color </Button>
         <TextInput
           style = {{justifyContent: 'flex-end'}}
           placeholder='Insert category'
