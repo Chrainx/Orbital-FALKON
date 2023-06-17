@@ -1,4 +1,4 @@
-import { FlatList, View, Text, ScrollView} from 'react-native';
+import { FlatList, View, Pressable, Text, Modal, ScrollView} from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -11,6 +11,7 @@ export default function Category() {
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const [color, setColor] = useState('');
+  const [colorVisible, setColorVisible] = useState(false);
 
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*');
@@ -41,6 +42,32 @@ export default function Category() {
   
   return (
     <View style = {{flex: 1}}>
+    <Modal
+        animationType="slide"
+        transparent={true}
+        visible={colorVisible}
+        onRequestClose={() => {
+          Alert.alert('Modal has been closed.');
+          setColorVisible(!colorVisible);
+        }}>
+        <View style = {{ 
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+            <ColorPicker
+              style = {{flex: 1}}
+              ref={r => {this.picker = r}}
+              color={color}
+              onColorChange={(color) => setColor(color)}
+            />
+            <Button
+              style={{flex: 1}}
+              onPress={() => setColorVisible(!colorVisible)}>
+              <Text>Close</Text>
+            </Button>
+        </View>
+      </Modal>
       <ScrollView
         style = {{flex: 1}}
       >
@@ -54,11 +81,7 @@ export default function Category() {
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center'}}>
-        <ColorPicker
-          ref={r => {this.picker = r}}
-          color={color}
-          onColorChange={(color) => setColor(color)}
-        />
+        <Button onPress={() => setColorVisible(true)}> Color </Button>
         <TextInput
           style = {{justifyContent: 'flex-end'}}
           placeholder='Insert category'
