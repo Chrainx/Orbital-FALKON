@@ -3,12 +3,16 @@ import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/auth';
+import ColorPicker from 'react-native-wheel-color-picker'
 
 export default function Category() {
   const {user} = useAuth();
   const [newCategory, setNewCategory] = useState('');
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
+  const [color, setColor] = useState('');
+
+  console.log(color);
 
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('category');
@@ -28,6 +32,7 @@ export default function Category() {
       .single();
     setRefresh(true);
     setNewCategory('');
+    this.picker.revert();
   }
 
 
@@ -50,7 +55,11 @@ export default function Category() {
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center'}}>
-        <Text> color </Text>
+        <ColorPicker
+          ref={r => {this.picker = r}}
+          color={color}
+          onColorChange={(color) => setColor(color)}
+        />
         <TextInput
           style = {{justifyContent: 'flex-end'}}
           placeholder='Insert category'
