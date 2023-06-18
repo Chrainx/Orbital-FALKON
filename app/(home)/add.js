@@ -2,10 +2,11 @@ import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
 import { useAuth } from '../../contexts/auth';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
 import { BottomSheet } from '@rneui/themed';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 export default function Add () {
   //For supabase
@@ -14,13 +15,16 @@ export default function Add () {
   //For Refresh
   const isFocused = useIsFocused()
   
+  //For Date
+  const [date, setDate] = useState(new Date());
+  const [datePicker , setDatePicker] = useState(false);
+
   //For Expense
   const [expense, setExpense] = useState('');
   const [expenseDetail, setExpenseDetail] = useState(false);
 
   //For Category
   const [category, setCategory] = useState('');
-  const [categoryDetail, setCategoryDetail] = useState(false);
   const [visible, setVisible] = useState(false);
 
   //For Amount
@@ -65,7 +69,7 @@ export default function Add () {
       setCategory("None")
     }
     const { error } = await supabase.from('data').
-      insert({name: expense, inserted_at: new Date(), category: category, amount: amt, user_id: user.id})
+      insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
       .select()
       .single();
 
@@ -78,6 +82,7 @@ export default function Add () {
     setCategory('');
     setExpenseDetail(false);
     setAmountDetail(false);
+    setDate(new Date());
   }
 
   async function fetchCategory() {
@@ -91,6 +96,17 @@ export default function Add () {
   return (
     <SafeAreaView>
       <Text> Add </Text>
+      <NewAdd
+        title= "Date"
+        icon= {<Text style={{color: 'white'}}> {date.toDateString()}</Text>}
+        action={() => setDatePicker(true)}
+      />
+       <DateTimePickerModal
+        isVisible={datePicker}
+        mode="date"
+        onConfirm={(date) => {setDate(date); setDatePicker(false)}}
+        onCancel={() => setDatePicker(false)}
+      />
       <NewAdd
         title= 'Expense'
         icon= {
