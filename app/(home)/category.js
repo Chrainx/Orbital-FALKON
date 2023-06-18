@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/auth';
 import { ColorPicker, fromHsv } from 'react-native-color-picker';
 
+
 export default function Category() {
   const {user} = useAuth();
   const [newCategory, setNewCategory] = useState('');
@@ -26,16 +27,18 @@ export default function Category() {
   }
 
   const handleAdd = async () => {
+    setError('');
     if (newCategory == '') {
       setError("New Category cannot be empty");
+      return;
     }
-    let { data } = await supabase.from('category').select('category').eq('category', newCategory)
+    let { data } = await supabase.from('category').select('category').eq('category', newCategory.charAt(0).toUpperCase() + newCategory.slice(1).toLowerCase())
     if (data.length == 1) {
       setError(newCategory + " already exist");
       return;
     }
     const { error } = await supabase.from('category')
-      .insert({category: (newCategory.charAt(0).toUpperCase() + newCategory.slice(1)), user_id: user.id, color: color})
+      .insert({category: (newCategory.charAt(0).toUpperCase() + newCategory.slice(1).toLowerCase()), user_id: user.id, color: color})
       .select()
       .single();
     setRefresh(true);
@@ -76,11 +79,28 @@ export default function Category() {
       >
         {data && data.map(
           item =>
-          <View key={item.category} style={{flexDirection:'row'}}>
-            <Text style={{color: item.color}}> {item.category} </Text>
-            <Button onPress={() => handleDelete(item.category)}> - </Button>
+          <View key={item.category} 
+                style={{flexDirection:'row', 
+                        alignItems:'center', 
+                        borderWidth: '2',
+                        borderColor: 'black',
+                        borderRadius: 8,
+                        marginTop: 10,
+                        marginHorizontal:5,
+                        marginVertical: 2,
+                        justifyContent:'space-between',
+                        backgroundColor: 'lavender',
+                        
+                        
+                        }}>
+            
+            <Text style={{color: item.color, fontSize:'20', marginLeft: 5}}> {item.category} </Text>
+            <Button onPress={() => handleDelete(item.category)}> Delete </Button>
+            
+            
           </View>
         )}
+        
         {error !== '' && <Text> {error} </Text>}
       </ScrollView>
 
