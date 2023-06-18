@@ -34,7 +34,7 @@ export default function Category() {
     }
     let { data } = await supabase.from('category').select('category').eq('category', newCategory.charAt(0).toUpperCase() + newCategory.slice(1).toLowerCase())
     if (data.length == 1) {
-      setError(newCategory + " already exist");
+      setError(newCategory.charAt(0).toUpperCase() + newCategory.slice(1).toLowerCase() + " already exist");
       return;
     }
     const { error } = await supabase.from('category')
@@ -82,7 +82,7 @@ export default function Category() {
           <View key={item.category} 
                 style={{flexDirection:'row', 
                         alignItems:'center', 
-                        borderWidth: '2',
+                        borderWidth: 2,
                         borderColor: 'black',
                         borderRadius: 8,
                         marginTop: 10,
@@ -94,7 +94,7 @@ export default function Category() {
                         
                         }}>
             
-            <Text style={{color: item.color, fontSize:'20', marginLeft: 5}}> {item.category} </Text>
+            <Text style={{color: item.color, fontSize: 20, marginLeft: 5}}> {item.category} </Text>
             <Button onPress={() => handleDelete(item.category)}> Delete </Button>
             
             
