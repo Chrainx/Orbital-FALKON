@@ -10,7 +10,7 @@ export default function Category() {
   const [newCategory, setNewCategory] = useState('');
   const [data, setData] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const [color, setColor] = useState('#000000');
+  const [color, setColor] = useState('#0000FF');
   const [colorVisible, setColorVisible] = useState(false);
   const [error, setError] = useState('')
 
@@ -35,12 +35,12 @@ export default function Category() {
       return;
     }
     const { error } = await supabase.from('category')
-      .insert({category: newCategory, user_id: user.id, color: color})
+      .insert({category: (newCategory.charAt(0).toUpperCase() + newCategory.slice(1)), user_id: user.id, color: color})
       .select()
       .single();
     setRefresh(true);
     setNewCategory('');
-    setColor("#000000")
+    setColor("#0000FF")
   }
 
 
