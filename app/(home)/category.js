@@ -1,10 +1,11 @@
-import { View, Text, Modal, ScrollView} from 'react-native';
+import { View, Text, Modal, ScrollView, Image, Dimensions, } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/auth';
 import { ColorPicker, fromHsv } from 'react-native-color-picker';
 
+let width = Dimensions.get('window').width
 
 export default function Category() {
   const {user} = useAuth();
@@ -74,9 +75,21 @@ export default function Category() {
             </Button>
         </View>
       </Modal>
+      <View>
+        <Image source={require('./tab-icons/MOMA.png')} 
+                resizeMode='contain'
+                style={{
+                  height: width, 
+                  width: width, 
+                  position: 'absolute', 
+                  top: 0,
+                  left: 0
+                }}/>
+      </View>
       <ScrollView
-        style = {{flex: 1}}
+        style = {{flex: 1 }}
       >
+      
         {data && data.map(
           item =>
           <View key={item.category} 

@@ -55,15 +55,26 @@ export default function Expense() {
             //   <Text>{item.category} </Text>
             //   <Text>{item.amount} </Text>
             //   <Button onPress={() => handleDelete(item.id)}> - </Button>
-            <View style={{display: 'flex', flexDirection: 'column', marginBottom: 12, width: '100%', }}>
+            <View style={{display: 'flex', 
+                  flexDirection: 'column', 
+                  marginBottom: 12,
+                  marginHorizontal: 15,
+
+                  backgroundColor: 'lavender',
+                  justifyContent: 'space-between',
+                  borderWidth: 3,
+                  borderRadius: 8,
+                    
+                  }}>
+
               <View style= {{width: '100%',
                     display:'flex', 
                     flexDirection: 'row', 
                     justifyContent: 'space-between',
                     alignItems:'center',
                     marginBottom: 4,}}>
-                  <Text style={{fontSize: 15, backgroundColor:'lightblue'}}>{item.name} </Text>
-                  <Text style={{fontSize: 15,backgroundColor:'lightgrey'}}>Currency {item.amount} </Text>
+                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'lightblue'}}>{item.name} </Text>
+                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'lightgrey'}}>Currency {item.amount} </Text>
               </View>
               
               <View style= {{width: '100%',
@@ -72,11 +83,11 @@ export default function Expense() {
                     justifyContent: 'space-between',
                     alignItems:'center',
                     }}>
-                  <Text style={{fontSize: 15, backgroundColor:'yellow'}}>{item.category} </Text>
-                  <Text style={{fontSize: 15, backgroundColor: 'pink'}}>{item.inserted_at} </Text>
+                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'yellow'}}>{item.category} </Text>
+                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor: 'pink'}}>{item.inserted_at} </Text>
               </View>
-              <View style={{marginTop: 5, borderBottomWidth: 1}}></View> 
-              <Button style = {{marginTop: 4, backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button>
+              <View style={{marginTop: 5, borderBottomWidth: 5, marginHorizontal: 3}}></View> 
+              <Button style = {{marginVertical: 4, marginHorizontal: 5,backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button>
             </View>
           }
           refreshing = {refresh}
