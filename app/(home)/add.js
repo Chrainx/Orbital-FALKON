@@ -81,7 +81,7 @@ export default function Add () {
   }
 
   async function fetchCategory() {
-    let {data} = await supabase.from('category').select('category');
+    let {data} = await supabase.from('category').select('*');
     setData(data);
   }
 
@@ -232,6 +232,7 @@ export default function Add () {
         {data.map((item) => 
           <Button 
             key={item.category} 
+            textColor={item.color}
             onPress={ ()=> {
               setVisible(false);
               setCategory(item.category);
@@ -241,7 +242,7 @@ export default function Add () {
           </Button> 
         )}        
         <Button 
-          style = {{color: 'white'}} 
+          textColor= {'white'}
           onPress={() => {
             setVisible(false);
             setCategory('');  

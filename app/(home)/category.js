@@ -12,6 +12,7 @@ export default function Category() {
   const [refresh, setRefresh] = useState(false);
   const [color, setColor] = useState('#000000');
   const [colorVisible, setColorVisible] = useState(false);
+  const [error, setError] = useState('')
 
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*');
@@ -25,7 +26,14 @@ export default function Category() {
   }
 
   const handleAdd = async () => {
-    console.log(color);
+    if (newCategory == '') {
+      setError("New Category cannot be empty");
+    }
+    let { data } = await supabase.from('category').select('category').eq('category', newCategory)
+    if (data.length == 1) {
+      setError(newCategory + " already exist");
+      return;
+    }
     const { error } = await supabase.from('category')
       .insert({category: newCategory, user_id: user.id, color: color})
       .select()
@@ -66,13 +74,14 @@ export default function Category() {
       <ScrollView
         style = {{flex: 1}}
       >
-        {data.map(
+        {data && data.map(
           item =>
           <View key={item.category} style={{flexDirection:'row'}}>
             <Text style={{color: item.color}}> {item.category} </Text>
             <Button onPress={() => handleDelete(item.category)}> - </Button>
           </View>
         )}
+        {error !== '' && <Text> {error} </Text>}
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center'}}>
@@ -82,6 +91,7 @@ export default function Category() {
           placeholder='Insert category'
           value={newCategory}
           onChangeText={setNewCategory}
+          keyboardType= {'default'}
         />
         <Button onPress={handleAdd}> ADD </Button>
       </View>
