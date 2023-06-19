@@ -19,7 +19,6 @@ export default function Expense() {
     let {data} = await supabase.from('data').select('*').order('inserted_at', {ascending: false});
     setTotal(data.reduce((a, b) => a + b.amount, 0));
     setData(data);
-    //console.log(data);
     const newArr = [];
     if(data.length > 0) {
       newArr.push(data[0].inserted_at)
@@ -30,9 +29,14 @@ export default function Expense() {
       }
     }
     setDate(newArr);
-    data = await supabase.from('category').select('*')
-    setColor(data);
+    fetchCategory();
     setRefresh(false);
+  }
+
+  async function fetchCategory() {
+    let {data} = await supabase.from('category').select('*');
+    setColor(data);
+    console.log(color);
   }
 
   useEffect(() => { fetchData() }, [isFocused]);
@@ -56,21 +60,13 @@ export default function Expense() {
 
   return (
       <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
-        <FlatList
-          data= {data}
-          //style = {{flexDirection: 'row', width: '100%', }}
-          renderItem ={({item}) => 
-            // <View style={{flexDirection:'row', 
-            //       alignItems:'center', 
-            //       justifyContent:"space-between", 
-            //       backgroundColor: 'gray', 
-            //       }}>                
-            //   <Text>{item.inserted_at} </Text>
-            //   <Text>{item.name} </Text>
-            //   <Text>{item.category} </Text>
-            //   <Text>{item.amount} </Text>
-            //   <Button onPress={() => handleDelete(item.id)}> - </Button>
-            <View style={{display: 'flex', 
+        {date && date.map(a => 
+          <View key={a}>
+            <Text> {a} </Text>
+              {data.filter(b => b.inserted_at == a).map(item => 
+                <View 
+                key={item.name}
+                style={{display: 'flex', 
                   flexDirection: 'column', 
                   marginBottom: 12,
                   marginHorizontal: 15,
@@ -79,7 +75,7 @@ export default function Expense() {
                   justifyContent: 'space-between',
                   borderWidth: 3,
                   borderRadius: 8,
-            }}>
+                }}>
               <View style= {{width: '100%',
                     display:'flex', 
                     flexDirection: 'row', 
@@ -96,28 +92,18 @@ export default function Expense() {
                     justifyContent: 'space-between',
                     alignItems:'center',
                     }}>
-                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'yellow'}}>{item.category} </Text>
-                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor: 'pink'}}>{item.inserted_at} </Text>
+                  <Text 
+                  style={{
+                    fontSize: 15, 
+                    fontWeight:'bold', 
+                    backgroundColor:'yellow',
+                    color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
+                  }}>{item.category} </Text>
               </View>
 
               <View style={{marginTop: 5, borderBottomWidth: 5, marginHorizontal: 3}}></View> 
               <Button style = {{marginVertical: 4, marginHorizontal: 5,backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button>
             </View>
-          }
-          refreshing = {refresh}
-        />
-
-        <Text> testing </Text>
-    
-        {date && date.map(a => 
-          <View key={a}>
-            <Text> {a} </Text>
-              {data.filter(b => b.inserted_at == a).map(c => 
-                <View key = {c.name} style= {{flexDirection: 'row'}}>
-                  <Text> {c.name} </Text>
-                  <Text> {c.category} </Text>
-                  <Text> {c.amount} </Text>
-                </View>
             )}
           </View>
         )}
