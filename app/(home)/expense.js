@@ -7,6 +7,8 @@ import { useIsFocused } from "@react-navigation/native";
 
 export default function Expense() { 
   const [data, setData] = useState([]);
+  const [color, setColor] = useState([]);
+  const [date, setDate] = useState([]);
   const [Total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -14,9 +16,22 @@ export default function Expense() {
   const isFocused = useIsFocused();
 
   async function fetchData() {
-    let {data} = await supabase.from('data').select('*');
+    let {data} = await supabase.from('data').select('*').order('inserted_at', {ascending: false});
     setTotal(data.reduce((a, b) => a + b.amount, 0));
     setData(data);
+    //console.log(data);
+    const newArr = [];
+    if(data.length > 0) {
+      newArr.push(data[0].inserted_at)
+    }
+    for (var i = 1; i < data.length; i++) {
+      if (newArr[newArr.length - 1] !== data[i].inserted_at) {
+        newArr.push(data[i].inserted_at)
+      }
+    }
+    setDate(newArr);
+    data = await supabase.from('category').select('*')
+    setColor(data);
     setRefresh(false);
   }
 
@@ -64,9 +79,7 @@ export default function Expense() {
                   justifyContent: 'space-between',
                   borderWidth: 3,
                   borderRadius: 8,
-                    
-                  }}>
-
+            }}>
               <View style= {{width: '100%',
                     display:'flex', 
                     flexDirection: 'row', 
@@ -86,12 +99,29 @@ export default function Expense() {
                   <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'yellow'}}>{item.category} </Text>
                   <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor: 'pink'}}>{item.inserted_at} </Text>
               </View>
+
               <View style={{marginTop: 5, borderBottomWidth: 5, marginHorizontal: 3}}></View> 
               <Button style = {{marginVertical: 4, marginHorizontal: 5,backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button>
             </View>
           }
           refreshing = {refresh}
         />
+
+        <Text> testing </Text>
+    
+        {date && date.map(a => 
+          <View key={a}>
+            <Text> {a} </Text>
+              {data.filter(b => b.inserted_at == a).map(c => 
+                <View key = {c.name} style= {{flexDirection: 'row'}}>
+                  <Text> {c.name} </Text>
+                  <Text> {c.category} </Text>
+                  <Text> {c.amount} </Text>
+                </View>
+            )}
+          </View>
+        )}
+        
         {loading && <ActivityIndicator />}
         <Text style={{fontSize: 20}}> Total: {Total}</Text>
       </View>
