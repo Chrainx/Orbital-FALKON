@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity} from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity, Touchable} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
 import { useAuth } from '../../contexts/auth';
@@ -147,14 +147,32 @@ export default function Add () {
                 style={ 
                   style.textInput
                 }
-              /> 
-              <Button 
+              />
+              <TouchableOpacity style=
+              {{
+                marginRight: 20, 
+                borderWidth:1, 
+                borderColor:'#6699CC', 
+                backgroundColor:'#6699CC', borderRadius: 25}} 
+                onPress={() => setAmountDetail(false
+                )}>
+
+                <Text style = {{
+                  color: 'white', 
+                  fontSize:15, 
+                  marginVertical: 5, 
+                  marginHorizontal:8,
+                  }}>
+                    Insert
+                </Text>
+              </TouchableOpacity>
+              {/* <Button 
 
               onPress={() => setExpenseDetail(false)}
               textColor='white'
               buttonColor='#6699CC'
               > 
-              Insert </Button> 
+              Insert </Button>  */}
             </View>
 
           : undefined 
@@ -211,12 +229,29 @@ export default function Add () {
                 onChangeText={setAmount}
                 style={style.textInput}
               />
-              
-              <Button 
+              <TouchableOpacity style=
+              {{
+                marginRight: 20, 
+                borderWidth:1, 
+                borderColor:'#6699CC', 
+                backgroundColor:'#6699CC', borderRadius: 25}} 
+                onPress={() => setAmountDetail(false
+                )}>
+
+                <Text style = {{
+                  color: 'white', 
+                  fontSize:15, 
+                  marginVertical: 5, 
+                  marginHorizontal:8,
+                  }}>
+                    Insert
+                </Text>
+              </TouchableOpacity>
+              {/* <Button 
               onPress={() => setAmountDetail(false)}
               textColor='white'
               buttonColor='#6699CC'
-              > Insert </Button>
+              > Insert </Button> */}
               
             </View>
 
@@ -241,28 +276,62 @@ export default function Add () {
         modalProps ={{}}
         containerStyle={{color:'black', height: 100}}
       >
-        <Text style = {{color:'white', backgroundColor:'black'}}> Please Select a Category </Text>
+        <Text style = {{color:'white', backgroundColor:'grey', fontSize: 20, }}> Please Select a Category </Text>
         <View
-          style = {{backgroundColor: 'black', justifyContent: 'center', alignItems: 'center'}}
+          style = {{backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center'}}
         >
         {data.map((item) => 
-          <Button 
+          
+          <TouchableOpacity
+          style={{marginVertical: 2, width: '100%', alignItems:'center',}}
+          key={item.category}
+          onPress={()=> {
+            setVisible(false);
+            setCategory(item.category);
+            }}>
+          <Text style={{color:item.color, fontSize: 18, marginVertical: 8}}>{item.category}</Text>
+        </TouchableOpacity>,
+        {/* <Button 
             key={item.category} 
             textColor={item.color}
             onPress={ ()=> {
               setVisible(false);
               setCategory(item.category);
             }}
-          > 
+          >
             {item.category}
-          </Button> 
-        )}        
-        <Button 
+          </Button> */}
+        )}   
+    
+        
+        {/* <Button 
           textColor= {'white'}
           onPress={() => {
             setVisible(false);
             setCategory('');  
-          }}> Close </Button>
+          }}> Close </Button> */}
+        <TouchableOpacity 
+            onPress={() => {
+              setVisible(false);
+              setCategory('');
+            }}
+            style=
+            {{
+              width: '100%', 
+              alignItems: 'center',
+              marginBottom: 30,
+              backgroundColor: 'red',
+              }}>
+              <Text style = 
+              {{
+                fontSize:20, 
+                color: 'white',
+                marginVertical: 10
+
+                }}>
+                Close
+              </Text>
+        </TouchableOpacity>
         </View>
       </BottomSheet>
 

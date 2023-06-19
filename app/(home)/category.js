@@ -102,7 +102,7 @@ export default function Category() {
                         marginHorizontal:5,
                         marginVertical: 2,
                         justifyContent:'space-between',
-                        backgroundColor: 'lavender',
+                        backgroundColor: 'lightgrey',
                         
                         
                         }}>
@@ -117,16 +117,18 @@ export default function Category() {
         {error !== '' && <Text> {error} </Text>}
       </ScrollView>
 
-      <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center'}}>
-        <Button labelStyle={{color: color}} onPress={() => setColorVisible(true)}> Color </Button>
+      <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center', marginBottom: 20}}>
+        <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}> Color </Button>
         <TextInput
-          style = {{justifyContent: 'flex-end'}}
+          style = {{justifyContent: 'flex-end', flex:2, }}
+          mode='outlined'
+          
           placeholder='Insert category'
           value={newCategory}
           onChangeText={setNewCategory}
           keyboardType= {'default'}
         />
-        <Button onPress={handleAdd}> ADD </Button>
+        <Button style = {{flex: 1}}onPress={handleAdd}> ADD </Button>
       </View>
     </View>
   );

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, View, ScrollView, TouchableOpacity} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -59,20 +59,21 @@ export default function Expense() {
 
   return (
       <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
+      <ScrollView>
         {date && date.map(a => 
           <View key={a}>
-            <Text> {a} </Text>
+            <Text style={{marginLeft: 15, marginVertical: 5}}> {a} </Text>
               {data.filter(b => b.inserted_at == a).map(item => 
                 <View 
                 key={item.name}
                 style={{display: 'flex', 
                   flexDirection: 'column', 
-                  marginBottom: 12,
+                  marginBottom: 4,
                   marginHorizontal: 15,
 
-                  backgroundColor: 'lavender',
+                  backgroundColor: 'lightgrey',
                   justifyContent: 'space-between',
-                  borderWidth: 3,
+                  borderWidth: 2,
                   borderRadius: 8,
                 }}>
               <View style= {{width: '100%',
@@ -80,9 +81,10 @@ export default function Expense() {
                     flexDirection: 'row', 
                     justifyContent: 'space-between',
                     alignItems:'center',
-                    marginBottom: 4,}}>
-                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'lightblue'}}>{item.name} </Text>
-                  <Text style={{fontSize: 15, fontWeight:'bold', backgroundColor:'lightgrey'}}>Currency {item.amount} </Text>
+                    marginBottom: 4,
+                    }}>
+                  <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3}}>{item.name} </Text>
+                  <Text style={{fontSize: 18, fontWeight:'bold', }}>USD {item.amount} </Text>
               </View>
               
               <View style= {{width: '100%',
@@ -94,21 +96,33 @@ export default function Expense() {
                   <Text 
                   style={{
                     fontSize: 15, 
-                    fontWeight:'bold', 
-                    backgroundColor:'yellow',
+                    fontWeight:'bold',
+                    marginLeft: 3, 
+                    //backgroundColor:'yellow',
                     color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
                   }}>{item.category} </Text>
+                  {/* <Button style = {{marginVertical: 4, marginHorizontal: 5, backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button> */}
+                  <TouchableOpacity style = {{
+                        marginRight: 3, 
+                        borderColor:'white', 
+                        borderWidth:1, 
+                        borderRadius: 200, 
+                        marginBottom: 2, }}
+                        onPress={() => handleDelete(item.id)}>
+                        <Text style={{fontSize:18, color:'red'}}> Delete </Text></TouchableOpacity>
               </View>
 
-              <View style={{marginTop: 5, borderBottomWidth: 5, marginHorizontal: 3}}></View> 
-              <Button style = {{marginVertical: 4, marginHorizontal: 5,backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button>
+
+              {/* <View style={{marginTop: 5, borderBottomWidth: 1, borderColor:'grey', marginHorizontal: 3}}></View> 
+              <Button style = {{marginVertical: 4, marginHorizontal: 5,backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button> */}
             </View>
             )}
           </View>
         )}
-        
+        </ScrollView>
         {loading && <ActivityIndicator />}
         <Text style={{fontSize: 20}}> Total: {Total}</Text>
+        
       </View>
   );
 }
