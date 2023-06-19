@@ -36,7 +36,6 @@ export default function Expense() {
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*');
     setColor(data);
-    console.log(color);
   }
 
   useEffect(() => { fetchData() }, [isFocused]);
