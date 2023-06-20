@@ -37,6 +37,7 @@ export default function Add () {
   //For error
   const [errExpenseMsg, setErrExpenseMsg] = useState('');
   const [errAmountMsg, setErrAmountMsg] = useState('');
+  const [errCategoryMsg, setErrCategoryMsg] = useState('');
 
   const handleSubmit = async () => {
     setErrExpenseMsg('');
@@ -44,15 +45,54 @@ export default function Add () {
     var amt = parseFloat(amount).toFixed(2);
     if (expense == '') {
       setErrExpenseMsg("Expense cannot be empty");
+      if (category == "") {
+        setErrCategoryMsg("Please select a category! you can add your own category in setting");
+        if (amount == '') {
+          setErrAmountMsg("Amount cannot be empty");
+          return;
+        }
+        if (isNaN(amt)) {
+          setErrAmountMsg("Amount must be a number");
+          return;
+        } 
+        if(amt < 0) {
+          setErrAmountMsg("Amount cannot be a negative value");
+          return;
+        }
+        return;
+      }
       if (amount == '') {
-      setErrAmountMsg("Amount cannot be empty");
-      return;
+        setErrAmountMsg("Amount cannot be empty");
+        return;
       }
       if (isNaN(amt)) {
         setErrAmountMsg("Amount must be a number");
+        return;
       } 
+      if(amt < 0) {
+        setErrAmountMsg("Amount cannot be a negative value");
+        return;
+      }
       return;
     }
+
+    if (category == '') {
+      setErrCategoryMsg("Please select a category! you can add your own category in setting");
+      if (amount == '') {
+        setErrAmountMsg("Amount cannot be empty");
+        return;
+      }
+      if (isNaN(amt)) {
+        setErrAmountMsg("Amount must be a number");
+        return;
+      }
+      if(amt < 0) {
+        setErrAmountMsg("Amount cannot be a negative value");
+        return;
+      }
+      return;
+    }
+      
     if (amount == '') {
       setErrAmountMsg("Amount cannot be empty");
       return;
@@ -65,18 +105,12 @@ export default function Add () {
       setErrAmountMsg("Amount cannot be a negative value");
       return;
     }
-    if (category == '') {
-      setCategory("None")
-    }
+
     const { error } = await supabase.from('data').
       insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
       .select()
       .single();
 
-    if (error != null) {
-      setErrAmountMsg(error.message);
-      return;
-    }
     setExpense('');
     setAmount('');
     setCategory('');
@@ -154,8 +188,7 @@ export default function Add () {
                 borderWidth:1, 
                 borderColor:'#6699CC', 
                 backgroundColor:'#6699CC', borderRadius: 25}} 
-                onPress={() => setAmountDetail(false
-                )}>
+                onPress={() => setExpenseDetail(false)}>
 
                 <Text style = {{
                   color: 'white', 
@@ -260,7 +293,6 @@ export default function Add () {
       />
      
       <TouchableOpacity 
-        
         style = {style.button}
         onPress = {handleSubmit}>
         <Text style= {{color: 'white'}}>Submit</Text>
@@ -269,6 +301,7 @@ export default function Add () {
       <View style = {{alignItems: 'center'}}>
       {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
       {errExpenseMsg && <Text style= {style.warning}> {errExpenseMsg} </Text>}
+      {errCategoryMsg && <Text style= {style.warning}> {errCategoryMsg} </Text>}
       </View>
 
       <BottomSheet
@@ -282,7 +315,7 @@ export default function Add () {
         >
         {data.map((item) => 
           
-          <TouchableOpacity
+        <TouchableOpacity
           style={{marginVertical: 2, width: '100%', alignItems:'center',}}
           key={item.category}
           onPress={()=> {

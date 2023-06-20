@@ -65,7 +65,7 @@ export default function Expense() {
             <Text style={{marginLeft: 15, marginVertical: 5}}> {a} </Text>
               {data.filter(b => b.inserted_at == a).map(item => 
                 <View 
-                key={item.name}
+                key={item.id}
                 style={{display: 'flex', 
                   flexDirection: 'column', 
                   marginBottom: 4,
