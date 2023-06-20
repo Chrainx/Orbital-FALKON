@@ -41,6 +41,7 @@ export default function Add () {
 
   const handleSubmit = async () => {
     setErrExpenseMsg('');
+    setErrCategoryMsg('');
     setErrAmountMsg('');
     var amt = parseFloat(amount).toFixed(2);
     if (expense == '') {
