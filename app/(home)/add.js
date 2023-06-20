@@ -1,8 +1,8 @@
-import { StyleSheet, SafeAreaView, View, Text, Image, FlatList, TouchableOpacity, Touchable} from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, Image, Alert, TouchableOpacity, Touchable} from 'react-native';
 import { TextInput, Button } from 'react-native-paper';
 import { NewAdd } from './newAdd';
 import { useAuth } from '../../contexts/auth';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useIsFocused } from "@react-navigation/native";
 import { BottomSheet } from '@rneui/themed';
@@ -35,83 +35,138 @@ export default function Add () {
   const [data, setData] = useState([]);
 
   //For error
-  const [errExpenseMsg, setErrExpenseMsg] = useState('');
-  const [errAmountMsg, setErrAmountMsg] = useState('');
-  const [errCategoryMsg, setErrCategoryMsg] = useState('');
+  //const [errExpenseMsg, setErrExpenseMsg] = useState('');
+  //const [errAmountMsg, setErrAmountMsg] = useState('');
+  //const [errCategoryMsg, setErrCategoryMsg] = useState('');
+  const errAmountMsg = useRef("");
+  const errCategoryMsg = useRef("");
+  const errExpenseMsg = useRef("");
+  const isError = useRef(false);
 
-  const handleSubmit = async () => {
-    setErrExpenseMsg('');
-    setErrCategoryMsg('');
-    setErrAmountMsg('');
+  const alertError = () => {
+    Alert.alert(
+      "Please check",
+      errAmountMsg.current + "\n" + errCategoryMsg.current + "\n" + errExpenseMsg.current, 
+      [
+        {text: "Ok"},
+      ]
+    );
+  }
+
+  const setError = () => {
     var amt = parseFloat(amount).toFixed(2);
-    if (expense == '') {
-      setErrExpenseMsg("Expense cannot be empty");
-      if (category == "") {
-        setErrCategoryMsg("Please select a category! you can add your own category in setting");
-        if (amount == '') {
-          setErrAmountMsg("Amount cannot be empty");
-          return;
-        }
-        if (isNaN(amt)) {
-          setErrAmountMsg("Amount must be a number");
-          return;
-        } 
-        if(amt < 0) {
-          setErrAmountMsg("Amount cannot be a negative value");
-          return;
-        }
-        return;
-      }
-      if (amount == '') {
-        setErrAmountMsg("Amount cannot be empty");
-        return;
-      }
-      if (isNaN(amt)) {
-        setErrAmountMsg("Amount must be a number");
-        return;
-      } 
-      if(amt < 0) {
-        setErrAmountMsg("Amount cannot be a negative value");
-        return;
-      }
-      return;
+    if (expense == "") {
+      errExpenseMsg.current = "Expense cannot be empty!";
+      isError.current = true;
     }
-
-    if (category == '') {
-      setErrCategoryMsg("Please select a category! you can add your own category in setting");
-      if (amount == '') {
-        setErrAmountMsg("Amount cannot be empty");
-        return;
-      }
-      if (isNaN(amt)) {
-        setErrAmountMsg("Amount must be a number");
-        return;
-      }
-      if(amt < 0) {
-        setErrAmountMsg("Amount cannot be a negative value");
-        return;
-      }
-      return;
+    if (category == "") {
+      errCategoryMsg.current = "Please select a category!\nyou can add your own category in setting!";
+      isError.current = true;
     }
-      
     if (amount == '') {
-      setErrAmountMsg("Amount cannot be empty");
-      return;
+      errAmountMsg.current = "Amount cannot be empty!";
+      isError.current = true;
     }
     if (isNaN(amt)) {
-      setErrAmountMsg("Amount must be a number");
-      return;
+      errAmountMsg.current = "Amount must be a number!";
+      isError.current = true;
+    } 
+    if (amt < 0) {
+      errAmountMsg.current = "Amount cannot be a negative value!";
+      isError.current = true;
     }
-    if(amt < 0) {
-      setErrAmountMsg("Amount cannot be a negative value");
-      return;
+    if (isError) {
+      alertError();
+      return
     }
+  }
 
+  const insert = async () => {
+    var amt = parseFloat(amount).toFixed(2);
     const { error } = await supabase.from('data').
-      insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
-      .select()
-      .single();
+    insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
+    .select()
+    .single();
+  }
 
+  const handleSubmit = () => {
+    errAmountMsg.current = "";
+    errCategoryMsg.current = "";
+    errExpenseMsg.current = "";
+    isError.current = false;
+    setError();
+    if (isError) {
+      return;
+    }
+    // var amt = parseFloat(amount).toFixed(2);
+    // if (expense == '') {
+    //   setErrExpenseMsg("Expense cannot be empty!");
+    //   if (category == "") {
+    //     setErrCategoryMsg("Please select a category!\nyou can add your own category in setting!");
+    //     if (amount == '') {
+    //       setErrAmountMsg("Amount cannot be empty!");
+    //       return alertError();
+    //     }
+    //     if (isNaN(amt)) {
+    //       setErrAmountMsg("Amount must be a number!");
+    //       return alertError();
+    //     } 
+    //     if(amt < 0) {
+    //       setErrAmountMsg("Amount cannot be a negative value!");
+    //       return alertError();
+    //     }
+    //     return alertError();
+    //   }
+    //   if (amount == '') {
+    //     setErrAmountMsg("Amount cannot be empty!");
+    //     return alertError();
+    //   }
+    //   if (isNaN(amt)) {
+    //     setErrAmountMsg("Amount must be a number!");
+    //     return alertError();
+    //   } 
+    //   if(amt < 0) {
+    //     setErrAmountMsg("Amount cannot be a negative value!");
+    //     return alertError();
+    //   }
+    //   return alertError();
+    // }
+
+    // if (category == '') {
+    //   setErrCategoryMsg("Please select a category!\nyou can add your own category in setting!");
+    //   if (amount == '') {
+    //     setErrAmountMsg("Amount cannot be empty!");
+    //     return alertError();
+    //   }
+    //   if (isNaN(amt)) {
+    //     setErrAmountMsg("Amount must be a number!");
+    //     return alertError();
+    //   }
+    //   if(amt < 0) {
+    //     setErrAmountMsg("Amount cannot be a negative value!");
+    //     return alertError();
+    //   }
+    //   return alertError();
+    // }
+      
+    // if (amount == '') {
+    //   setErrAmountMsg("Amount cannot be empty!");
+    //   return alertError();
+    // }
+    // if (isNaN(amt)) {
+    //   setErrAmountMsg("Amount must be a number");
+    //   return alertError();
+    // }
+    // if(amt < 0) {
+    //   setErrAmountMsg("Amount cannot be a negative value");
+    //   return alertError();
+    // }
+
+    // const { error } = await supabase.from('data').
+    //   insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
+    //   .select()
+    //   .single();
+    insert();
     setExpense('');
     setAmount('');
     setCategory('');
@@ -299,11 +354,11 @@ export default function Add () {
         <Text style= {{color: 'white'}}>Submit</Text>
       </TouchableOpacity>
       
-      <View style = {{alignItems: 'center'}}>
+      {/* <View style = {{alignItems: 'center'}}>
       {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
       {errExpenseMsg && <Text style= {style.warning}> {errExpenseMsg} </Text>}
       {errCategoryMsg && <Text style= {style.warning}> {errCategoryMsg} </Text>}
-      </View>
+      </View> */}
 
       <BottomSheet
         isVisible = {visible}

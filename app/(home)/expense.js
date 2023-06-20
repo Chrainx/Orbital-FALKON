@@ -6,18 +6,33 @@ import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
 
 export default function Expense() { 
+  
+  // For data about every expense
   const [data, setData] = useState([]);
+  
+  // For getiing color for each category
   const [color, setColor] = useState([]);
+
+  // For remove duplicate date 
   const [date, setDate] = useState([]);
+
+  // For find the total spending
   const [Total, setTotal] = useState(0);
+
+  // For the loading indicator
   const [loading, setLoading] = useState(false);
+
+  //For refreshing
   const [refresh, setRefresh] = useState(false);
-  const {user} = useAuth();
   const isFocused = useIsFocused();
 
   async function fetchData() {
     let {data} = await supabase.from('data').select('*').order('inserted_at', {ascending: false});
-    setTotal(data.reduce((a, b) => a + b.amount, 0));
+    if (data.length == 0) {
+      setTotal(0);
+    } else {
+      setTotal(data.reduce((a, b) => a + b.amount, 0));
+    }
     setData(data);
     const newArr = [];
     if(data.length > 0) {
@@ -38,17 +53,9 @@ export default function Expense() {
     setColor(data);
   }
 
-  useEffect(() => { fetchData() }, [isFocused]);
-  
-  useEffect(() => {
-    fetchData()
-  }, []);
-
-  useEffect(() => {
-    if (refresh) {
-      fetchData()
-    }
-  }, [refresh]);
+  useEffect(() => {fetchData()}, []);
+  useEffect(() => {if(isFocused){fetchData()}}, [isFocused]);
+  useEffect(() => {if (refresh) {fetchData()}}, [refresh]);
 
   const handleDelete = async (itemId) => {
     setLoading(true);
