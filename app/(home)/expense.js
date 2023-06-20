@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { FlatList, View, ScrollView, TouchableOpacity} from "react-native";
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { FlatList, View, ScrollView, TouchableOpacity, Image} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -64,68 +65,79 @@ export default function Expense() {
     setRefresh(true);
   }
 
+
   return (
       <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
       <ScrollView>
-        {date && date.map(a => 
-          <View key={a}>
-            <Text style={{marginLeft: 15, marginVertical: 5}}> {a} </Text>
-              {data.filter(b => b.inserted_at == a).map(item => 
-                <View 
-                key={item.id}
-                style={{display: 'flex', 
-                  flexDirection: 'column', 
-                  marginBottom: 4,
-                  marginHorizontal: 15,
-
-                  backgroundColor: 'lightgrey',
-                  justifyContent: 'space-between',
-                  borderWidth: 2,
-                  borderRadius: 8,
-                }}>
-              <View style= {{width: '100%',
-                    display:'flex', 
-                    flexDirection: 'row', 
-                    justifyContent: 'space-between',
-                    alignItems:'center',
-                    marginBottom: 4,
-                    }}>
-                  <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3}}>{item.name} </Text>
-                  <Text style={{fontSize: 18, fontWeight:'bold', }}>USD {item.amount} </Text>
-              </View>
-              
-              <View style= {{width: '100%',
-                    display:'flex', 
-                    flexDirection: 'row', 
-                    justifyContent: 'space-between',
-                    alignItems:'center',
-                    }}>
-                  <Text 
+        {date && date.map(date => 
+          <View key={date}>
+            <Text style={{marginLeft: 15, marginVertical: 5}}> {date} </Text>
+              {data.filter(b => b.inserted_at == date).map(item => 
+              <Swipeable key={item.id} renderRightActions={() => (
+                <TouchableOpacity
                   style={{
-                    fontSize: 15, 
-                    fontWeight:'bold',
-                    marginLeft: 3, 
-                    //backgroundColor:'yellow',
-                    color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 8,
+                    marginBottom: 4,
+                    marginRight: 15, 
+                    backgroundColor: 'red',
+                    width: 50,
+                  }}
+                  onPress={() => handleDelete(item.id)}
+                >
+                  <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 40, height: 40, }}/>
+                </TouchableOpacity>
+              )}
+              onSwipeableRight={() => handleDelete(item.id)}
+              >
+                <View 
+                  style={{display: 'flex', 
+                    flexDirection: 'column', 
+                    marginBottom: 4,
+                    marginHorizontal: 15,
+                    backgroundColor: 'lightgrey',
+                    justifyContent: 'space-between',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                  }}>
+                  <View 
+                    style= {{width: '100%',
+                      display:'flex', 
+                      flexDirection: 'row', 
+                      justifyContent: 'space-between',
+                      alignItems:'center',
+                      marginBottom: 4,
+                      }}>
+                    <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3}}>{item.name} </Text>
+                    <Text style={{fontSize: 18, fontWeight:'bold', }}>USD {item.amount} </Text>
+                  </View>
+              
+                  <View 
+                    style= {{width: '100%',
+                      display:'flex', 
+                      flexDirection: 'row', 
+                      justifyContent: 'space-between',
+                      alignItems:'center',
+                      }}>
+                  <Text 
+                    style={{
+                      fontSize: 15, 
+                      fontWeight:'bold',
+                      marginLeft: 3, 
+                      //backgroundColor:'yellow',
+                      color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
                   }}>{item.category} </Text>
-                  {/* <Button style = {{marginVertical: 4, marginHorizontal: 5, backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button> */}
-                  <TouchableOpacity style = {{
-                        marginRight: 3, 
-                        borderColor:'white', 
-                        borderWidth:1, 
-                        borderRadius: 200, 
-                        marginBottom: 2, }}
-                        onPress={() => handleDelete(item.id)}>
-                        <Text style={{fontSize:18, color:'red'}}> Delete </Text></TouchableOpacity>
+                      <Text style = {{fontSize: 15, fontWeight: 'bold', marginRight: 3}}> put what</Text>
               </View>
-
-
-              {/* <View style={{marginTop: 5, borderBottomWidth: 1, borderColor:'grey', marginHorizontal: 3}}></View> 
-              <Button style = {{marginVertical: 4, marginHorizontal: 5,backgroundColor: '#6699CC'}} onPress={() => handleDelete(item.id)}> Delete </Button> */}
             </View>
+            </Swipeable>
             )}
           </View>
+          
+          
         )}
+          
         </ScrollView>
         {loading && <ActivityIndicator />}
         <Text style={{fontSize: 20}}> Total: {Total}</Text>

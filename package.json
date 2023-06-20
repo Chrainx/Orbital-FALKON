@@ -40,7 +40,7 @@
     "react-native-date-picker": "^4.2.13",
     "react-native-dropdown-select-list": "^2.0.4",
     "react-native-element-dropdown": "^2.9.0",
-    "react-native-gesture-handler": "~2.9.0",
+    "react-native-gesture-handler": "^2.9.0",
     "react-native-modal-datetime-picker": "^15.0.1",
     "react-native-paper": "^5.8.0",
     "react-native-paper-datetimepicker": "^0.0.2",

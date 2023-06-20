@@ -61,7 +61,7 @@ export default function Home() {
           }}
         />
         <Tab.Screen 
-          name="Setting" 
+          name="Settings" 
           component={Setting} 
           options = {{
             tabBarIcon: ({focused}) => (
