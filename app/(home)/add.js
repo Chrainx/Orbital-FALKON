@@ -75,27 +75,19 @@ export default function Add () {
       errAmountMsg.current = "Amount cannot be a negative value!";
       isError.current = true;
     }
-    if (isError) {
+    if (isError.current) {
       alertError();
-      return
+      return;
     }
   }
 
-  const insert = async () => {
-    var amt = parseFloat(amount).toFixed(2);
-    const { error } = await supabase.from('data').
-    insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
-    .select()
-    .single();
-  }
-
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     errAmountMsg.current = "";
     errCategoryMsg.current = "";
     errExpenseMsg.current = "";
     isError.current = false;
     setError();
-    if (isError) {
+    if (isError.current) {
       return;
     }
     // var amt = parseFloat(amount).toFixed(2);
@@ -162,11 +154,12 @@ export default function Add () {
     //   return alertError();
     // }
 
-    // const { error } = await supabase.from('data').
-    //   insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
-    //   .select()
-    //   .single();
-    insert();
+    var amt = parseFloat(amount).toFixed(2);
+    const { error } = await supabase.from('data').
+    insert({name: expense, inserted_at: date, category: category, amount: amt, user_id: user.id})
+    .select()
+    .single();
+
     setExpense('');
     setAmount('');
     setCategory('');
