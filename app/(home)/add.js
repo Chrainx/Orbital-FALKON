@@ -45,8 +45,8 @@ export default function Add () {
 
   const alertError = () => {
     Alert.alert(
-      "Please check",
-      errAmountMsg.current + "\n" + errCategoryMsg.current + "\n" + errExpenseMsg.current, 
+      "Please Check",
+      errExpenseMsg.current + "\n\n" + errCategoryMsg.current + "\n\n" + errAmountMsg.current, 
       [
         {text: "Ok"},
       ]
@@ -60,7 +60,7 @@ export default function Add () {
       isError.current = true;
     }
     if (category == "") {
-      errCategoryMsg.current = "Please select a category!\nyou can add your own category in setting!";
+      errCategoryMsg.current = "Please select a category!\n -You can add your own category in Settings!-";
       isError.current = true;
     }
     if (amount == '') {
@@ -174,7 +174,7 @@ export default function Add () {
   }
 
   useEffect(() => {fetchCategory()} ,[]);
-  useEffect(() => {fetchCategory()}, [isFocused]);
+  useEffect(() => {fetchCategory(), setExpenseDetail(false), setAmountDetail(false)}, [isFocused]);
 
   return (
     <SafeAreaView>
@@ -231,23 +231,7 @@ export default function Add () {
                   style.textInput
                 }
               />
-              <TouchableOpacity style=
-              {{
-                marginRight: 20, 
-                borderWidth:1, 
-                borderColor:'#6699CC', 
-                backgroundColor:'#6699CC', borderRadius: 25}} 
-                onPress={() => setExpenseDetail(false)}>
-
-                <Text style = {{
-                  color: 'white', 
-                  fontSize:15, 
-                  marginVertical: 5, 
-                  marginHorizontal:8,
-                  }}>
-                    Insert
-                </Text>
-              </TouchableOpacity>
+              
               {/* <Button 
 
               onPress={() => setExpenseDetail(false)}

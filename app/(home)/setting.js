@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, Image, Alert } from 'react-native';
+import { SafeAreaView, View, Text, Image, Alert, TouchableOpacity} from 'react-native';
 import { NewSetting } from './newSetting';
 import { TextInput, Button } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
@@ -94,11 +94,26 @@ export default function Setting () {
                   marginLeft: 10,
                   width: '82%'
                 }}
-              /> 
-              <Button 
-              onPress={() => undefined}
-              textColor='white'
-              buttonColor='#6699CC'> + </Button>
+              />
+
+            <TouchableOpacity style=
+              {{
+                marginRight: 20, 
+                borderWidth:1, 
+                borderColor:'#6699CC', 
+                backgroundColor:'#6699CC', borderRadius: 25}} 
+                onPress={() => undefined}>
+
+                <Text style = {{
+                  color: 'white', 
+                  fontSize:15, 
+                  marginVertical: 5, 
+                  marginHorizontal:8,
+                  }}>
+                    Insert
+                </Text>
+              </TouchableOpacity>
+
             </View>
             : undefined}
           action = {() => {setCurrencyDetail(!CurrencyDetail)}}
