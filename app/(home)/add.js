@@ -82,6 +82,8 @@ export default function Add () {
   }
 
   const handleSubmit = async () => {
+    console.log(date.toDateString());
+    console.log(date.toTimeString());
     errAmountMsg.current = "";
     errCategoryMsg.current = "";
     errExpenseMsg.current = "";
@@ -232,13 +234,13 @@ export default function Add () {
                 }
               />
               
-              {/* <Button 
+              <Button 
 
               onPress={() => setExpenseDetail(false)}
               textColor='white'
               buttonColor='#6699CC'
               > 
-              Insert </Button>  */}
+              Insert </Button>  
             </View>
 
           : undefined 
