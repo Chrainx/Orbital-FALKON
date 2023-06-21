@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { FlatList, View, ScrollView, TouchableOpacity, Image} from "react-native";
+import { View, ScrollView, TouchableOpacity, Image, Modal} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
-
 export default function Expense() { 
   
   // For data about every expense
@@ -17,13 +16,23 @@ export default function Expense() {
   // For remove duplicate date 
   const [date, setDate] = useState([]);
 
+  // For limit
+  const [limit, setLimit] = useState([]);
+
+  // For Changing daily limit
+  const [newLimit, setNewLimit] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
   // For find the total spending
   const [Total, setTotal] = useState(0);
 
   // For the loading indicator
   const [loading, setLoading] = useState(false);
 
-  //For refreshing
+  // For authentication
+  const {user} = useAuth();
+
+  // For refreshing
   const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
 
@@ -46,12 +55,18 @@ export default function Expense() {
     }
     setDate(newArr);
     fetchCategory();
+    fetchLimit();
     setRefresh(false);
   }
 
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*');
     setColor(data);
+  }
+
+  async function fetchLimit() {
+    let {data} = await supabase.from('info').select("*");
+    setLimit(data);
   }
 
   useEffect(() => {fetchData()}, []);
@@ -65,9 +80,71 @@ export default function Expense() {
     setRefresh(true);
   }
 
+  const handleChange = async () => {
+    setLoading(true);
+    var amt = parseFloat(newLimit).toFixed(2);
+    console.log(amt);
+    console.log(limit.length);
+    if (limit.length == 0) {
+      const { error } = await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
+    } else {
+      await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
+    }
+    setLoading(false);
+    setRefresh(true);
+  }
+
 
   return (
-      <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
+    <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(false);
+        }}
+      >
+        <View 
+          style = {{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: 22,
+          }}
+        >
+          <TextInput
+            value={newLimit} 
+            onChangeText={setNewLimit}
+          />
+          <TouchableOpacity
+            onPress={() => setModalVisible(false)}
+          >
+            <Text> Cancel </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={
+              () => {
+                setModalVisible(false);
+                handleChange();
+              }
+            }
+          >
+            <Text> Change </Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+      >
+        <Text> Daily limit </Text>
+        {limit.length != 0 && limit[0].limit != null
+          ? <Text> {limit[0].limit} </Text>
+          : <Text> - </Text> 
+        }
+      </TouchableOpacity>
       <ScrollView>
         {date && date.map(date => 
           <View key={date}>
@@ -138,10 +215,9 @@ export default function Expense() {
           
         )}
           
-        </ScrollView>
-        {loading && <ActivityIndicator />}
-        <Text style={{fontSize: 20}}> Total: {Total}</Text>
-        
-      </View>
+      </ScrollView>
+      {loading && <ActivityIndicator />}
+      <Text style={{fontSize: 20}}> Total: {Total}</Text>
+    </View>
   );
 }

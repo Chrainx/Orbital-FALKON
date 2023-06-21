@@ -82,8 +82,6 @@ export default function Add () {
   }
 
   const handleSubmit = async () => {
-    console.log(date.toDateString());
-    console.log(date.toTimeString());
     errAmountMsg.current = "";
     errCategoryMsg.current = "";
     errExpenseMsg.current = "";
@@ -171,7 +169,7 @@ export default function Add () {
   }
 
   async function fetchCategory() {
-    let {data} = await supabase.from('category').select('*');
+    let {data} = await supabase.from('category').select('*').order("category", {ascending: true});
     setData(data);
   }
 

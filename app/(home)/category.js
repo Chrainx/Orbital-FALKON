@@ -17,7 +17,7 @@ export default function Category() {
   const [error, setError] = useState('')
 
   async function fetchCategory() {
-    let {data} = await supabase.from('category').select('*');
+    let {data} = await supabase.from('category').select('*').order("category", {ascending: true});
     setData(data);
     setRefresh(false);
   }
