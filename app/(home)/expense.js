@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { View, ScrollView, TouchableOpacity, Image, Modal} from "react-native";
+import { View, ScrollView, TouchableOpacity, Image, Modal, Alert} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -36,7 +36,10 @@ export default function Expense() {
   const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
 
+
   async function fetchData() {
+    fetchCategory();
+    fetchLimit();
     let {data} = await supabase.from('data').select('*').order('inserted_at', {ascending: false});
     if (data.length == 0) {
       setTotal(0);
@@ -54,8 +57,6 @@ export default function Expense() {
       }
     }
     setDate(newArr);
-    fetchCategory();
-    fetchLimit();
     setRefresh(false);
   }
 
@@ -80,11 +81,24 @@ export default function Expense() {
     setRefresh(true);
   }
 
+  const alertError = () => {
+    Alert.alert(
+      "Please Check",
+      "Daily limit must be a number!",
+      [
+        {text: "Ok"},
+      ]
+    );
+  }
+
   const handleChange = async () => {
     setLoading(true);
+    if (isNaN(newLimit)) {
+      setLoading(false);
+      alertError();
+      return;
+    }
     var amt = parseFloat(newLimit).toFixed(2);
-    console.log(amt);
-    console.log(limit.length);
     if (limit.length == 0) {
       const { error } = await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
     } else {
