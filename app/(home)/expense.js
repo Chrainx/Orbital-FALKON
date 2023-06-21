@@ -99,7 +99,8 @@ export default function Expense() {
       return;
     }
     var amt = parseFloat(newLimit).toFixed(2);
-    if (limit.length == 0) {
+    let {data} =  await supabase.from('info').select('*');
+    if (data.length == 0) {
       const { error } = await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
     } else {
       await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
@@ -154,7 +155,7 @@ export default function Expense() {
         onPress={() => setModalVisible(true)}
       >
         <Text> Daily limit </Text>
-        {limit.length != 0 && limit[0].limit != null
+        {limit && limit.length != 0 && limit[0].limit != null
           ? <Text> {limit[0].limit} </Text>
           : <Text> - </Text> 
         }
