@@ -71,7 +71,7 @@ export default function Expense() {
       <ScrollView>
         {date && date.map(date => 
           <View key={date}>
-            <Text style={{marginLeft: 15, marginVertical: 5}}> {date} </Text>
+            <Text style={{marginLeft: 15, marginVertical: 5}}> {new Date(date).toDateString()} </Text>
               {data.filter(b => b.inserted_at == date).map(item => 
               <Swipeable key={item.id} renderRightActions={() => (
                 <TouchableOpacity
