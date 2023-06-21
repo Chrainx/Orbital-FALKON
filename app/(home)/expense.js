@@ -126,19 +126,25 @@ export default function Expense() {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: 22,
+            borderColor: 'black',
+            borderWidth: 1,
+            borderRadius: 20,
+            backgroundColor:'lavender',
+            marginVertical: '90%',
+            marginHorizontal: '20%',
           }}
         >
+        <Text style={{color: 'black', fontSize:20,}}> Set the Daily Limit: </Text>
+          <View style={{flexDirection:'row', alignItems: 'center', }}>
           <TextInput
+          style={{marginTop: 5, marginLeft: 5,  width: 100}}
+          mode="outlined"
             value={newLimit} 
             onChangeText={setNewLimit}
           />
+
           <TouchableOpacity
-            onPress={() => setModalVisible(false)}
-          >
-            <Text> Cancel </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
+            style={{marginTop: 10, marginLeft: 10,}}
             onPress={
               () => {
                 setModalVisible(false);
@@ -146,18 +152,27 @@ export default function Expense() {
               }
             }
           >
-            <Text> Change </Text>
+            <Text style={{}}> Change </Text>
           </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity style= {{marginTop: 20, }}
+            onPress={() => setModalVisible(false)}
+          >
+            <Text style= {{color: 'red', fontSize: 18}}> Cancel </Text>
+          </TouchableOpacity>
+
         </View>
       </Modal>
 
       <TouchableOpacity
+      style={{marginTop: 10, alignItems:'center', backgroundColor:'yellow'}}
         onPress={() => setModalVisible(true)}
       >
-        <Text> Daily limit </Text>
+        <Text style={{fontSize: 20,}}> Daily limit </Text>
         {limit && limit.length != 0 && limit[0].limit != null
-          ? <Text> {limit[0].limit} </Text>
-          : <Text> - </Text> 
+          ? <Text style={{fontSize: 25,}}> {limit[0].limit} </Text>
+          : <Text style={{fontSize: 25,}}> - </Text> 
         }
       </TouchableOpacity>
       <ScrollView>
@@ -190,6 +205,7 @@ export default function Expense() {
                     marginHorizontal: 15,
                     backgroundColor: 'lightgrey',
                     justifyContent: 'space-between',
+                    borderColor: 'grey',
                     borderWidth: 2,
                     borderRadius: 8,
                   }}>
