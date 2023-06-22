@@ -1,6 +1,6 @@
 import { useState, useEffect} from "react";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { View, ScrollView, TouchableOpacity, Image, Modal, Alert} from "react-native";
+import { View, ScrollView, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -123,18 +123,24 @@ export default function Expense() {
       >
         <View 
           style = {{
-            flex: 1,
+            //flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
             borderColor: 'black',
             borderWidth: 1,
             borderRadius: 20,
             backgroundColor:'lavender',
-            marginVertical: '90%',
-            marginHorizontal: '20%',
+            //marginVertical: '80%',
+            //width: '50%',
+            width: 200,
+            height: 150,
+            //position: 'absolute',
+            top: '40%',
+
+            left: '25%',
           }}
         >
-        <Text style={{color: 'black', fontSize:20,}}> Set the Daily Limit: </Text>
+          <Text style={{color: 'black', fontSize:20, marginTop: 5}}> Set the Daily Limit: </Text>
           <View style={{flexDirection:'row', alignItems: 'center', }}>
           <TextInput
           style={{marginTop: 5, marginLeft: 5,  width: 100}}
@@ -156,7 +162,7 @@ export default function Expense() {
           </TouchableOpacity>
           </View>
 
-          <TouchableOpacity style= {{marginTop: 20, }}
+          <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
             onPress={() => setModalVisible(false)}
           >
             <Text style= {{color: 'red', fontSize: 18}}> Cancel </Text>
@@ -175,6 +181,7 @@ export default function Expense() {
           : <Text style={{fontSize: 25,}}> - </Text> 
         }
       </TouchableOpacity>
+      
       <ScrollView>
         {date && date.map(date => 
           <View key={date}>
@@ -246,9 +253,13 @@ export default function Expense() {
           
         )}
           
-      </ScrollView>
+      
       {loading && <ActivityIndicator />}
       <Text style={{fontSize: 20}}> Total: {Total}</Text>
+      <View style={{height: 100,}}></View>
+      </ScrollView>
+      
     </View>
+    
   );
 }

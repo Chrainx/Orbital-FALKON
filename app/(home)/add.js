@@ -231,14 +231,32 @@ export default function Add () {
                   style.textInput
                 }
               />
+
+              <TouchableOpacity style=
+              {{
+                right: 10, 
+                borderWidth:1, 
+                borderColor:'#6699CC', 
+                backgroundColor:'#6699CC', borderRadius: 25}} 
+                onPress={() => setExpenseDetail(false)}>
+
+                <Text style = {{
+                  color: 'white', 
+                  fontSize:15, 
+                  marginVertical: 5, 
+                  marginHorizontal:8,
+                  }}>
+                    Insert
+                </Text>
+              </TouchableOpacity>
               
-              <Button 
+              {/* <Button 
 
               onPress={() => setExpenseDetail(false)}
               textColor='white'
               buttonColor='#6699CC'
               > 
-              Insert </Button>  
+              Insert </Button>   */}
             </View>
 
           : undefined 
@@ -295,14 +313,15 @@ export default function Add () {
                 onChangeText={setAmount}
                 style={style.textInput}
               />
+
+              
               <TouchableOpacity style=
               {{
-                marginRight: 20, 
+                right: 10, 
                 borderWidth:1, 
                 borderColor:'#6699CC', 
                 backgroundColor:'#6699CC', borderRadius: 25}} 
-                onPress={() => setAmountDetail(false
-                )}>
+                onPress={() => setAmountDetail(false)}>
 
                 <Text style = {{
                   color: 'white', 
@@ -324,12 +343,15 @@ export default function Add () {
           : undefined 
         }
       />
-     
+      <View style = {{alignItems: 'center'}}>
       <TouchableOpacity 
-        style = {style.button}
+        style = {style.submit}
         onPress = {handleSubmit}>
+        
         <Text style= {{color: 'white'}}>Submit</Text>
+        
       </TouchableOpacity>
+      </View>
       
       {/* <View style = {{alignItems: 'center'}}>
       {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
@@ -406,11 +428,11 @@ export default function Add () {
 }
 
 const style = StyleSheet.create({
-  button: {
+  submit: {
     alignItems: 'center',
     backgroundColor: 'blue',
     padding: 20,
-    marginHorizontal: 125,
+    width: 150,
     marginTop: 10,
     borderRadius: 30,
   },
