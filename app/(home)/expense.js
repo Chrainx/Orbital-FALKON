@@ -247,7 +247,9 @@ export default function Expense() {
               </View>
             </View>
             </Swipeable>
+
             )}
+            <Text> {new Date(date).toDateString()} total: {data.filter(b => b.inserted_at == date).reduce((a,b) => a + b.amount,0)} </Text>
           </View>
           
           
