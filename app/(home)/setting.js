@@ -44,7 +44,7 @@ export default function Setting () {
             await supabase.from('data').delete().eq("user_id", user.id);
             await supabase.from('category').delete().eq("user_id", user.id);
             await supabase.from('info').delete().eq("user_id", user.id);
-            const {error} = await supabase.auth.admin.deleteUser(user.id);
+            const { data, error } = await supabase.auth.admin.deleteUser(user.id);
             console.log(error);
           } 
         },
@@ -144,12 +144,12 @@ export default function Setting () {
           icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
           action = {alertErase}
         />
-        {/* <NewSetting
+        <NewSetting
           title= 'Delete Your Account' 
           isDestructive 
           icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
           action = {alertDelete}
-        /> */}
+        />
         <NewSetting
           title= 'Logout' 
           icon= {<Image source={require('./tab-icons/logout.png')} resizeMode="contain" style={{ width: 20, height: 20, }}/>}
