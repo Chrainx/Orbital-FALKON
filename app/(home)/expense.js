@@ -52,17 +52,17 @@ export default function Expense() {
         setTotal(data.reduce((a, b) => a + b.amount, 0));
       }
       setData(data);
-    }
-    const newArr = [];
-    if(data && data.length > 0) {
-      newArr.push(new Date(data[0].inserted_at).toDateString())
-    }
-    for (var i = 1; i < data.length; i++) {
-      if (newArr[newArr.length - 1] !== new Date(data[i].inserted_at).toDateString()) {
-        newArr.push(new Date(data[i].inserted_at).toDateString())
+      const newArr = [];
+      if(data.length > 0) {
+        newArr.push(new Date(data[0].inserted_at).toDateString())
       }
+      for (var i = 1; i < data.length; i++) {
+        if (newArr[newArr.length - 1] !== new Date(data[i].inserted_at).toDateString()) {
+          newArr.push(new Date(data[i].inserted_at).toDateString())
+        }
+      }
+      setDate(newArr);
     }
-    setDate(newArr);
     setRefresh(false);
   }
 
@@ -253,7 +253,7 @@ export default function Expense() {
               <Text style={{marginRight: 18, marginVertical: 5, fontWeight:'bold'}}> Total Today: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight:'bold'}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
             </View>
 
-              {data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
+              {data && data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
               <Swipeable key={item.id} renderRightActions={() => (
                 <TouchableOpacity
                   style={{
