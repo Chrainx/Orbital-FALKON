@@ -250,7 +250,7 @@ export default function Expense() {
           <View key={date}>
             <View style={{flexDirection:'row',justifyContent:'space-between', marginTop: '2%'}}>
               <Text style={{marginLeft: 16, marginVertical: 5, fontWeight: 'bold'}}> {date} </Text>
-              <Text style={{marginRight: 18, marginVertical: 5, fontWeight:'bold'}}> Total Today: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight:'bold'}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
+              <Text style={{marginRight: 18, marginVertical: 5, fontWeight:'bold'}}> Daily Total: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight:'bold'}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
             </View>
 
               {data && data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
