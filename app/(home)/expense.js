@@ -85,10 +85,10 @@ export default function Expense() {
     setRefresh(true);
   }
 
-  const alertError = () => {
+  const alertError = (errorString) => {
     Alert.alert(
       "Please Check",
-      "Daily limit must be a number!",
+      errorString,
       [
         {text: "Ok"},
       ]
@@ -97,9 +97,14 @@ export default function Expense() {
 
   const handleChange = async () => {
     setLoading(true);
+    if (newLimit == "") {
+      setLoading(false);
+      alertError("Daily limit cannot change to empty");
+      return;
+    }
     if (isNaN(newLimit)) {
       setLoading(false);
-      alertError();
+      alertError("Daily limit must be a number!");
       return;
     }
     var amt = parseFloat(newLimit).toFixed(2);
@@ -110,6 +115,21 @@ export default function Expense() {
       await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
     }
     setLoading(false);
+    setNewLimit("");
+    setRefresh(true);
+  }
+
+  const handleReset = async () => {
+    setLoading(true);
+    let {data} =  await supabase.from('info').select('*');
+    if (data.length == 0) {
+      setLoading(false);
+      return;
+    } else {
+      await supabase.from('info').delete().eq("user_id", user.id);
+    }
+    setLoading(false);
+    setNewLimit("");
     setRefresh(true);
   }
 
@@ -166,15 +186,24 @@ export default function Expense() {
             </TouchableOpacity>
           </View>
           
-          <View style={{flexDirection:'row', }}>
-
-          <TouchableOpacity style={{marginTop: 15, marginBottom: 5,}}>
-            <Text style= {{color: 'red', fontSize: 18,}}>Reset</Text>
-          </TouchableOpacity>
-          <Text>            </Text>
-          <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
-            onPress={() => setModalVisible(false)}
+          <View 
+            style={{flexDirection:'row', }}
           >
+            <TouchableOpacity 
+              style={{marginTop: 15, marginBottom: 5,}}
+              onPress={
+                () => {
+                  handleReset();
+                  setModalVisible(false);
+                }
+              }
+            >
+              <Text style= {{color: 'red', fontSize: 18,}}>Reset</Text>
+            </TouchableOpacity>
+            <Text>            </Text>
+            <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
+              onPress={() => setModalVisible(false)}
+            >
             <Text style= {{color: 'red', fontSize: 18}}> Cancel </Text>
           </TouchableOpacity>
 
@@ -207,8 +236,7 @@ export default function Expense() {
 
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
-            ? <Text style={{fontSize: 25, }}> {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)} </Text>
-              
+            ? <Text style={{fontSize: 25, }}> {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
           : data && <Text style={{fontSize: 25,}}> {data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
         }

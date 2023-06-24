@@ -14,15 +14,14 @@ export default function Setting () {
   const [CurrencyDetail, setCurrencyDetail] = useState(false);
   const navigation = useNavigation();
 
-  
-  const alertDelete = () => {
+  const alertErase = () => {
       Alert.alert(
         "Are you sure you want to erase all data?",
         "This action is irreversible.", 
         [
           {text: "Cancel"},
           {
-            text: "Delete", 
+            text: "Erase", 
             onPress: async () => { 
               await supabase.from('data').delete().eq("user_id", user.id);
               await supabase.from('category').delete().eq("user_id", user.id);
@@ -31,6 +30,26 @@ export default function Setting () {
           },
         ]
       );
+  }
+
+  const alertDelete = () => {
+    Alert.alert(
+      "Are you sure you want to delete your account?",
+      "This action is irreversible.", 
+      [
+        {text: "Cancel"},
+        {
+          text: "Delete", 
+          onPress: async () => { 
+            await supabase.from('data').delete().eq("user_id", user.id);
+            await supabase.from('category').delete().eq("user_id", user.id);
+            await supabase.from('info').delete().eq("user_id", user.id);
+            await supabase.auth.signOut();
+            await supabase.auth.deleteUser(user.id);
+          } 
+        },
+      ]
+    );
   }
   const alertLogout = () => {
     Alert.alert(
@@ -121,6 +140,12 @@ export default function Setting () {
         /> */}
         <NewSetting
           title= 'Erase all data' 
+          isDestructive 
+          icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
+          action = {alertErase}
+        />
+        <NewSetting
+          title= 'Delete Your Account' 
           isDestructive 
           icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
           action = {alertDelete}
