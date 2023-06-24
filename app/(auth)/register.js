@@ -32,15 +32,16 @@ export default function RegisterPage() {
     const { error } = await supabase.auth.signUp({ email, password });
     setLoading(false);
     if (error) { 
-      setErrMsg(error.message + "!");
+      setErrMsg(error.message);
       return;
     }
   }
   return (
-    <SafeAreaView style = {{flex: 1, alignItems: 'center'}}>
+    <SafeAreaView style = {{flex: 1, alignItems: 'center', }}>
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
-        <Text style = {style.text}> Email </Text>
+        <Text></Text>
+        <Text style={{fontSize: 18, fontWeight:'bold'}}> Email </Text>
         <TextInput 
           style = {style.input}
           placeholder = 'Enter your email here'
@@ -50,7 +51,7 @@ export default function RegisterPage() {
           value={email}
           onChangeText={setEmail} />
           {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
-        <Text style = {style.text}> Password </Text>
+        <Text style = {{fontSize: 18, fontWeight:'bold', marginTop: 20}}> Password </Text>
         <TextInput
           style = {style.input}
           placeholder = 'Enter your password here'
@@ -61,7 +62,9 @@ export default function RegisterPage() {
           value={password}
           onChangeText={setPassword} />
           {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
-        <Button onPress = {handleRegister}> Register </Button>
+        <Button 
+        style={{marginVertical: '6%'}}
+        onPress = {handleRegister}><Text style= {{fontWeight:'bold', color: '#5090CC', }}>REGISTER</Text></Button>
         {errMsg !== "" && <Text style = {style.error}>{errMsg}</Text>}
         {loading && <ActivityIndicator />}
       </View>
@@ -71,7 +74,7 @@ export default function RegisterPage() {
 
 const style = StyleSheet.create({
   input: {
-    
+    marginBottom: '2%'
   },
 
   text: {
@@ -79,6 +82,11 @@ const style = StyleSheet.create({
   },
 
   error: {
-    color: 'red'
+    color: 'red',
+    left: 3,
+    fontSize: 15,
+    fontWeight:'bold',
+    marginVertical: '3%',
+    textAlign: 'center',
   },
 })

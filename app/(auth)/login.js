@@ -42,13 +42,15 @@ export default function LoginPage() {
   }
 
   return (
-    <SafeAreaView style= {{flex: 1, alignItems: 'center'}}>
-      <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
+    <SafeAreaView style= {{flex: 1, alignItems: 'center', }}>
+      <View style = {{flex: 1, justifyContent: 'center', width: 300,}}>
         <Logo />
-        <Text>  Email </Text>
+        <Text></Text>
+        <Text style={{fontSize: 18, fontWeight:'bold'}}>  Email </Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
+          
           placeholder = 'Enter your email here'
           autoCapitalize="none"
           textContentType="emailAddress"
@@ -56,7 +58,7 @@ export default function LoginPage() {
           onChangeText={setEmail} />
           {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
         <Text 
-        style = {style.text}>  Password</Text>
+        style = {{fontSize: 18, fontWeight:'bold', marginTop: 20}}>  Password</Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
@@ -67,13 +69,15 @@ export default function LoginPage() {
           value={password}
           onChangeText={setPassword} />
           {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
-        <Button onPress = {handleLogin}> Login </Button>
+        <Button 
+          style={{marginVertical: '3%'}}
+          onPress = {handleLogin}><Text style= {{fontWeight:'bold', color: '#5090CC', }}>LOGIN</Text></Button>
         {loading && <ActivityIndicator />}
         {errMsg !== "" && <Text style = {style.error}>{errMsg} </Text>}
         <View style={{flexDirection: 'row', justifyContent : 'center', alignItems: 'center'}}>
-          <Text> Don't have an account? </Text>
+          <Text style={{fontSize: 15, fontWeight: 'bold'}}> Don't have an account? </Text>
           <Link href="/register">
-            <Text style={{color: "rgb(0,125,250)", }}> Register now </Text>
+            <Text style={{fontSize: 15, color: "rgb(0,125,250)", }}> Register Here. </Text>
           </Link>
         </View>
       </View>
@@ -86,11 +90,12 @@ const style = StyleSheet.create({
     
   },
 
-  text: {
-    marginTop: 20
-  },
-
   error: {
-    color: 'red'
+    color: 'red',
+    left: 3,
+    fontSize: 15,
+    fontWeight:'bold',
+    marginVertical: '3%',
+    textAlign: 'center'
   },
 })
