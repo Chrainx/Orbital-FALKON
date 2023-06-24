@@ -224,6 +224,7 @@ export default function Add () {
                 }}>
               <TextInput
                 placeholder= 'Insert Expense'
+                maxLength={15}
                 textColor='white'
                 placeholderTextColor='white'
                 value={expense} 
@@ -369,7 +370,7 @@ export default function Add () {
         <View
           style = {{backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center'}}
         >
-        {data.map((item) => 
+        {data && data.map((item) => 
           
         <TouchableOpacity
           style={{marginVertical: 2, width: '100%', alignItems:'center',}}

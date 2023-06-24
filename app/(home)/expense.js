@@ -290,7 +290,7 @@ export default function Expense() {
                       marginBottom: 4,
                       //backgroundColor:'skyblue',
                       justifyContent:'flex-end',
-                      flex: 1.5,
+                      flex: 1,
                       }}>
                     <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3, marginBottom: '2%'}}>{item.name} </Text>
                     <Text 
