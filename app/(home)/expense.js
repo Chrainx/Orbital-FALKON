@@ -45,14 +45,16 @@ export default function Expense() {
     fetchCategory();
     fetchLimit();
     let {data} = await supabase.from('data').select('*').order('inserted_at', {ascending: false});
-    if (data.length == 0) {
-      setTotal(0);
-    } else {
-      setTotal(data.reduce((a, b) => a + b.amount, 0));
+    if(data) {
+      if (data.length == 0) {
+        setTotal(0);
+      } else {
+        setTotal(data.reduce((a, b) => a + b.amount, 0));
+      }
+      setData(data);
     }
-    setData(data);
     const newArr = [];
-    if(data.length > 0) {
+    if(data && data.length > 0) {
       newArr.push(new Date(data[0].inserted_at).toDateString())
     }
     for (var i = 1; i < data.length; i++) {
@@ -109,7 +111,7 @@ export default function Expense() {
     }
     var amt = parseFloat(newLimit).toFixed(2);
     let {data} =  await supabase.from('info').select('*');
-    if (data.length == 0) {
+    if (data && data.length == 0) {
       const { error } = await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
     } else {
       await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
@@ -122,7 +124,7 @@ export default function Expense() {
   const handleReset = async () => {
     setLoading(true);
     let {data} =  await supabase.from('info').select('*');
-    if (data.length == 0) {
+    if (data && data.length == 0) {
       setLoading(false);
       return;
     } else {
@@ -200,7 +202,7 @@ export default function Expense() {
             >
               <Text style= {{color: 'red', fontSize: 18,}}>Reset</Text>
             </TouchableOpacity>
-            <Text>            </Text>
+            <Text>              </Text>
             <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
               onPress={() => setModalVisible(false)}
             >
@@ -246,7 +248,11 @@ export default function Expense() {
       <ScrollView>
         {date && date.map(date => 
           <View key={date}>
-            <Text style={{marginLeft: 15, marginVertical: 5}}> {date} </Text>
+            <View style={{flexDirection:'row',justifyContent:'space-between', marginTop: '2%'}}>
+              <Text style={{marginLeft: 16, marginVertical: 5, fontWeight: 'bold'}}> {date} </Text>
+              <Text style={{marginRight: 18, marginVertical: 5, fontWeight:'bold'}}> Total Today: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight:'bold'}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
+            </View>
+
               {data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
               <Swipeable key={item.id} renderRightActions={() => (
                 <TouchableOpacity
@@ -268,7 +274,7 @@ export default function Expense() {
               >
                 <View 
                   style={{display: 'flex', 
-                    flexDirection: 'column', 
+                    flexDirection: 'row', 
                     marginBottom: 4,
                     marginHorizontal: 15,
                     backgroundColor: 'lightgrey',
@@ -280,23 +286,14 @@ export default function Expense() {
                   <View 
                     style= {{width: '100%',
                       display:'flex', 
-                      flexDirection: 'row', 
-                      justifyContent: 'space-between',
-                      alignItems:'center',
+                      flexDirection: 'column', 
                       marginBottom: 4,
+                      //backgroundColor:'skyblue',
+                      justifyContent:'flex-end',
+                      flex: 1.5,
                       }}>
-                    <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3}}>{item.name} </Text>
-                    <Text style={{fontSize: 18, fontWeight:'bold', }}>SGD {item.amount} </Text>
-                  </View>
-              
-                  <View 
-                    style= {{width: '100%',
-                      display:'flex', 
-                      flexDirection: 'row', 
-                      justifyContent: 'space-between',
-                      alignItems:'center',
-                      }}>
-                  <Text 
+                    <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3, marginBottom: '2%'}}>{item.name} </Text>
+                    <Text 
                     style={{
                       fontSize: 15, 
                       fontWeight:'bold',
@@ -304,13 +301,25 @@ export default function Expense() {
                       //backgroundColor:'yellow',
                       color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
                   }}>{item.category} </Text>
-                      <Text style = {{fontSize: 15, fontWeight: 'bold', marginRight: 3}}> put what</Text>
+                    
+                  </View>
+              
+                  <View 
+                    style= {{width: '100%',
+                      display:'flex',
+                      //backgroundColor:'red',
+                      flex:1,
+                      alignItems:'flex-end',
+                      justifyContent:'center'
+                      }}>
+                  <Text style={{fontSize: 20, fontWeight:'bold', marginRight: 2}}><Text style={{fontSize: 15,}}>SGD</Text> {item.amount} </Text>
+                      
               </View>
             </View>
             </Swipeable>
 
             )}
-            <Text> {date} total: {data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)} </Text>
+            
           </View>
           
           
