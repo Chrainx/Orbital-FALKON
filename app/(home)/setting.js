@@ -44,8 +44,8 @@ export default function Setting () {
             await supabase.from('data').delete().eq("user_id", user.id);
             await supabase.from('category').delete().eq("user_id", user.id);
             await supabase.from('info').delete().eq("user_id", user.id);
-            await supabase.auth.signOut();
-            await supabase.auth.deleteUser(user.id);
+            const {error} = await supabase.auth.deleteUser(user.id);
+            console.log(error);
           } 
         },
       ]
