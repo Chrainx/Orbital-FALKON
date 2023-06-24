@@ -5,6 +5,7 @@ import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
+
 export default function Expense() { 
   
   // For data about every expense
@@ -18,6 +19,9 @@ export default function Expense() {
 
   // For limit
   const [limit, setLimit] = useState([]);
+
+  // For left:
+  const [isRemaining , setIsRemaining] = useState(true);
 
   // For Changing daily limit
   const [newLimit, setNewLimit] = useState('');
@@ -49,11 +53,11 @@ export default function Expense() {
     setData(data);
     const newArr = [];
     if(data.length > 0) {
-      newArr.push(data[0].inserted_at)
+      newArr.push(new Date(data[0].inserted_at).toDateString())
     }
     for (var i = 1; i < data.length; i++) {
-      if (newArr[newArr.length - 1] !== data[i].inserted_at) {
-        newArr.push(data[i].inserted_at)
+      if (newArr[newArr.length - 1] !== new Date(data[i].inserted_at).toDateString()) {
+        newArr.push(new Date(data[i].inserted_at).toDateString())
       }
     }
     setDate(newArr);
@@ -142,24 +146,24 @@ export default function Expense() {
         >
           <Text style={{color: 'black', fontSize:20, marginTop: 5}}> Set the Daily Limit: </Text>
           <View style={{flexDirection:'row', alignItems: 'center', }}>
-          <TextInput
-          style={{marginTop: 5, marginLeft: 5,  width: 100}}
-          mode="outlined"
-            value={newLimit} 
-            onChangeText={setNewLimit}
-          />
+            <TextInput
+              style={{marginTop: 5, marginLeft: 5,  width: 100}}
+              mode="outlined"
+              value={newLimit} 
+              onChangeText={setNewLimit}
+            />
 
-          <TouchableOpacity
-            style={{marginTop: 10, marginLeft: 10,}}
-            onPress={
-              () => {
-                setModalVisible(false);
-                handleChange();
+            <TouchableOpacity
+              style={{marginTop: 10, marginLeft: 10,}}
+              onPress={
+                () => {
+                  setModalVisible(false);
+                  handleChange();
+                }
               }
-            }
-          >
-            <Text style={{}}> Change </Text>
-          </TouchableOpacity>
+            > 
+              <Text style={{}}> Change </Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
@@ -172,7 +176,7 @@ export default function Expense() {
       </Modal>
 
       <TouchableOpacity
-      style={{marginTop: 10, alignItems:'center', backgroundColor:'yellow'}}
+        style={{marginTop: 10, alignItems:'center', backgroundColor:'yellow'}}
         onPress={() => setModalVisible(true)}
       >
         <Text style={{fontSize: 20,}}> Daily limit </Text>
@@ -181,12 +185,22 @@ export default function Expense() {
           : <Text style={{fontSize: 25,}}> - </Text> 
         }
       </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => setIsRemaining(!isRemaining)}>
+        {isRemaining 
+          ? data && limit && limit.length != 0 && limit[0].limit != null
+            ? <Text style={{fontSize: 25,}}> Remaining budget: {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)} </Text>
+            : <Text style={{fontSize: 25,}}> Please set yout daily limit first </Text> 
+          : data && <Text style={{fontSize: 25,}}> Total spent today: {data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
+        }
+      </TouchableOpacity>
       
       <ScrollView>
         {date && date.map(date => 
           <View key={date}>
-            <Text style={{marginLeft: 15, marginVertical: 5}}> {new Date(date).toDateString()} </Text>
-              {data.filter(b => b.inserted_at == date).map(item => 
+            <Text style={{marginLeft: 15, marginVertical: 5}}> {date} </Text>
+              {data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
               <Swipeable key={item.id} renderRightActions={() => (
                 <TouchableOpacity
                   style={{
@@ -249,7 +263,7 @@ export default function Expense() {
             </Swipeable>
 
             )}
-            <Text> {new Date(date).toDateString()} total: {data.filter(b => b.inserted_at == date).reduce((a,b) => a + b.amount,0)} </Text>
+            <Text> {date} total: {data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)} </Text>
           </View>
           
           

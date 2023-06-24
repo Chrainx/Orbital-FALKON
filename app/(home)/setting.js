@@ -26,6 +26,7 @@ export default function Setting () {
             onPress: async () => { 
               await supabase.from('data').delete().eq("user_id", user.id);
               await supabase.from('category').delete().eq("user_id", user.id);
+              await supabase.from('info').delete().eq("user_id", user.id)
             } 
           },
         ]
