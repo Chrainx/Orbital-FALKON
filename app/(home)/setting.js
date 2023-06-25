@@ -1,4 +1,4 @@
-import { SafeAreaView, View, Text, Image, Alert, TouchableOpacity} from 'react-native';
+import { SafeAreaView, Text, Image, Alert } from 'react-native';
 import { NewSetting } from './newSetting';
 import { TextInput, Button } from 'react-native-paper';
 import { useAuth } from '../../contexts/auth';
