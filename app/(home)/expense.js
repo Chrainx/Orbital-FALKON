@@ -137,7 +137,7 @@ export default function Expense() {
 
 
   return (
-    <View style={{flexDirecton: 'row',justifyContent: "space-between", }}>
+    <View style={{flex: 1, flexDirecton: 'row',justifyContent: "space-between", }}>
 
       <Modal
         animationType="slide"
@@ -328,11 +328,8 @@ export default function Expense() {
           
           
         )}
-          
-      
-      {loading && <ActivityIndicator />}
-      <View style={{height: 100,}}></View>
       </ScrollView>
+      {loading && <ActivityIndicator />}
       <Text style={{fontSize: 20}}> Total: {Total}</Text>
     </View>
     
