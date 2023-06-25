@@ -177,8 +177,9 @@ export default function Add () {
   useEffect(() => {fetchCategory(), setExpenseDetail(false), setAmountDetail(false)}, [isFocused]);
 
   return (
-    <SafeAreaView>
-      <Text> Add </Text>
+    
+    <SafeAreaView >
+      <Text></Text>
       <NewAdd
         title= "Date"
         icon= {<Text style={{color: 'white'}}> {date.toDateString()}</Text>}

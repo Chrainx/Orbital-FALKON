@@ -21,7 +21,7 @@ export default function Expense() {
   const [limit, setLimit] = useState([]);
 
   // For left:
-  const [isRemaining , setIsRemaining] = useState(true);
+  const [isRemaining , setIsRemaining] = useState(false);
 
   // For Changing daily limit
   const [newLimit, setNewLimit] = useState('');
@@ -165,20 +165,29 @@ export default function Expense() {
               <Text style={{}}> Change </Text>
             </TouchableOpacity>
           </View>
+          
+          <View style={{flexDirection:'row', }}>
 
+          <TouchableOpacity style={{marginTop: 15, marginBottom: 5,}}>
+            <Text style= {{color: 'red', fontSize: 18,}}>Reset</Text>
+          </TouchableOpacity>
+          <Text>            </Text>
           <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
             onPress={() => setModalVisible(false)}
           >
             <Text style= {{color: 'red', fontSize: 18}}> Cancel </Text>
           </TouchableOpacity>
 
+          </View>
+
         </View>
       </Modal>
 
+      <View style={{flexDirection:'row', alignItems:'center', marginHorizontal: 15,}}>
       <TouchableOpacity
-        style={{marginTop: 10, alignItems:'center', backgroundColor:'yellow'}}
-        onPress={() => setModalVisible(true)}
-      >
+        style={{alignItems:'center', flex: 1.5, backgroundColor:'yellow', }}
+        onPress={() => setModalVisible(true)}>
+
         <Text style={{fontSize: 20,}}> Daily limit </Text>
         {limit && limit.length != 0 && limit[0].limit != null
           ? <Text style={{fontSize: 25,}}> {limit[0].limit} </Text>
@@ -187,14 +196,24 @@ export default function Expense() {
       </TouchableOpacity>
 
       <TouchableOpacity
+        style={{ alignItems: 'center', flex: 2.5, backgroundColor:'skyblue',}}
         onPress={() => setIsRemaining(!isRemaining)}>
+        {isRemaining
+          ? data && limit && limit.length != 0 && limit[0].limit != null
+            ? <Text style={{fontSize: 20, }}> Remaining Budget: </Text>
+            : <Text></Text>
+          : <Text style = {{fontSize: 20, }}> Total Spent Today: </Text>
+        }
+
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
-            ? <Text style={{fontSize: 25,}}> Remaining budget: {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)} </Text>
-            : <Text style={{fontSize: 25,}}> Please set yout daily limit first </Text> 
-          : data && <Text style={{fontSize: 25,}}> Total spent today: {data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
+            ? <Text style={{fontSize: 25, }}> {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)} </Text>
+              
+            : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
+          : data && <Text style={{fontSize: 25,}}> {data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
         }
       </TouchableOpacity>
+      </View>
       
       <ScrollView>
         {date && date.map(date => 
@@ -239,7 +258,7 @@ export default function Expense() {
                       marginBottom: 4,
                       }}>
                     <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3}}>{item.name} </Text>
-                    <Text style={{fontSize: 18, fontWeight:'bold', }}>USD {item.amount} </Text>
+                    <Text style={{fontSize: 18, fontWeight:'bold', }}>SGD {item.amount} </Text>
                   </View>
               
                   <View 

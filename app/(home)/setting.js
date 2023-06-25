@@ -50,7 +50,7 @@ export default function Setting () {
 
   return (
     <SafeAreaView>
-        <Text> Settings </Text>
+        <Text></Text>
         <NewSetting
           title = 'Add Category'
           icon = {<Image source={require('./tab-icons/addCategory.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
@@ -62,7 +62,7 @@ export default function Setting () {
             }
           }
         />
-        <NewSetting 
+        {/* <NewSetting 
           title= 'Currency Type' 
           icon={CurrencyDetail
             ? <Text style={{color: 'red'}}> Cancel </Text> 
@@ -118,7 +118,7 @@ export default function Setting () {
             </View>
             : undefined}
           action = {() => {setCurrencyDetail(!CurrencyDetail)}}
-        />
+        /> */}
         <NewSetting
           title= 'Erase all data' 
           isDestructive 
