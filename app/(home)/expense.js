@@ -231,14 +231,18 @@ export default function Expense() {
         onPress={() => setIsRemaining(!isRemaining)}>
         {isRemaining
           ? data && limit && limit.length != 0 && limit[0].limit != null
-            ? <Text style={{fontSize: 20, }}> Remaining Budget: </Text>
+            ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
+              ? <Text style={{fontSize: 20, }}> Remaining Budget: </Text>
+              : <Text style={{fontSize: 20, }}> Over Spent: </Text>
             : <Text></Text>
           : <Text style = {{fontSize: 20, }}> Total Spent Today: </Text>
         }
 
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
-            ? <Text style={{fontSize: 25, }}> {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)} </Text>  
+            ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
+              ?<Text style={{fontSize: 25, }}> {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
+              :<Text style={{fontSize: 25, }}> {-limit[0].limit + data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
           : data && <Text style={{fontSize: 25,}}> {data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
         }
