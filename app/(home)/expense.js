@@ -331,10 +331,9 @@ export default function Expense() {
           
       
       {loading && <ActivityIndicator />}
-      <Text style={{fontSize: 20}}> Total: {Total}</Text>
       <View style={{height: 100,}}></View>
       </ScrollView>
-      
+      <Text style={{fontSize: 20}}> Total: {Total}</Text>
     </View>
     
   );
