@@ -145,15 +145,15 @@ export default function Setting () {
           action = {alertErase}
         />
         <NewSetting
+          title= 'Logout' 
+          icon= {<Image source={require('./tab-icons/logout.png')} resizeMode="contain" style={{ width: 20, height: 20, }}/>}
+          action= {alertLogout} 
+        />
+        <NewSetting
           title= 'Delete Your Account' 
           isDestructive 
           icon={ <Image source={require('./tab-icons/trashcan.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>}
           action = {alertDelete}
-        />
-        <NewSetting
-          title= 'Logout' 
-          icon= {<Image source={require('./tab-icons/logout.png')} resizeMode="contain" style={{ width: 20, height: 20, }}/>}
-          action= {alertLogout} 
         />
     </SafeAreaView>
   );

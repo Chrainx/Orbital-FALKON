@@ -155,7 +155,7 @@ export default function Expense() {
             borderColor: 'black',
             borderWidth: 1,
             borderRadius: 20,
-            backgroundColor:'lavender',
+            backgroundColor:'#c1d5f0',
             //marginVertical: '80%',
             //width: '50%',
             width: 200,
@@ -214,37 +214,37 @@ export default function Expense() {
         </View>
       </Modal>
 
-      <View style={{flexDirection:'row', alignItems:'center', marginHorizontal: 15,}}>
+      <View style={{flexDirection:'row', alignItems:'center',}}>
       <TouchableOpacity
-        style={{alignItems:'center', flex: 1.5, backgroundColor:'yellow', }}
+        style={{alignItems:'center', flex: 1.5, backgroundColor:'#bedaf7', borderTopWidth: 2, borderBottomWidth: 2, borderRightWidth:1}}
         onPress={() => setModalVisible(true)}>
 
-        <Text style={{fontSize: 20,}}> Daily limit </Text>
+        <Text style={{fontSize: 20, fontWeight: 700}}> Daily limit </Text>
         {limit && limit.length != 0 && limit[0].limit != null
-          ? <Text style={{fontSize: 25,}}> {limit[0].limit} </Text>
-          : <Text style={{fontSize: 25,}}> - </Text> 
+          ? <Text style={{fontSize: 25, fontWeight: 500}}><Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit} </Text>
+          : <Text style={{fontSize: 25, fontWeight: 500}}> - </Text> 
         }
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={{ alignItems: 'center', flex: 2.5, backgroundColor:'skyblue',}}
+        style={{ alignItems: 'center', flex: 2.5, backgroundColor:'#c8dfea', borderTopWidth: 2, borderBottomWidth: 2, borderLeftWidth:1}}
         onPress={() => setIsRemaining(!isRemaining)}>
         {isRemaining
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ? <Text style={{fontSize: 20, }}> Remaining Budget: </Text>
-              : <Text style={{fontSize: 20, }}> Over Spent: </Text>
+              ? <Text style={{fontSize: 20, fontWeight: 700}}> Remaining Budget </Text>
+              : <Text style={{fontSize: 20, fontWeight: 700}}> Over Spent </Text>
             : <Text></Text>
-          : <Text style = {{fontSize: 20, }}> Total Spent Today: </Text>
+          : <Text style = {{fontSize: 20, fontWeight: 700}}> Total Spent Today </Text>
         }
 
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ?<Text style={{fontSize: 25, }}> {limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
-              :<Text style={{fontSize: 25, }}> {-limit[0].limit + data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
+              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
+              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{-limit[0].limit + data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
-          : data && <Text style={{fontSize: 25,}}> {data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
+          : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
         }
       </TouchableOpacity>
       </View>
@@ -253,8 +253,8 @@ export default function Expense() {
         {date && date.map(date => 
           <View key={date}>
             <View style={{flexDirection:'row',justifyContent:'space-between', marginTop: '2%'}}>
-              <Text style={{marginLeft: 16, marginVertical: 5, fontWeight: 'bold'}}> {date} </Text>
-              <Text style={{marginRight: 18, marginVertical: 5, fontWeight:'bold'}}> Daily Total: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight:'bold'}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
+              <Text style={{marginLeft: 16, marginVertical: 5, fontWeight: 600}}> {date} </Text>
+              <Text style={{marginRight: 18, marginVertical: 5, fontWeight: 600}}> Daily Total: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight: 700}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
             </View>
 
               {data && data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
@@ -281,9 +281,9 @@ export default function Expense() {
                     flexDirection: 'row', 
                     marginBottom: 4,
                     marginHorizontal: 15,
-                    backgroundColor: 'lightgrey',
+                    backgroundColor: '#deecfb',
                     justifyContent: 'space-between',
-                    borderColor: 'grey',
+                    borderColor: '#1666ba',
                     borderWidth: 2,
                     borderRadius: 8,
                   }}>
@@ -296,11 +296,11 @@ export default function Expense() {
                       justifyContent:'flex-end',
                       flex: 1,
                       }}>
-                    <Text style={{fontSize: 15, fontWeight:'bold', marginLeft: 3, marginBottom: '2%'}}>{item.name} </Text>
+                    <Text style={{fontSize: 15, fontWeight: 700, marginLeft: 3, marginVertical: '2%'}}>{item.name} </Text>
                     <Text 
                     style={{
                       fontSize: 15, 
-                      fontWeight:'bold',
+                      fontWeight: 700,
                       marginLeft: 3, 
                       //backgroundColor:'yellow',
                       color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
@@ -316,21 +316,17 @@ export default function Expense() {
                       alignItems:'flex-end',
                       justifyContent:'center'
                       }}>
-                  <Text style={{fontSize: 20, fontWeight:'bold', marginRight: 2}}><Text style={{fontSize: 15,}}>SGD</Text> {item.amount} </Text>
+                  <Text style={{fontSize: 20, fontWeight:600, marginRight: 2}}><Text style={{fontSize: 15}}>SGD</Text> {item.amount} </Text>
                       
               </View>
             </View>
             </Swipeable>
-
-            )}
-            
+            )} 
           </View>
-          
-          
-        )}
-      </ScrollView>
+        )}  
+        </ScrollView>
       {loading && <ActivityIndicator />}
-      <Text style={{fontSize: 20}}> Total: {Total}</Text>
+      <Text style={{fontSize: 20, fontWeight: 600, textAlign:'left', borderBottomWidth: 0, borderWidth: 1, backgroundColor:'#b4cbf0'}}> Total: <Text style={{fontSize: 13}}> SGD </Text>{Total.toFixed(2)}</Text>
     </View>
     
   );

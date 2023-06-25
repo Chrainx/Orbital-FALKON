@@ -238,8 +238,8 @@ export default function Add () {
               {{
                 right: 10, 
                 borderWidth:1, 
-                borderColor:'#6699CC', 
-                backgroundColor:'#6699CC', borderRadius: 25}} 
+                borderColor:'#368ce7', 
+                backgroundColor:'#368ce7', borderRadius: 25}} 
                 onPress={() => setExpenseDetail(false)}>
 
                 <Text style = {{
@@ -321,8 +321,8 @@ export default function Add () {
               {{
                 right: 10, 
                 borderWidth:1, 
-                borderColor:'#6699CC', 
-                backgroundColor:'#6699CC', borderRadius: 25}} 
+                borderColor:'#368ce7', 
+                backgroundColor:'#368ce7', borderRadius: 25}} 
                 onPress={() => setAmountDetail(false)}>
 
                 <Text style = {{
@@ -350,7 +350,7 @@ export default function Add () {
         style = {style.submit}
         onPress = {handleSubmit}>
         
-        <Text style= {{color: 'white'}}>Submit</Text>
+        <Text style= {{color: 'white', fontWeight: 800}}> SUBMIT </Text>
         
       </TouchableOpacity>
       </View>
@@ -432,7 +432,7 @@ export default function Add () {
 const style = StyleSheet.create({
   submit: {
     alignItems: 'center',
-    backgroundColor: 'blue',
+    backgroundColor: '#368ce7',
     padding: 20,
     width: 150,
     marginTop: 10,

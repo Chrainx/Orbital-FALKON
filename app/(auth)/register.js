@@ -41,7 +41,7 @@ export default function RegisterPage() {
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
         <Text></Text>
-        <Text style={{fontSize: 18, fontWeight:'bold'}}> Email </Text>
+        <Text style={{fontSize: 18, fontWeight:600}}> Email </Text>
         <TextInput 
           style = {style.input}
           placeholder = 'Enter your email here'
@@ -51,7 +51,7 @@ export default function RegisterPage() {
           value={email}
           onChangeText={setEmail} />
           {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
-        <Text style = {{fontSize: 18, fontWeight:'bold', marginTop: 20}}> Password </Text>
+        <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Password </Text>
         <TextInput
           style = {style.input}
           placeholder = 'Enter your password here'
@@ -63,8 +63,8 @@ export default function RegisterPage() {
           onChangeText={setPassword} />
           {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
         <Button 
-        style={{marginVertical: '6%'}}
-        onPress = {handleRegister}><Text style= {{fontWeight:'bold', color: '#5090CC', }}>REGISTER</Text></Button>
+        style={{marginVertical: '6%', backgroundColor: '#368ce7'}}
+        onPress = {handleRegister}><Text style= {{fontWeight: 800, color: 'white', }}>REGISTER</Text></Button>
         {errMsg !== "" && <Text style = {style.error}>{errMsg}</Text>}
         {loading && <ActivityIndicator />}
       </View>
@@ -85,7 +85,7 @@ const style = StyleSheet.create({
     color: 'red',
     left: 3,
     fontSize: 15,
-    fontWeight:'bold',
+    fontWeight: 600,
     marginVertical: '3%',
     textAlign: 'center',
   },

@@ -102,7 +102,7 @@ export default function Category() {
                         marginHorizontal:5,
                         marginVertical: 2,
                         justifyContent:'space-between',
-                        backgroundColor: 'lightgrey',
+                        backgroundColor: '#deecfb',
                         
                         
                         }}>
@@ -118,7 +118,7 @@ export default function Category() {
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center', marginBottom: 20}}>
-        <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}> Color </Button>
+        <Button style= {{flex: 1}}labelStyle={{color: '#1666ba'}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button>
         <TextInput
           style = {{justifyContent: 'flex-end', flex:2, }}
           mode='outlined'
@@ -128,7 +128,7 @@ export default function Category() {
           onChangeText={setNewCategory}
           keyboardType= {'default'}
         />
-        <Button style = {{flex: 1}}onPress={handleAdd}> ADD </Button>
+        <Button style = {{flex: 1}} onPress={handleAdd}><Text style={{fontWeight:700, color: '#368ce7'}}>ADD</Text></Button>
       </View>
     </View>
   );

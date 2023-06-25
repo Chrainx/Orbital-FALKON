@@ -46,7 +46,7 @@ export default function LoginPage() {
       <View style = {{flex: 1, justifyContent: 'center', width: 300,}}>
         <Logo />
         <Text></Text>
-        <Text style={{fontSize: 18, fontWeight:'bold'}}>  Email </Text>
+        <Text style={{fontSize: 18, fontWeight: 600}}>  Email </Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
@@ -58,7 +58,7 @@ export default function LoginPage() {
           onChangeText={setEmail} />
           {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
         <Text 
-        style = {{fontSize: 18, fontWeight:'bold', marginTop: 20}}>  Password</Text>
+        style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}>  Password</Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
@@ -70,14 +70,14 @@ export default function LoginPage() {
           onChangeText={setPassword} />
           {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
         <Button 
-          style={{marginVertical: '3%'}}
-          onPress = {handleLogin}><Text style= {{fontWeight:'bold', color: '#5090CC', }}>LOGIN</Text></Button>
+          style={{marginVertical: '6%', backgroundColor: '#368ce7'}}
+          onPress = {handleLogin}><Text style= {{fontWeight:800, color: 'white', }}>LOGIN</Text></Button>
         {loading && <ActivityIndicator />}
         {errMsg !== "" && <Text style = {style.error}>{errMsg} </Text>}
         <View style={{flexDirection: 'row', justifyContent : 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 15, fontWeight: 'bold'}}> Don't have an account? </Text>
+          <Text style={{fontSize: 15, fontWeight: 600}}> Don't have an account? </Text>
           <Link href="/register">
-            <Text style={{fontSize: 15, color: "rgb(0,125,250)", }}> Register Here. </Text>
+            <Text style={{fontSize: 15, color: "rgb(0,125,250)", fontWeight: 600}}> Register Here. </Text>
           </Link>
         </View>
       </View>
@@ -87,14 +87,14 @@ export default function LoginPage() {
 
 const style = StyleSheet.create({
   input: {
-    
+    marginBottom: '2%'
   },
 
   error: {
     color: 'red',
     left: 3,
     fontSize: 15,
-    fontWeight:'bold',
+    fontWeight: 600,
     marginVertical: '3%',
     textAlign: 'center'
   },
