@@ -316,7 +316,7 @@ export default function Expense() {
                       alignItems:'flex-end',
                       justifyContent:'center'
                       }}>
-                  <Text style={{fontSize: 20, fontWeight:600, marginRight: 2}}><Text style={{fontSize: 15}}>SGD</Text> {item.amount} </Text>
+                  <Text style={{fontSize: 20, fontWeight: 700, marginRight: 2}}><Text style={{fontSize: 15}}>SGD</Text> {item.amount} </Text>
                       
               </View>
             </View>

@@ -1,9 +1,10 @@
-import { View, Text, Modal, ScrollView, Image, Dimensions, } from 'react-native';
+import { View, Text, Modal, ScrollView, Image, Dimensions, StyleSheet } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/auth';
 import { ColorPicker, fromHsv } from 'react-native-color-picker';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 let width = Dimensions.get('window').width
 
@@ -66,11 +67,11 @@ export default function Category() {
             <ColorPicker
               color={color}
               onColorChange={color => setColor(fromHsv(color))}
-              style={{ flex: 1 }}
+              style={{ flex: 0.8, marginHorizontal: 25}}
             />
-            <Button 
+            <Button style={{backgroundColor: '#368ce7', marginHorizontal: '35%', marginTop: 30}}
               onPress={() => setColorVisible(!colorVisible)}>
-              <Text>Close</Text>
+              <Text style={{color: 'white', fontWeight: 800,}}>CLOSE</Text>
             </Button>
         </View>
       </Modal>
@@ -95,7 +96,7 @@ export default function Category() {
                 style={{flexDirection:'row', 
                         alignItems:'center', 
                         borderWidth: 2,
-                        borderColor: 'black',
+                        borderColor: '#1666ba',
                         borderRadius: 8,
                         marginTop: 10,
                         marginHorizontal:5,
@@ -106,20 +107,33 @@ export default function Category() {
                         
                         }}>
             
-            <Text style={{color: item.color, fontSize: 20, marginLeft: 5}}> {item.category} </Text>
-            <Button onPress={() => handleDelete(item.category)}> Delete </Button>
+            <Text style={{color: item.color, fontSize: 20, marginLeft: 5, fontWeight: 600}}> {item.category} </Text>
+            <Button onPress={() => handleDelete(item.category)}><Text  style={{fontWeight: 700,}}>Delete</Text></Button>
             
             
           </View>
         )}
         
-        {error !== '' && <Text> {error} </Text>}
+        {error !== '' && <Text style={styles.error}>{error} </Text>}
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center', marginBottom: 20}}>
-        <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button>
+        {/* <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button> */}
+        <TouchableOpacity style={{
+          backgroundColor: color, 
+          width: 30, 
+          height: 30, 
+          borderRadius: 15, 
+          marginLeft: 30,
+          marginRight: 25,
+          marginTop: 3,
+          borderWidth: 3}}
+          
+          onPress={() => setColorVisible(true)}>
+
+        </TouchableOpacity>
         <TextInput
-          style = {{justifyContent: 'flex-end', flex:2, }}
+          style = {{justifyContent: 'flex-end', flex: 2, }}
           mode='outlined'
           maxLength={15}
           placeholder='Insert category'
@@ -127,8 +141,19 @@ export default function Category() {
           onChangeText={setNewCategory}
           keyboardType= {'default'}
         />
-        <Button style = {{flex: 1}} onPress={handleAdd}><Text style={{fontWeight:700, color: '#368ce7'}}>ADD</Text></Button>
+        <Button style = {{width: 100}} onPress={handleAdd}><Text style={{fontWeight:700, color: '#368ce7'}}>ADD</Text></Button>
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  error: {
+    color: 'red',
+    fontSize: 15,
+    fontWeight: 600,
+    marginVertical: '3%',
+    textAlign: 'center'
+  },
+
+})
