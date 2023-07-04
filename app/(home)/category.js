@@ -63,7 +63,6 @@ export default function Category() {
           setColorVisible(!colorVisible);
         }}>
         <View style={{flex: 1, backgroundColor:'white'}}>
-            <Text style={{marginTop: 5}}> Please select a color</Text>
             <ColorPicker
               color={color}
               onColorChange={color => setColor(fromHsv(color))}
@@ -118,7 +117,7 @@ export default function Category() {
       </ScrollView>
 
       <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center', marginBottom: 20}}>
-        <Button style= {{flex: 1}}labelStyle={{color: '#1666ba'}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button>
+        <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button>
         <TextInput
           style = {{justifyContent: 'flex-end', flex:2, }}
           mode='outlined'

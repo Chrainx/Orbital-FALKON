@@ -77,24 +77,14 @@ export default function Expense() {
   }
 
   useEffect(() => {fetchData()}, []);
-  useEffect(() => {if(isFocused){fetchData()}}, [isFocused]);
-  useEffect(() => {if (refresh) {fetchData()}}, [refresh]);
+  useEffect(() => {if(isFocused) {fetchData()}}, [isFocused]);
+  useEffect(() => {if(refresh) {fetchData()}}, [refresh]);
 
   const handleDelete = async (itemId) => {
     setLoading(true);
     await supabase.from('data').delete().eq("id", itemId);
     setLoading(false);
     setRefresh(true);
-  }
-
-  const alertError = (errorString) => {
-    Alert.alert(
-      "Please Check",
-      errorString,
-      [
-        {text: "Ok"},
-      ]
-    );
   }
 
   const handleChange = async () => {
@@ -133,6 +123,16 @@ export default function Expense() {
     setLoading(false);
     setNewLimit("");
     setRefresh(true);
+  }
+
+  const alertError = (errorString) => {
+    Alert.alert(
+      "Please Check",
+      errorString,
+      [
+        {text: "Ok"},
+      ]
+    );
   }
 
 
