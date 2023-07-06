@@ -5,6 +5,8 @@ import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
+import MultiSelect from 'react-native-multiple-select';
+
 
 export default function Expense() { 
   
@@ -27,7 +29,10 @@ export default function Expense() {
   const [newLimit, setNewLimit] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
-  // For find the total spending
+  //For total spending for today
+  const [today, setToday] = useState(0);
+
+  // For find the total for all spending
   const [Total, setTotal] = useState(0);
 
   // For the loading indicator
@@ -36,16 +41,29 @@ export default function Expense() {
   // For authentication
   const {user} = useAuth();
 
+  // For filter
+  const [filter, setFilter] = useState([]);
+
   // For refreshing
   const [refresh, setRefresh] = useState(false);
   const isFocused = useIsFocused();
 
 
   async function fetchData() {
+    setRefresh(true);
     fetchCategory();
     fetchLimit();
-    let {data} = await supabase.from('data').select('*').order('inserted_at', {ascending: false});
-    if(data) {
+    fetchExpense();
+    setRefresh(false);
+  }
+
+  async function fetchExpense() {
+    let {data} = await supabase.from('data').select("*").order("inserted_at", {ascending: false});
+    setToday(data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0));
+    if (filter && filter.length > 0) {
+      data = data.filter(x => filter.includes(x.category));
+    }
+    if (data) {
       if (data.length == 0) {
         setTotal(0);
       } else {
@@ -63,7 +81,6 @@ export default function Expense() {
       }
       setDate(newArr);
     }
-    setRefresh(false);
   }
 
   async function fetchCategory() {
@@ -79,6 +96,12 @@ export default function Expense() {
   useEffect(() => {fetchData()}, []);
   useEffect(() => {if(isFocused) {fetchData()}}, [isFocused]);
   useEffect(() => {if(refresh) {fetchData()}}, [refresh]);
+
+  const onSelectedItemsChange = (selectedItems) => {
+    // Set Selected Items
+    setFilter(selectedItems);
+    setRefresh(true);
+  };
 
   const handleDelete = async (itemId) => {
     setLoading(true);
@@ -241,12 +264,34 @@ export default function Expense() {
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
-              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{-limit[0].limit + data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0)} </Text>  
+              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit - today} </Text>  
+              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{-limit[0].limit + today} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
-          : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()). reduce((a,b) => a + b.amount, 0)}</Text>
+          : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{today}</Text>
         }
       </TouchableOpacity>
+      </View>
+      
+      <View>
+        <MultiSelect
+          hideTags
+          items={color}
+          uniqueKey="category"
+          onSelectedItemsChange={onSelectedItemsChange}
+          selectedItems={filter}
+          selectText="Filter"
+          searchInputPlaceholderText="Search Categories..."
+          tagRemoveIconColor="#CCC"
+          tagBorderColor="#CCC"
+          tagTextColor="#CCC"
+          selectedItemTextColor="#CCC"
+          selectedItemIconColor="#CCC"
+          itemTextColor="#000"
+          displayKey="category"
+          searchInputStyle={{color: '#CCC'}}
+          submitButtonColor="#48d22b"
+          submitButtonText="Submit"
+        />
       </View>
       
       <ScrollView>
