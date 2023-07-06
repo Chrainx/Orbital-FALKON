@@ -6,6 +6,7 @@ import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
 import MultiSelect from 'react-native-multiple-select';
+import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list'
 
 
 export default function Expense() { 
@@ -272,7 +273,16 @@ export default function Expense() {
       </TouchableOpacity>
       </View>
       
-      <View>
+      <View style={{marginHorizontal: 20, marginTop: 8,}}>
+        <MultipleSelectList
+            setFilter={(val) => setFilter(val)} 
+            data={color} 
+            save="value"
+            //onSelect={() => alert(filter)} 
+            label="Categories"
+        />
+      </View>
+      {/* <View>
         <MultiSelect
           hideTags
           items={color}
@@ -290,9 +300,11 @@ export default function Expense() {
           displayKey="category"
           searchInputStyle={{color: '#CCC'}}
           submitButtonColor="#48d22b"
-          submitButtonText="Ok"
+          submitButtonText="Filter"
+          styleDropdownMenu={{marginBottom: 0}}
+          
         />
-      </View>
+      </View> */}
       
       <ScrollView>
         {date && date.map(date => 
