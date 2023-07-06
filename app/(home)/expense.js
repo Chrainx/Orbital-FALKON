@@ -104,7 +104,8 @@ export default function Expense() {
 
   const onSelectedItemsChange = (selectedItems) => {
     // Set Selected Items
-    setFilter(selectedItems);
+    
+    setSelected(selectedItems);
     setRefresh(true);
   };
 
@@ -276,15 +277,37 @@ export default function Expense() {
         }
       </TouchableOpacity>
       </View>
+
       
-      <View style={{marginHorizontal: 20, marginTop: 8,}}>
+      
+      <View style={{}}>
+
         <MultipleSelectList
-            setSelected={(val) => setFilter(val)} 
+            setSelected= {(val) => {setFilter(val); setRefresh(true)}}
             data={category} 
             save="value"
             //onSelect={() => alert(filter)} 
-            label="Categories"
+            label="Categories Selected"
+            badgeStyles= {{backgroundColor: '#1666ba'}}
+            checkBoxStyles={{backgroundColor: '#f0ffff'}}
+            notFoundText="No category found"
+            placeholder="Filter by Category"
+            searchPlaceholder="Find Categories..."
+            boxStyles={{backgroundColor: '#90b1e7', 
+                        borderWidth: 2, 
+                        marginHorizontal: 15,
+                        marginTop: 8, 
+                        borderColor: 'black', }}
+            dropdownStyles={{backgroundColor: '#deecfb', 
+                             borderWidth: 2, 
+                             marginHorizontal: 15,
+                             marginTop: 8, 
+                             borderColor: 'black', }}
+            dropdownTextStyles={{fontWeight: 700}}
+            badgeTextStyles={{fontWeight: 700}}
+            labelStyles={{color: '#f0ffff', fontSize: 18}}
         />
+
       </View>
       {/* <View>
         <MultiSelect
@@ -344,8 +367,8 @@ export default function Expense() {
                     marginHorizontal: 15,
                     backgroundColor: '#deecfb',
                     justifyContent: 'space-between',
-                    borderColor: '#1666ba',
-                    borderWidth: 2,
+                    borderColor: 'black',
+                    borderWidth: 1,
                     borderRadius: 8,
                   }}>
                   <View 
@@ -357,12 +380,12 @@ export default function Expense() {
                       justifyContent:'flex-end',
                       flex: 1,
                       }}>
-                    <Text style={{fontSize: 15, fontWeight: 700, marginLeft: 3, marginVertical: '2%'}}>{item.name} </Text>
+                    <Text style={{fontSize: 15, fontWeight: 700, marginLeft: 7, marginVertical: '2%'}}>{item.name} </Text>
                     <Text 
                     style={{
                       fontSize: 15, 
                       fontWeight: 700,
-                      marginLeft: 3, 
+                      marginLeft: 7, 
                       //backgroundColor:'yellow',
                       color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
                   }}>{item.category} </Text>
