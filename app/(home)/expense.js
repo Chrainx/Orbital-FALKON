@@ -14,8 +14,11 @@ export default function Expense() {
   // For data about every expense
   const [data, setData] = useState([]);
   
-  // For getiing color for each category
+  // For geting color for each category
   const [color, setColor] = useState([]);
+
+  // For geting category
+  const [category, setCategory] = useState([]);
 
   // For remove duplicate date 
   const [date, setDate] = useState([]);
@@ -87,6 +90,7 @@ export default function Expense() {
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*');
     setColor(data);
+    setCategory(data.map(x =>{return {key: x.id, value: x.category}}));
   }
 
   async function fetchLimit() {
@@ -276,7 +280,7 @@ export default function Expense() {
       <View style={{marginHorizontal: 20, marginTop: 8,}}>
         <MultipleSelectList
             setFilter={(val) => setFilter(val)} 
-            data={color} 
+            data={category} 
             save="value"
             //onSelect={() => alert(filter)} 
             label="Categories"
