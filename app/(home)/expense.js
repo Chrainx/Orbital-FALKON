@@ -290,7 +290,7 @@ export default function Expense() {
           displayKey="category"
           searchInputStyle={{color: '#CCC'}}
           submitButtonColor="#48d22b"
-          submitButtonText="Submit"
+          submitButtonText="Ok"
         />
       </View>
       
