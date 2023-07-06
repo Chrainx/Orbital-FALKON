@@ -279,7 +279,7 @@ export default function Expense() {
       
       <View style={{marginHorizontal: 20, marginTop: 8,}}>
         <MultipleSelectList
-            setFilter={(val) => setFilter(val)} 
+            setSelected={(val) => setFilter(val)} 
             data={category} 
             save="value"
             //onSelect={() => alert(filter)} 
