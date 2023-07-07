@@ -5,8 +5,7 @@ import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
-import MultiSelect from 'react-native-multiple-select';
-import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list'
+import { MultipleSelectList } from 'react-native-dropdown-select-list'
 
 
 export default function Expense() { 
@@ -54,11 +53,13 @@ export default function Expense() {
 
 
   async function fetchData() {
+    setLoading(true);
     setRefresh(true);
     fetchCategory();
     fetchLimit();
     fetchExpense();
     setRefresh(false);
+    setLoading(false);
   }
 
   async function fetchExpense() {
@@ -67,17 +68,13 @@ export default function Expense() {
     if (filter && filter.length > 0) {
       data = data.filter(x => filter.includes(x.category));
     }
-    if (data) {
-      if (data.length == 0) {
-        setTotal(0);
-      } else {
-        setTotal(data.reduce((a, b) => a + b.amount, 0));
-      }
-      setData(data);
-      const newArr = [];
-      if(data.length > 0) {
-        newArr.push(new Date(data[0].inserted_at).toDateString())
-      }
+    setData(data);
+    const newArr = [];
+    if (data.length == 0) {
+      setTotal(0);
+    } else {
+      setTotal(data.reduce((a, b) => a + b.amount, 0));
+      newArr.push(new Date(data[0].inserted_at).toDateString());
       for (var i = 1; i < data.length; i++) {
         if (newArr[newArr.length - 1] !== new Date(data[i].inserted_at).toDateString()) {
           newArr.push(new Date(data[i].inserted_at).toDateString())
@@ -101,13 +98,6 @@ export default function Expense() {
   useEffect(() => {fetchData()}, []);
   useEffect(() => {if(isFocused) {fetchData()}}, [isFocused]);
   useEffect(() => {if(refresh) {fetchData()}}, [refresh]);
-
-  const onSelectedItemsChange = (selectedItems) => {
-    // Set Selected Items
-    
-    setSelected(selectedItems);
-    setRefresh(true);
-  };
 
   const handleDelete = async (itemId) => {
     setLoading(true);
@@ -309,29 +299,6 @@ export default function Expense() {
         />
 
       </View>
-      {/* <View>
-        <MultiSelect
-          hideTags
-          items={color}
-          uniqueKey="category"
-          onSelectedItemsChange={onSelectedItemsChange}
-          selectedItems={filter}
-          selectText="Filter"
-          searchInputPlaceholderText="Search Categories..."
-          tagRemoveIconColor="#CCC"
-          tagBorderColor="#CCC"
-          tagTextColor="#CCC"
-          selectedItemTextColor="#CCC"
-          selectedItemIconColor="#CCC"
-          itemTextColor="#000"
-          displayKey="category"
-          searchInputStyle={{color: '#CCC'}}
-          submitButtonColor="#48d22b"
-          submitButtonText="Filter"
-          styleDropdownMenu={{marginBottom: 0}}
-          
-        />
-      </View> */}
       
       <ScrollView>
         {date && date.map(date => 
