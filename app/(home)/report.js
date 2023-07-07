@@ -52,9 +52,6 @@ export default function Report() {
     setRefresh(true);
     fetchExpense();
     fetchCategory();
-    console.log(data);
-    console.log(category);
-    console.log(category.map(x => data.filter(y => y.category == x.category)))
     setRefresh(false);
     setLoading(false);
   }
