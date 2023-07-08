@@ -80,7 +80,7 @@ export default function Report() {
         //setAverage(data.filter(x => new Date(x.inserted_at).toDateString()))
       } else if (averageSetting == "This Month") {
         setAverage(data.filter(x => new Date(x.inserted_at).getMonth() == new Date().getMonth() && new Date(x.inserted_at).getFullYear() == new Date().getFullYear()).reduce((a, b) => a + b.amount, 0));
-      } else if (averageSetting == "This Month") {
+      } else if (averageSetting == "This Year") {
         setAverage(data.filter(x => new Date(x.inserted_at).getFullYear() == new Date().getFullYear()).reduce((a, b) => a + b.amount, 0));
       }
     }
