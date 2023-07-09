@@ -12,7 +12,7 @@ import PieChart from 'react-native-pie-chart'
 
 export default function Report() { 
 
-    //For Pie Chart
+  //For Pie Chart
   const widthAndHeight = 250
   const series = [123, 321, 123, 789, 537]
   const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00']
@@ -122,13 +122,16 @@ export default function Report() {
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text style={styles.title}>Doughnut</Text>
-          <PieChart
-            widthAndHeight={widthAndHeight}
-            series={series}
-            sliceColor={sliceColor}
-            coverRadius={0.45}
-            coverFill={'#FFF'}
-          />
+          {category && category.length == 0
+            ? <Text> You dont have any data </Text>
+            :<PieChart
+              widthAndHeight={widthAndHeight}
+              series={category.map(x => data.filter(y => y.category == x.category).length == 0 ? 0 : data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0))}
+              sliceColor={category.map(x => x.color)}
+              coverRadius={0.45}
+              coverFill={'#FFF'}
+            />
+          }
         </View>
       </ScrollView>
 
