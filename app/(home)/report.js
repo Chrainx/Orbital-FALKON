@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useRef} from "react";
-import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
+import { Dimensions, View, ScrollView, StyleSheet, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -13,6 +13,7 @@ import { VictoryPie } from 'victory-native'
 
 export default function Report() { 
 
+  const SIZE = Dimensions.get('window');
   //For Pie Chart
   const widthAndHeight = 250
   const series = [123, 321, 123, 789, 537]
@@ -103,7 +104,7 @@ export default function Report() {
 
 
   return (
-    <View style={{flex: 1, flexDirecton: 'row'}}>
+    <ScrollView style={{flex: 1, flexDirecton: 'row'}}>
 
       <View>
         <View style={{flexDirection: 'row', justifyContent: "space-around"}}> 
@@ -140,16 +141,17 @@ export default function Report() {
           <VictoryPie
           data={category.map(x => data.filter(y => y.category == x.category).length == 0 ? 0 : data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0))}
           colorScale={category.map(x => x.color)}
-          labels={category.map(x => x.category + " " + (data.filter(y => y.category == x.category).length == 0 ? "0%" : (data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0)*100/total.current).toFixed(2).toString() + "%"))}
-          radius={150}
-          innerRadius={50}
-          labelRadius={100}
+          labels={category.map(x => x.category + "\n" + (data.filter(y => y.category == x.category).length == 0 ? "0%" : (data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0)*100/total.current).toFixed(2).toString() + "%"))}
+          radius={SIZE.width * 0.3 - 10}
+          innerRadius={SIZE.width * 0.3 - 70}
+          labelRadius={SIZE.width * 0.4 - 27}
+          padAngle={2}
           />
       </View>
 
 
       {category && category.map(x => 
-        <View key={x.id}>
+        <View style={{flexDirection: 'row', justifyContent:'space-between', marginBottom: 3, marginHorizontal: SIZE.width * 0.05}}key={x.id}>
           <Text> {x.category} </Text>
           {data 
             ? <Text> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
@@ -158,18 +160,18 @@ export default function Report() {
         </View>
       )}
       {loading && <ActivityIndicator />}
-    </View>
+    </ScrollView>
     
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 24,
-    margin: 10,
-  },
-})
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     alignItems: 'center',
+//   },
+//   title: {
+//     fontSize: 24,
+//     margin: 10,
+//   },
+// })
