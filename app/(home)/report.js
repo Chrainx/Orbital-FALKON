@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef} from "react";
-import { View, ScrollView, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
+import React, { Component, useState, useEffect, useRef} from "react";
+import { View, ScrollView, StyleSheet, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -7,9 +7,15 @@ import { useIsFocused } from "@react-navigation/native";
 import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list'
 import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
+import PieChart from 'react-native-pie-chart'
 
 
 export default function Report() { 
+
+    //For Pie Chart
+  const widthAndHeight = 250
+  const series = [123, 321, 123, 789, 537]
+  const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00']
 
   //For Average
   const averagePick = [
@@ -112,6 +118,21 @@ export default function Report() {
         <Text> Yang this week masih salah, trus kyknya yang gw buat ni cocoknya di expense yang paling bawah </Text>
       </View>
 
+
+      <ScrollView style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Doughnut</Text>
+          <PieChart
+            widthAndHeight={widthAndHeight}
+            series={series}
+            sliceColor={sliceColor}
+            coverRadius={0.45}
+            coverFill={'#FFF'}
+          />
+        </View>
+      </ScrollView>
+
+
       {category && category.map(x => 
         <View key={x.id}>
           <Text> {x.category} </Text>
@@ -126,3 +147,14 @@ export default function Report() {
     
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 24,
+    margin: 10,
+  },
+})
