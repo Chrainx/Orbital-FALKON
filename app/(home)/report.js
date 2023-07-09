@@ -8,6 +8,7 @@ import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-lis
 import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
+import { VictoryPie } from 'victory-native'
 
 
 export default function Report() { 
@@ -119,7 +120,7 @@ export default function Report() {
       </View>
 
 
-      <ScrollView style={{ flex: 1 }}>
+      {/* <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <Text style={styles.title}>Doughnut</Text>
           {category && category.length == 0
@@ -133,7 +134,18 @@ export default function Report() {
             />
           }
         </View>
-      </ScrollView>
+      </ScrollView> */}
+
+      <View>
+          <VictoryPie
+          data={category.map(x => data.filter(y => y.category == x.category).length == 0 ? 0 : data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0))}
+          colorScale={category.map(x => x.color)}
+          labels={category.map(x => x.category)}
+          radius={150}
+          innerRadius={50}
+          labelRadius={100}
+          />
+      </View>
 
 
       {category && category.map(x => 
