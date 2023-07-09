@@ -140,7 +140,7 @@ export default function Report() {
           <VictoryPie
           data={category.map(x => data.filter(y => y.category == x.category).length == 0 ? 0 : data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0))}
           colorScale={category.map(x => x.color)}
-          labels={category.map(x => data.filter(y => y.category == x.category).length == 0 ? "0%" : (data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0)*100/total.current).toFixed(2).toString() + "%")}
+          labels={category.map(x => x.category + " " + (data.filter(y => y.category == x.category).length == 0 ? "0%" : (data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0)*100/total.current).toFixed(2).toString() + "%"))}
           radius={150}
           innerRadius={50}
           labelRadius={100}
