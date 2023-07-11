@@ -72,6 +72,7 @@ export default function Expense() {
     const newArr = [];
     if (data.length == 0) {
       setTotal(0);
+      setDate([]);
     } else {
       setTotal(data.reduce((a, b) => a + b.amount, 0));
       newArr.push(new Date(data[0].inserted_at).toDateString());
@@ -121,7 +122,7 @@ export default function Expense() {
     var amt = parseFloat(newLimit).toFixed(2);
     let {data} =  await supabase.from('info').select('*');
     if (data && data.length == 0) {
-      const { error } = await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
+      await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
     } else {
       await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
     }

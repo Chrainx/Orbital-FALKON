@@ -9,6 +9,7 @@ import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
 import { VictoryPie } from 'victory-native'
+import Category from "./category";
 
 
 export default function Report() { 
@@ -18,6 +19,9 @@ export default function Report() {
   const widthAndHeight = 250
   const series = [123, 321, 123, 789, 537]
   const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00']
+  const [eachCategory, setEachCategory] = useState([]);
+  const [color, setColor] = useState([]);
+  const [pieData, setPieData] = useState([]);
 
   //For Average
   const averagePick = [
@@ -94,7 +98,7 @@ export default function Report() {
     }
   }
   async function fetchCategory() {
-    let {data} = await supabase.from('category').select('*');
+    let {data} = await supabase.from('category').select('*').order("category", {ascending: true});
     setCategory(data);
   }
 
@@ -117,7 +121,7 @@ export default function Report() {
           />
           <Text> SGD {(average).toFixed(2)}</Text>
         </View>
-        <Text> Yang this week masih salah, trus kyknya yang gw buat ni cocoknya di expense yang paling bawah </Text>
+        {/* <Text> Yang this week masih salah, trus kyknya yang gw buat ni cocoknya di expense yang paling bawah </Text> */}
       </View>
 
 
@@ -136,12 +140,64 @@ export default function Report() {
           }
         </View>
       </ScrollView> */}
-
+      {category && total.current != 0 && category.length == 0 
+      ?  <Text> You dont have any data yet! </Text>
+      : <View>
       <View>
           <VictoryPie
-          data={category.map(x => data.filter(y => y.category == x.category).length == 0 ? 0 : data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0))}
-          colorScale={category.map(x => x.color)}
-          labels={category.map(x => x.category + "\n" + (data.filter(y => y.category == x.category).length == 0 ? "0%" : (data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0)*100/total.current).toFixed(2).toString() + "%"))}
+          data={
+            [...category.filter(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+              ) > 2
+            ).map(x => 
+              data
+              .filter(y => y.category == x.category)
+              .reduce((a, b)=> a + b.amount , 0) * 100/ total.current
+            ),
+            category.map(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+              )).filter(z => z <= 2).reduce((a, b)=> a + b , 0)
+            ]
+          }
+          colorScale={
+            [...category.filter(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+              ) > 2
+            ).map(x => x.color),
+            "#fbd203"
+            ]
+          }
+          labels={
+            [...(category.filter(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+              ) > 2
+            ).map(x => 
+              x.category
+              + "\n" 
+              + (data
+                  .filter(y => y.category == x.category)
+                  .reduce((a, b)=> a + b.amount , 0) * 100/ total.current
+                ).toFixed(2)
+                .toString()
+              + "%"
+            )),
+              "Other\n" 
+              + category.map(x => 
+                (data
+                  .filter(y => y.category == x.category)
+                  .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+                )).filter(z => z <= 2).reduce((a, b)=> a + b, 0).toFixed(2).toString()
+              + "%"
+            ]
+          }
           radius={SIZE.width * 0.3 - 10}
           innerRadius={SIZE.width * 0.3 - 70}
           labelRadius={SIZE.width * 0.4 - 27}
@@ -159,6 +215,8 @@ export default function Report() {
           }
         </View>
       )}
+      </View>}
+      
       {loading && <ActivityIndicator />}
     </ScrollView>
     
