@@ -1,4 +1,4 @@
-import { View, Text, Modal, ScrollView, Image, Dimensions, StyleSheet } from 'react-native';
+import { View, Text, Modal, ScrollView, Image, Dimensions, StyleSheet, Alert } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -23,8 +23,26 @@ export default function Category() {
     setRefresh(false);
   }
 
+  useEffect(() => {fetchCategory()}, [])
+  useEffect(() => {fetchCategory()}, [refresh])
+
+  const alertDelete = async (item)  => {
+    Alert.alert(
+      "Every expense belong to " + item +" category will be deleted!",
+      "Do you want to proceed?",
+      [
+        {text: "Cancel"},
+        {
+          text: "Yes", 
+          onPress: () => {handleDelete(item)}
+        },
+      ]
+    );
+  }
+
   const handleDelete = async (item) => {
-    const { error } = await supabase.from('category').delete().eq("category", item);
+    await supabase.from('category').delete().eq("category", item);
+    await supabase.from("data").delete().eq("category", item);
     setRefresh(true);
   }
 
@@ -47,10 +65,6 @@ export default function Category() {
     setNewCategory('');
     setColor("#0000FF")
   }
-
-
-  useEffect(() => {fetchCategory()}, [])
-  useEffect(() => {fetchCategory()}, [refresh])
 
   
   return (
@@ -108,7 +122,7 @@ export default function Category() {
                         }}>
             
             <Text style={{color: item.color, fontSize: 20, marginLeft: 5, fontWeight: 600}}> {item.category} </Text>
-            <Button onPress={() => handleDelete(item.category)}><Text  style={{fontWeight: 700,}}>Delete</Text></Button>
+            <Button onPress={() => alertDelete(item.category)}><Text  style={{fontWeight: 700,}}>Delete</Text></Button>
             
             
           </View>
