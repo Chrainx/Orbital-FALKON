@@ -16,12 +16,11 @@ export default function Report() {
 
   const SIZE = Dimensions.get('window');
   //For Pie Chart
-  const widthAndHeight = 250
-  const series = [123, 321, 123, 789, 537]
-  const sliceColor = ['#fbd203', '#ffb300', '#ff9100', '#ff6c00', '#ff3c00']
-  const [eachCategory, setEachCategory] = useState([]);
+  const [filterCategory, setFilterCategory] = useState([]);
+  const [leftCategory, setLeftCategory] = useState([]);
   const [color, setColor] = useState([]);
-  const [pieData, setPieData] = useState([]);
+  const [displayData, setDisplayData] = useState([]);
+  const [label, setLabel] = useState([]);
 
   //For Average
   const averagePick = [
@@ -42,7 +41,7 @@ export default function Report() {
   const [category, setCategory] = useState([]);
 
   // For find the total for all spending
-  const total = useRef(0);
+  const [total, setTotal] = useState(0);
 
   // For the loading indicator
   const [loading, setLoading] = useState(false);
@@ -64,19 +63,74 @@ export default function Report() {
     setRefresh(true);
     fetchExpense();
     fetchCategory();
+    //setPieChart();
     setRefresh(false);
     setLoading(false);
   }
+
+  // const setPieChart = () => {
+  //   setFilterCategory(
+  //     category.filter(x => 
+  //       data.filter(y => x.category == y.category)
+  //       .reduce((a,b) => a + b.amount, 0) > 2
+  //     )
+  //   )
+  //   setLeftCategory(
+  //     category.filter(x => 
+  //       data.filter(y => x.category == y.category)
+  //       .reduce((a,b) => a + b.amount, 0) <= 2
+  //     )
+  //   )
+  //   setDisplayData(
+  //     filterCategory.map(x => 
+  //       data.filter(y => x.category == y.category)
+  //       .reduce((a,b) => a + b.amount, 0)
+  //     )
+  //   );
+  //   setColor(filterCategory.map(x => x.color))
+  //   setLabel(
+  //     filterCategory.map(x => 
+  //       x.category
+  //       + "\n" 
+  //       + (data
+  //         .filter(y => y.category == x.category)
+  //         .reduce((a, b)=> a + b.amount , 0) * 100/ total
+  //       ).toFixed(2)
+  //       .toString()
+  //       + "%"
+  //     )
+  //   )
+  //   if (filterCategory.length == category.length) {
+  //     setDisplayData(
+  //       [...displayData, 
+  //         leftCategory.map(x => 
+  //           data.filter(y => x.category == y.category)
+  //           .reduce((a,b) => a + b.amount, 0)
+  //         )
+  //       ]
+  //     );
+  //     setColor([...color, "#fbd203"]);
+  //     setLabel(
+  //       [...label, 
+  //         "Other\n" 
+  //         + leftCategory.reduce((a, b)=> a + b, 0)
+  //           .toFixed(2)
+  //           .toString()
+  //         + "%"
+  //       ]
+  //     )
+  //   }
+  // }
 
   async function fetchExpense() {
     let {data} = await supabase.from('data').select("*").order("inserted_at", {ascending: false});
     setData(data);
     const newArr = [];
     if (data.length == 0) {
-      total.current = 0;
+      setTotal(0);
       setAverage(0);
     } else {
-      total.current = data.reduce((a, b) => a + b.amount, 0);
+      setTotal(data.reduce((a, b) => a + b.amount, 0));
       newArr.push(new Date(data[0].inserted_at).toDateString());
       for (var i = 1; i < data.length; i++) {
         if (newArr[newArr.length - 1] !== new Date(data[i].inserted_at).toDateString()) {
@@ -85,7 +139,7 @@ export default function Report() {
       }
       setDate(newArr);
       if (averageSetting == "All") {
-        setAverage(total.current);
+        setAverage(total);
       } else if (averageSetting == "Today") {
         setAverage(data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a, b) => a + b.amount, 0));
       } else if (averageSetting == "This Week") {
@@ -138,7 +192,7 @@ export default function Report() {
           }
         </View>
       </ScrollView> */}
-      {category && (total.current == 0 || category.length == 0)
+      {category && (total == 0 || category.length == 0)
       ?  <Text> You dont have any data yet! </Text>
       : <View>
       <View>
@@ -147,61 +201,99 @@ export default function Report() {
             [...category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
               ) > 2
             ).map(x => 
               data
               .filter(y => y.category == x.category)
-              .reduce((a, b)=> a + b.amount , 0) * 100/ total.current
+              .reduce((a, b)=> a + b.amount , 0) * 100/ total
             ),
-            category.map(x => 
+            ...category.map(x => 
               (data
                 .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
-              )).filter(z => z <= 2).reduce((a, b)=> a + b , 0)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              )
+            ).filter(z => z <= 2)
+            .reduce((a, b)=> a + b , 0) != 0
+            ? [category.map(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              )
+            ).filter(z => z <= 2).reduce((a, b)=> a + b , 0)]
+            : []
             ]
           }
           colorScale={
             [...category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
               ) > 2
             ).map(x => x.color),
-            "#fbd203"
+            ...category.map(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              )
+            ).filter(z => z <= 2)
+            .reduce((a, b)=> a + b , 0) != 0
+            ? ["#fbd203"]
+            : []
             ]
           }
           labels={
             [...(category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
               ) > 2
             ).map(x => 
               x.category
               + "\n" 
               + (data
                   .filter(y => y.category == x.category)
-                  .reduce((a, b)=> a + b.amount , 0) * 100/ total.current
+                  .reduce((a, b)=> a + b.amount , 0) * 100/ total
                 ).toFixed(2)
                 .toString()
               + "%"
             )),
-              "Other\n" 
+            ...category.map(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              )
+            ).filter(z => z <= 2)
+            .reduce((a, b)=> a + b , 0) != 0 
+            ? ["Other\n" 
               + category.map(x => 
                 (data
                   .filter(y => y.category == x.category)
-                  .reduce((a, b)=> a + b.amount, 0) * 100/ total.current
+                  .reduce((a, b)=> a + b.amount, 0) * 100/ total
                 )).filter(z => z <= 2).reduce((a, b)=> a + b, 0).toFixed(2).toString()
-              + "%"
+              + "%"]
+            : []
             ]
           }
           radius={SIZE.width * 0.3 - 10}
           innerRadius={SIZE.width * 0.3 - 50}
           labelRadius={SIZE.width * 0.4 - 45}
-          padAngle={0}
+          padAngle={2}
           />
       </View>
+      {/* {displayData.length > 1
+      ? <VictoryPie
+          data={displayData}
+          colorScale={color}
+          labels={label}
+          radius={SIZE.width * 0.3 - 10}
+          innerRadius={SIZE.width * 0.3 - 50}
+          labelRadius={SIZE.width * 0.4 - 45}
+          padAngle={2}
+        />
+        : <Text> loading </Text>
+      }
+      </View> */}
       
       {category && category.map(x => 
         <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1, }} key={x.id}>
@@ -216,7 +308,7 @@ export default function Report() {
             } */}
           </View>
             <View style={{justifyContent: 'center'}}>
-              <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)}%</Text>
+              <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total).toFixed(2)}%</Text>
             </View>
           </View>
       )}
