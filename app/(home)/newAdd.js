@@ -5,7 +5,8 @@ export const NewAdd = props => {
       <TouchableOpacity
         style = {{
           flexDirection: 'row',
-          backgroundColor: 'black',
+          backgroundColor: '#73a0b9',
+          //backgroundColor: '#1D79D0',
           borderRadius: 10,
           justifyContent: props.icon? 'space-between': 'flex-start',
           alignItems: 'center',
@@ -16,7 +17,7 @@ export const NewAdd = props => {
         }}
         onPress= {props.action}
       >
-      <Text style = {{color: props.isDestructive? 'red' : 'white' }}> {props.title} </Text>
+      <Text style = {{color: props.isDestructive? 'red' : 'white' , fontWeight: 800, fontSize: 17}}> {props.title} </Text>
       {props.icon && <View>{props.icon}</View>}
       </TouchableOpacity>
       {props.detail}

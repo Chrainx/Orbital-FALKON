@@ -157,7 +157,7 @@ export default function Expense() {
 
 
   return (
-    <View style={{flex: 1, flexDirecton: 'row',justifyContent: "space-between", }}>
+    <View style={{flex: 1, flexDirecton: 'row',justifyContent: "space-between", backgroundColor: '#f0ffff'}}>
 
       <Modal
         animationType="slide"

@@ -178,7 +178,7 @@ export default function Add () {
 
   return (
     
-    <SafeAreaView >
+    <SafeAreaView>
       <Text></Text>
       <NewAdd
         title= "Date"
@@ -195,7 +195,7 @@ export default function Add () {
         title= 'Expense'
         icon= {
           expenseDetail 
-          ? <Text style={{color: 'white'}}> Cancel </Text>
+          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#dd0520'}}> Cancel </Text>
           : expense != ''
           ? <Text style={{color: 'white'}}> {expense} </Text>
           : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
@@ -220,7 +220,7 @@ export default function Add () {
                 marginBottom: 8,
                 //width: '100%', 
                 justifyContent:'space-between', 
-                backgroundColor:'#5A5A5A'
+                backgroundColor:'#81B1D5'
                 }}>
               <TextInput
                 placeholder= 'Insert Expense'
@@ -238,8 +238,8 @@ export default function Add () {
               {{
                 right: 10, 
                 borderWidth:1, 
-                borderColor:'#368ce7', 
-                backgroundColor:'#368ce7', borderRadius: 25}} 
+                borderColor:'#368cc7', 
+                backgroundColor:'#368cc7', borderRadius: 25}} 
                 onPress={() => setExpenseDetail(false)}>
 
                 <Text style = {{
@@ -247,6 +247,7 @@ export default function Add () {
                   fontSize:15, 
                   marginVertical: 5, 
                   marginHorizontal:8,
+                  fontWeight: 700
                   }}>
                     Insert
                 </Text>
@@ -279,7 +280,7 @@ export default function Add () {
         title= 'Amount'
         icon= {
           amountDetail 
-          ? <Text style={{color: 'white'}}> Cancel </Text>
+          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#dd0520'}}> Cancel </Text>
           : amount != ''
           ? <Text style={{color: 'white'}}> {amount} </Text>
           : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
@@ -304,12 +305,12 @@ export default function Add () {
                 marginBottom: 8,
                 //width: '100%',
                 justifyContent:'space-between', 
-                backgroundColor:'#5A5A5A'
+                backgroundColor:'#81B1D5'
                   }}
             >
               <TextInput
                 placeholder= 'Insert Amount'
-                textColor='white'
+                //textColor='white'
                 placeholderTextColor='white'
                 value={amount} 
                 onChangeText={setAmount}
@@ -321,8 +322,8 @@ export default function Add () {
               {{
                 right: 10, 
                 borderWidth:1, 
-                borderColor:'#368ce7', 
-                backgroundColor:'#368ce7', borderRadius: 25}} 
+                borderColor:'#368cc7', 
+                backgroundColor:'#368cc7', borderRadius: 25}} 
                 onPress={() => setAmountDetail(false)}>
 
                 <Text style = {{
@@ -330,6 +331,7 @@ export default function Add () {
                   fontSize:15, 
                   marginVertical: 5, 
                   marginHorizontal:8,
+                  fontWeight: 700
                   }}>
                     Insert
                 </Text>
@@ -366,20 +368,20 @@ export default function Add () {
         modalProps ={{}}
         containerStyle={{color:'black', height: 100}}
       >
-        <Text style = {{color:'white', backgroundColor:'grey', fontSize: 20, }}> Please Select a Category </Text>
+        <Text style = {{color:'white', borderWidth: 2, borderColor: '#1666ba', backgroundColor:'#368cc7', fontSize: 20, fontWeight: 700, textAlign:'center', paddingVertical: 5}}> Please Select a Category </Text>
         <View
-          style = {{backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center'}}
+          style = {{backgroundColor: '#A0C0D4', borderWidth: 0, justifyContent: 'center', alignItems: 'center'}}
         >
         {data && data.map((item) => 
           
         <TouchableOpacity
-          style={{marginVertical: 2, width: '100%', alignItems:'center',}}
+          style={{marginVertical: 0, paddingVertical: 2,  width: '100%', alignItems:'center', borderWidth: 1, borderColor: '#2080d0'}}
           key={item.category}
           onPress={()=> {
             setVisible(false);
             setCategory(item.category);
             }}>
-          <Text style={{color:item.color, fontSize: 18, marginVertical: 8}}>{item.category}</Text>
+          <Text style={{color: item.color, fontSize: 18, marginVertical: 8}}>{item.category}</Text>
         </TouchableOpacity>,
         {/* <Button 
             key={item.category} 
@@ -410,7 +412,7 @@ export default function Add () {
               width: '100%', 
               alignItems: 'center',
               marginBottom: 30,
-              backgroundColor: 'red',
+              backgroundColor: '#dd0520',
               }}>
               <Text style = 
               {{
@@ -432,7 +434,7 @@ export default function Add () {
 const style = StyleSheet.create({
   submit: {
     alignItems: 'center',
-    backgroundColor: '#368ce7',
+    backgroundColor: '#368cc7',
     padding: 20,
     width: 150,
     marginTop: 10,
@@ -442,7 +444,7 @@ const style = StyleSheet.create({
   textInput: {
     height:50,
     color: 'white',
-    backgroundColor:'#5A5A5A',
+    backgroundColor:'#81B1D5',
     marginLeft: 10,
     width: '82%'
   },

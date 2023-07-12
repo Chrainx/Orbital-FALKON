@@ -68,7 +68,7 @@ export default function Category() {
 
   
   return (
-    <View style = {{flex: 1}}>
+    <View style = {{flex: 1, backgroundColor: '#f0ffff'}}>
     <Modal
         animationType="slide"
         transparent={true}

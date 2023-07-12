@@ -108,10 +108,9 @@ export default function Report() {
 
 
   return (
-    <ScrollView style={{flex: 1, flexDirecton: 'row'}}>
+    <ScrollView style={{flex: 1, flexDirecton: 'row', backgroundColor: '#f0ffff'}}>
 
-      <View>
-        <View style={{flexDirection: 'row', justifyContent: "space-around"}}> 
+        {/* <View style={{flexDirection: 'row', justifyContent: "space-around"}}> 
           <Text> Total for: </Text>
           <SelectList
             setSelected={(val) => {setAverageSetting(val); setRefresh(true)}}
@@ -120,9 +119,8 @@ export default function Report() {
             defaultOption={{key:'5', value:'All'}}
           />
           <Text> SGD {(average).toFixed(2)}</Text>
-        </View>
+        </View> */}
         {/* <Text> Yang this week masih salah, trus kyknya yang gw buat ni cocoknya di expense yang paling bawah </Text> */}
-      </View>
 
 
       {/* <ScrollView style={{ flex: 1 }}>
@@ -199,21 +197,28 @@ export default function Report() {
             ]
           }
           radius={SIZE.width * 0.3 - 10}
-          innerRadius={SIZE.width * 0.3 - 70}
-          labelRadius={SIZE.width * 0.4 - 27}
-          padAngle={2}
+          innerRadius={SIZE.width * 0.3 - 50}
+          labelRadius={SIZE.width * 0.4 - 45}
+          padAngle={0}
           />
       </View>
-
-
+      
       {category && category.map(x => 
-        <View style={{flexDirection: 'row', justifyContent:'space-between', marginBottom: 3, marginHorizontal: SIZE.width * 0.05}}key={x.id}>
-          <Text> {x.category} </Text>
-          {data 
-            ? <Text> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
-            : <Text> 0 </Text>
-          }
-        </View>
+        <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1, }} key={x.id}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{marginLeft: 0, fontSize: 17, fontWeight: 800, justifyContent: 'center', color: 'white' }}> {x.category} </Text>
+            </View>
+            {/* {data 
+              ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
+              : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
+            } */}
+          </View>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)}%</Text>
+            </View>
+          </View>
       )}
       </View>}
       
@@ -233,3 +238,4 @@ export default function Report() {
 //     margin: 10,
 //   },
 // })
+
