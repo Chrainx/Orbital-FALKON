@@ -138,7 +138,7 @@ export default function Report() {
           }
         </View>
       </ScrollView> */}
-      {category && total.current != 0 && category.length == 0 
+      {category && (total.current == 0 || category.length == 0)
       ?  <Text> You dont have any data yet! </Text>
       : <View>
       <View>
