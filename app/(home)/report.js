@@ -63,64 +63,9 @@ export default function Report() {
     setRefresh(true);
     fetchExpense();
     fetchCategory();
-    //setPieChart();
     setRefresh(false);
     setLoading(false);
   }
-
-  // const setPieChart = () => {
-  //   setFilterCategory(
-  //     category.filter(x => 
-  //       data.filter(y => x.category == y.category)
-  //       .reduce((a,b) => a + b.amount, 0) > 2
-  //     )
-  //   )
-  //   setLeftCategory(
-  //     category.filter(x => 
-  //       data.filter(y => x.category == y.category)
-  //       .reduce((a,b) => a + b.amount, 0) <= 2
-  //     )
-  //   )
-  //   setDisplayData(
-  //     filterCategory.map(x => 
-  //       data.filter(y => x.category == y.category)
-  //       .reduce((a,b) => a + b.amount, 0)
-  //     )
-  //   );
-  //   setColor(filterCategory.map(x => x.color))
-  //   setLabel(
-  //     filterCategory.map(x => 
-  //       x.category
-  //       + "\n" 
-  //       + (data
-  //         .filter(y => y.category == x.category)
-  //         .reduce((a, b)=> a + b.amount , 0) * 100/ total
-  //       ).toFixed(2)
-  //       .toString()
-  //       + "%"
-  //     )
-  //   )
-  //   if (filterCategory.length == category.length) {
-  //     setDisplayData(
-  //       [...displayData, 
-  //         leftCategory.map(x => 
-  //           data.filter(y => x.category == y.category)
-  //           .reduce((a,b) => a + b.amount, 0)
-  //         )
-  //       ]
-  //     );
-  //     setColor([...color, "#fbd203"]);
-  //     setLabel(
-  //       [...label, 
-  //         "Other\n" 
-  //         + leftCategory.reduce((a, b)=> a + b, 0)
-  //           .toFixed(2)
-  //           .toString()
-  //         + "%"
-  //       ]
-  //     )
-  //   }
-  // }
 
   async function fetchExpense() {
     let {data} = await supabase.from('data').select("*").order("inserted_at", {ascending: false});
@@ -281,19 +226,7 @@ export default function Report() {
           padAngle={2}
           />
       </View>
-      {/* {displayData.length > 1
-      ? <VictoryPie
-          data={displayData}
-          colorScale={color}
-          labels={label}
-          radius={SIZE.width * 0.3 - 10}
-          innerRadius={SIZE.width * 0.3 - 50}
-          labelRadius={SIZE.width * 0.4 - 45}
-          padAngle={2}
-        />
-        : <Text> loading </Text>
-      }
-      </View> */}
+     
       
       {category && category.map(x => 
         <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1, }} key={x.id}>
