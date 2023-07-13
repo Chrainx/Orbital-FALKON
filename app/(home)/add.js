@@ -178,7 +178,7 @@ export default function Add () {
 
   return (
     
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#f0ffff'}}>
       <Text></Text>
       <NewAdd
         title= "Date"
@@ -195,7 +195,7 @@ export default function Add () {
         title= 'Expense'
         icon= {
           expenseDetail 
-          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#dd0520'}}> Cancel </Text>
+          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#ff0000'}}> Cancel </Text>
           : expense != ''
           ? <Text style={{color: 'white'}}> {expense} </Text>
           : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
@@ -280,7 +280,7 @@ export default function Add () {
         title= 'Amount'
         icon= {
           amountDetail 
-          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#dd0520'}}> Cancel </Text>
+          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#ff0000'}}> Cancel </Text>
           : amount != ''
           ? <Text style={{color: 'white'}}> {amount} </Text>
           : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>

@@ -261,8 +261,8 @@ export default function Expense() {
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit - today} </Text>  
-              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{-limit[0].limit + today} </Text>  
+              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit - today}.toFixed(2) </Text>  
+              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{-limit[0].limit + today}.toFixed(2) </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
           : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{today}</Text>
         }

@@ -15,7 +15,7 @@ export const NewSetting = props => {
         }}
         onPress= {props.action}
       >
-      <Text style = {{color: props.isDestructive? '#dd0520' : 'white', fontWeight: 800, fontSize: 17}}> {props.title} </Text>
+      <Text style = {{color: props.isDestructive? '#ff0000' : 'white', fontWeight: 800, fontSize: 17}}> {props.title} </Text>
       {props.icon && <View>{props.icon}</View>}
       </TouchableOpacity>
       {props.detail}

@@ -38,7 +38,7 @@ export default function RegisterPage() {
     setErrMsg("Confirmation has been sent to your email");
   }
   return (
-    <SafeAreaView style = {{flex: 1, alignItems: 'center', }}>
+    <SafeAreaView style = {{flex: 1, alignItems: 'center', backgroundColor:'#f0ffff'}}>
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
         <Text></Text>

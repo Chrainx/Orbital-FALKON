@@ -68,7 +68,7 @@ export default function Setting () {
 }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1, backgroundColor:'#f0ffff'}}>
         <Text></Text>
         <NewSetting
           title = 'Add Category'

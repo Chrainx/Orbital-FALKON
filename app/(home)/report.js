@@ -8,11 +8,19 @@ import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-lis
 import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
-import { VictoryPie } from 'victory-native'
+import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup } from 'victory-native'
 import Category from "./category";
 
 
 export default function Report() { 
+  
+  const dat = [
+    {Categories: 'Food', SGD: 200},
+    {Categories: 'Groceries', SGD: 50},
+    {Categories: 'Healthcare', SGD: 80},
+    {Categories: 'Personal', SGD: 30},
+    {Categories: 'Transport', SGD: 380},
+  ]
 
   const SIZE = Dimensions.get('window');
   //For Pie Chart
@@ -137,8 +145,10 @@ export default function Report() {
           }
         </View>
       </ScrollView> */}
+
+      
       {category && (total == 0 || category.length == 0)
-      ?  <Text> You dont have any data yet! </Text>
+      ?  <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
       : <View>
       <View>
           <VictoryPie
@@ -222,14 +232,29 @@ export default function Report() {
           }
           radius={SIZE.width * 0.3 - 10}
           innerRadius={SIZE.width * 0.3 - 50}
-          labelRadius={SIZE.width * 0.4 - 45}
+          labelRadius={SIZE.width * 0.4 - 25}
           padAngle={2}
           />
+          
+          <VictoryChart>
+              <VictoryBar 
+                barWidth={20}
+                width={SIZE.width - 30}
+                style={{data: {fill: 'red',}}}
+                x= "Categories"
+                y= "SGD"
+                data= {dat}
+              />
+          </VictoryChart>
+          
+          
+          
       </View>
+
      
       
       {category && category.map(x => 
-        <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1, }} key={x.id}>
+        <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
             <View style={{justifyContent: 'center'}}>
