@@ -8,19 +8,11 @@ import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-lis
 import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
-import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup } from 'victory-native'
+import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup, VictoryAxis } from 'victory-native'
 import Category from "./category";
 
 
 export default function Report() { 
-  
-  const dat = [
-    {Categories: 'Food', SGD: 200},
-    {Categories: 'Groceries', SGD: 50},
-    {Categories: 'Healthcare', SGD: 80},
-    {Categories: 'Personal', SGD: 30},
-    {Categories: 'Transport', SGD: 380},
-  ]
 
   const SIZE = Dimensions.get('window');
 
@@ -228,17 +220,26 @@ export default function Report() {
             : []
             ]
           }
+          labelPlacement={({ text }) => text.length > 20
+            ? "perpendicular"
+            : "vertical"
+          }
+          
           radius={SIZE.width * 0.3 - 10}
           innerRadius={SIZE.width * 0.3 - 50}
-          labelRadius={SIZE.width * 0.4 - 25}
-          padAngle={2}
+          labelRadius={SIZE.width * 0.4 - 35}
+          padAngle={1}
+          padding={{left: 50, top: 0, right: 50, bottom: 0}}
+          
           />
           
-          <VictoryChart>
+          
+          <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
               <VictoryBar 
-                barWidth={20}
-                width={SIZE.width - 30}
-                style={{data: {fill: 'red',}}}
+                
+                barWidth={11}
+                
+                style={{data: {fill: ({ datum }) => category.filter(y => datum.category == y.category)[0].color}}}
                 x= "category"
                 y= "eachTotal"
                 data= {category.reduce((a,b) => {
@@ -253,20 +254,27 @@ export default function Report() {
                   return a;
                 },[])}
               />
-          </VictoryChart>
-          
-          
-          
+              <VictoryAxis dependentAxis
+                
+              />
+              <VictoryAxis
+                
+                style={{tickLabels: {angle : 340, fontSize: ({ text }) => text.length > 10 ? 9: 11}}}
+  />
+          </VictoryChart>        
       </View>
-      
+      <View
+        
+      >
+        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Main </Text>
       {category && category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
               ) > 2
-            ).map(x => 
+            ).map(x =>  
         <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
           {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
             <View style={{justifyContent: 'center'}}>
               <Text style={{marginLeft: 0, fontSize: 17, fontWeight: 800, justifyContent: 'center', color: 'white' }}> {x.category} </Text>
@@ -277,15 +285,19 @@ export default function Report() {
             } */}
           </View>
             <View style={{justifyContent: 'center'}}>
+            
               <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total).toFixed(2)}%</Text>
             </View>
           </View>
+        
       )}
+      </View>
       </View>}
+      <View style={{marginTop: 2}}></View>
       <TouchableOpacity
         onPress= {() => setOther(!other)}
       >
-        <Text> Other </Text>
+        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Other </Text>
         {other && category && category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
