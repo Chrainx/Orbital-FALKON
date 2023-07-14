@@ -104,6 +104,7 @@ export default function Report() {
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*').order("category", {ascending: true});
     setCategory(data);
+    console.log(category);
   }
 
   useEffect(() => {fetchData()}, []);
@@ -238,9 +239,19 @@ export default function Report() {
                 barWidth={20}
                 width={SIZE.width - 30}
                 style={{data: {fill: 'red',}}}
-                x= "Categories"
-                y= "SGD"
-                data= {dat}
+                x= "category"
+                y= "eachTotal"
+                data= {category.reduce((a,b) => {
+                  a.push(
+                    {
+                      category: b.category, 
+                      eachTotal: 
+                        data.filter(y => b.category == y.category)
+                        .reduce((n ,m) => n + m.amount, 0)
+                    }
+                  )
+                  return a;
+                },[])}
               />
           </VictoryChart>
           
