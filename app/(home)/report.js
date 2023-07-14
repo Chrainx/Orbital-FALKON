@@ -23,12 +23,6 @@ export default function Report() {
   ]
 
   const SIZE = Dimensions.get('window');
-  //For Pie Chart
-  const [filterCategory, setFilterCategory] = useState([]);
-  const [leftCategory, setLeftCategory] = useState([]);
-  const [color, setColor] = useState([]);
-  const [displayData, setDisplayData] = useState([]);
-  const [label, setLabel] = useState([]);
 
   //For Average
   const averagePick = [
@@ -64,6 +58,9 @@ export default function Report() {
   // For average
   const [averageSetting, setAverageSetting] = useState("All");
   const [average, setAverage] = useState(0);
+
+  // For showing other 
+  const [other, setOther] = useState(false);
 
 
   async function fetchData() {
@@ -250,10 +247,13 @@ export default function Report() {
           
           
       </View>
-
-     
       
-      {category && category.map(x => 
+      {category && category.filter(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              ) > 2
+            ).map(x => 
         <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
           {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
@@ -271,6 +271,33 @@ export default function Report() {
           </View>
       )}
       </View>}
+      <TouchableOpacity
+        onPress= {() => setOther(!other)}
+      >
+        <Text> Other </Text>
+        {other && category && category.filter(x => 
+              (data
+                .filter(y => y.category == x.category)
+                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              ) <= 2
+            ).map(x => 
+        <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+          {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{marginLeft: 0, fontSize: 17, fontWeight: 800, justifyContent: 'center', color: 'white' }}> {x.category} </Text>
+            </View>
+            {/* {data 
+              ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
+              : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
+            } */}
+          </View>
+            <View style={{justifyContent: 'center'}}>
+              <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total).toFixed(2)}%</Text>
+            </View>
+          </View>
+      )}
+      </TouchableOpacity>
       
       {loading && <ActivityIndicator />}
     </ScrollView>
