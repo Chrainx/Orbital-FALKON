@@ -18,6 +18,7 @@ export default function RegisterPage() {
   const handleRegister = async () => {
     setErrEmailMsg("");
     setErrPasswordMsg("");
+    setErrPasswordMsg2("");
     setErrMsg("");
     if (email == "") {
       setErrEmailMsg("Email cannot be empty!");
@@ -41,7 +42,12 @@ export default function RegisterPage() {
     }
 
     if (password2 == "") {
-      setErrPasswordMsg2("Please confirm your password")
+      setErrPasswordMsg2("Please confirm your password!")
+      return;
+    }
+
+    if (password2 !== password) {
+      setErrPasswordMsg2("Your password is not the same!")
       return;
     }
 
@@ -80,7 +86,7 @@ export default function RegisterPage() {
           value={password}
           onChangeText={setPassword} />
           {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
-          <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Password </Text>
+          <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Confirm your Password </Text>
         <TextInput
           style = {style.input}
           placeholder = 'Please Confirm Your Password!'
@@ -88,7 +94,7 @@ export default function RegisterPage() {
           secureTextEntry
           autoCapitalize="none"
           textContentType="password"
-          value={password}
+          value={password2}
           onChangeText={setPassword2} />
           {errPasswordMsg2 !== "" && <Text style = {style.error}>{errPasswordMsg2} </Text>}
         <Button 
