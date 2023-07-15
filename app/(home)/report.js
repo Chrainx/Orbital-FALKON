@@ -8,7 +8,7 @@ import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-lis
 import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
-import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup, VictoryAxis } from 'victory-native'
+import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup, VictoryAxis, VictoryLabel} from 'victory-native'
 import Category from "./category";
 
 
@@ -216,7 +216,8 @@ export default function Report() {
             : []
             ]
           }
-          labelPlacement={({ text }) => text.length > 20
+          
+          labelPlacement={({ text }) => text.length > 10
             ? "perpendicular"
             : "vertical"
           }
@@ -224,11 +225,10 @@ export default function Report() {
           radius={SIZE.width * 0.3 - 10}
           innerRadius={SIZE.width * 0.3 - 50}
           labelRadius={SIZE.width * 0.4 - 35}
-          padAngle={1}
+          padAngle={2}
           padding={{left: 50, top: 0, right: 50, bottom: 0}}
           
           />
-          
           
           <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
               <VictoryBar 
@@ -301,7 +301,7 @@ export default function Report() {
       )}
       </View>
       </View>}
-      <View style={{marginTop: 2}}></View>
+      <View style={{marginTop: 5}}></View>
         <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Other </Text>
         {category && category.filter(x => 
               (data
