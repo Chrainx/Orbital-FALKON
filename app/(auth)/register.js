@@ -8,10 +8,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [errEmailMsg, setErrEmailMsg] = useState('');
   const [errPasswordMsg, setErrPasswordMsg] = useState('');
+  const [errPasswordMsg2, setErrPasswordMsg2] = useState('');
 
   const handleRegister = async () => {
     setErrEmailMsg("");
@@ -21,13 +23,28 @@ export default function RegisterPage() {
       setErrEmailMsg("Email cannot be empty!");
       if (password == "") {
         setErrPasswordMsg("Password cannot be empty!");
+        if (password2 == "") {
+          setErrPasswordMsg2("Please confirm your password")
+        }
+      }
+      if (password2 == "") {
+        setErrPasswordMsg2("Please confirm your password")
       }
       return;
     }
     if (password == "") {
       setErrPasswordMsg("Password cannot be empty!");
+      if (password2 == "") {
+        setErrPasswordMsg2("Please confirm your password")
+      }
       return;
     }
+
+    if (password2 == "") {
+      setErrPasswordMsg2("Please confirm your password")
+      return;
+    }
+    
     setLoading(true);
     const { error } = await supabase.auth.signUp({ email, password });
     setLoading(false);
@@ -63,6 +80,17 @@ export default function RegisterPage() {
           value={password}
           onChangeText={setPassword} />
           {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
+          <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Password </Text>
+        <TextInput
+          style = {style.input}
+          placeholder = 'Please Confirm Your Password'
+          mode = 'outlined'
+          secureTextEntry
+          autoCapitalize="none"
+          textContentType="password2"
+          value={password}
+          onChangeText={setPassword2} />
+          {errPasswordMsg2 !== "" && <Text style = {style.error}>{errPasswordMsg2} </Text>}
         <Button 
         style={{marginVertical: '6%', backgroundColor: '#368ce7'}}
         onPress = {handleRegister}><Text style= {{fontWeight: 800, color: 'white', }}>REGISTER</Text></Button>
