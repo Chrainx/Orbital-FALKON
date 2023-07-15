@@ -44,7 +44,7 @@ export default function RegisterPage() {
       setErrPasswordMsg2("Please confirm your password")
       return;
     }
-    
+
     setLoading(true);
     const { error } = await supabase.auth.signUp({ email, password });
     setLoading(false);
@@ -83,11 +83,11 @@ export default function RegisterPage() {
           <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Password </Text>
         <TextInput
           style = {style.input}
-          placeholder = 'Please Confirm Your Password'
+          placeholder = 'Please Confirm Your Password!'
           mode = 'outlined'
           secureTextEntry
           autoCapitalize="none"
-          textContentType="password2"
+          textContentType="password"
           value={password}
           onChangeText={setPassword2} />
           {errPasswordMsg2 !== "" && <Text style = {style.error}>{errPasswordMsg2} </Text>}
