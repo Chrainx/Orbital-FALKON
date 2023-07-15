@@ -51,9 +51,6 @@ export default function Report() {
   const [averageSetting, setAverageSetting] = useState("All");
   const [average, setAverage] = useState(0);
 
-  // For showing other 
-  const [other, setOther] = useState(false);
-
 
   async function fetchData() {
     setLoading(true);
@@ -96,7 +93,6 @@ export default function Report() {
   async function fetchCategory() {
     let {data} = await supabase.from('category').select('*').order("category", {ascending: true});
     setCategory(data);
-    console.log(category);
   }
 
   useEffect(() => {fetchData()}, []);
@@ -147,7 +143,7 @@ export default function Report() {
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 2
+              ) > 5
             ).map(x => 
               data
               .filter(y => y.category == x.category)
@@ -158,14 +154,14 @@ export default function Report() {
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
               )
-            ).filter(z => z <= 2)
+            ).filter(z => z <= 5)
             .reduce((a, b)=> a + b , 0) != 0
             ? [category.map(x => 
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
               )
-            ).filter(z => z <= 2).reduce((a, b)=> a + b , 0)]
+            ).filter(z => z <= 5).reduce((a, b)=> a + b , 0)]
             : []
             ]
           }
@@ -174,14 +170,14 @@ export default function Report() {
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 2
+              ) > 5
             ).map(x => x.color),
             ...category.map(x => 
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
               )
-            ).filter(z => z <= 2)
+            ).filter(z => z <= 5)
             .reduce((a, b)=> a + b , 0) != 0
             ? ["#fbd203"]
             : []
@@ -192,7 +188,7 @@ export default function Report() {
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 2
+              ) > 5
             ).map(x => 
               x.category
               + "\n" 
@@ -208,14 +204,14 @@ export default function Report() {
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
               )
-            ).filter(z => z <= 2)
+            ).filter(z => z <= 5)
             .reduce((a, b)=> a + b , 0) != 0 
             ? ["Other\n" 
               + category.map(x => 
                 (data
                   .filter(y => y.category == x.category)
                   .reduce((a, b)=> a + b.amount, 0) * 100/ total
-                )).filter(z => z <= 2).reduce((a, b)=> a + b, 0).toFixed(2).toString()
+                )).filter(z => z <= 5).reduce((a, b)=> a + b, 0).toFixed(2).toString()
               + "%"]
             : []
             ]
@@ -239,20 +235,34 @@ export default function Report() {
                 
                 barWidth={11}
                 
-                style={{data: {fill: ({ datum }) => category.filter(y => datum.category == y.category)[0].color}}}
+                style={{data: {fill: ({ datum }) => datum.category == "Other" ? "#fbd203" :category.filter(y => datum.category == y.category)[0].color}}}
                 x= "category"
                 y= "eachTotal"
-                data= {category.reduce((a,b) => {
-                  a.push(
+                data= {
+                  [
+                    ...category.reduce((a,b) => {
+                      a.push(
+                        {
+                          category: b.category, 
+                          eachTotal: 
+                            data.filter(y => b.category == y.category)
+                            .reduce((n ,m) => n + m.amount, 0)
+                        }
+                      )
+                      return a;
+                    },[]).filter(x => x.eachTotal > 5 * total/100),
                     {
-                      category: b.category, 
+                      category: "Other",
                       eachTotal: 
-                        data.filter(y => b.category == y.category)
-                        .reduce((n ,m) => n + m.amount, 0)
+                        category.map(x => 
+                          (data
+                            .filter(y => y.category == x.category)
+                            .reduce((a, b)=> a + b.amount, 0)
+                          )
+                        ).filter(z => z <= total/20).reduce((a, b)=> a + b, 0)
                     }
-                  )
-                  return a;
-                },[])}
+                  ]
+                }
               />
               <VictoryAxis dependentAxis
                 
@@ -263,15 +273,13 @@ export default function Report() {
   />
           </VictoryChart>        
       </View>
-      <View
-        
-      >
+      <View>
         <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Main </Text>
       {category && category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 2
+              ) > 5
             ).map(x =>  
         <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
@@ -288,21 +296,18 @@ export default function Report() {
             
               <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total).toFixed(2)}%</Text>
             </View>
-          </View>
+        </View>
         
       )}
       </View>
       </View>}
       <View style={{marginTop: 2}}></View>
-      <TouchableOpacity
-        onPress= {() => setOther(!other)}
-      >
         <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Other </Text>
-        {other && category && category.filter(x => 
+        {category && category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
                 .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) <= 2
+              ) <= 5
             ).map(x => 
         <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
@@ -320,7 +325,6 @@ export default function Report() {
             </View>
           </View>
       )}
-      </TouchableOpacity>
       
       {loading && <ActivityIndicator />}
     </ScrollView>
