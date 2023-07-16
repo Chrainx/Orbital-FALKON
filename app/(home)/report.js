@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect, useRef} from "react";
-import { Dimensions, View, ScrollView, StyleSheet, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
+import { Dimensions, View, ScrollView, StyleSheet, TouchableOpacity, Image, Modal, Alert, FlatList, SafeAreaView} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -215,17 +215,22 @@ export default function Report() {
               + "%"]
             : []
             ]
+            
+            
           }
           
-          labelPlacement={({ text }) => text.length > 10
-            ? "perpendicular"
-            : "vertical"
-          }
+          // labelPlacement={({ text }) => text.length > 11
+          //   ? "perpendicular"
+          //   : "vertical"
+          // }
+          labelPlacement={"parallel"}
           
           radius={SIZE.width * 0.3 - 10}
           innerRadius={SIZE.width * 0.3 - 50}
-          labelRadius={SIZE.width * 0.4 - 35}
+          labelRadius={SIZE.width * 0.4 - 33}
           padAngle={2}
+
+          //labelComponent={<VictoryLabel angle={0}/>}
           padding={{left: 50, top: 0, right: 50, bottom: 0}}
           
           />
@@ -274,7 +279,7 @@ export default function Report() {
           </VictoryChart>        
       </View>
       <View>
-        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Main </Text>
+        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Main <Text style={{fontWeight: 700}}>(Categories over 5%)</Text></Text>
       {category && category.filter(x => 
               (data
                 .filter(y => y.category == x.category)
@@ -302,7 +307,7 @@ export default function Report() {
       </View>
       </View>}
       <View style={{marginTop: 5}}></View>
-        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Other </Text>
+        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Other<Text style={{fontWeight: 700}}> (Categories up to 5%)</Text> </Text>
         {category && category.filter(x => 
               (data
                 .filter(y => y.category == x.category)

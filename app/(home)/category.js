@@ -149,7 +149,7 @@ export default function Category() {
         <TextInput
           style = {{justifyContent: 'flex-end', flex: 2, }}
           mode='outlined'
-          maxLength={15}
+          maxLength={12}
           placeholder='Insert category'
           value={newCategory}
           onChangeText={setNewCategory}
