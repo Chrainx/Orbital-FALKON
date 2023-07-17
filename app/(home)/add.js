@@ -66,8 +66,7 @@ export default function Add () {
     if (amount == '') {
       errAmountMsg.current = "Amount cannot be empty!";
       isError.current = true;
-    }
-    if (isNaN(amt)) {
+    } else if (isNaN(amt)) {
       errAmountMsg.current = "Amount must be a number!";
       isError.current = true;
     } 
