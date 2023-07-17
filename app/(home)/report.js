@@ -108,8 +108,13 @@ export default function Report() {
 
 
   return (
-    <ScrollView style={{flex: 1, flexDirecton: 'row', backgroundColor: '#f0ffff'}}>
-
+    <ScrollView 
+      style={{
+        flex: 1,
+        flexDirecton: 'row',
+        backgroundColor: '#f0ffff'
+      }}
+    >
         {/* <View style={{flexDirection: 'row', justifyContent: "space-around"}}> 
           <Text> Total for: </Text>
           <SelectList
@@ -124,127 +129,125 @@ export default function Report() {
       
 
         {category && (total == 0 || category.length == 0)
-      ?  <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
-      : isPie 
-          ? 
-            <View> 
-              <Text> PieChart </Text>
-              <TouchableOpacity
-                onPress={() => setIsPie(!isPie)}
-              > 
-                <Text> Change </Text> 
-              </TouchableOpacity>
-              <VictoryPie
-                data={
-                  [...category.filter(x => 
-                    getCategoryTotal(x.category) * 100/ total > 5
-                  ).map(x => 
-                    getCategoryTotal(x.category) * 100/ total
-                  ),
-                  ...category.map(x => 
-                    (getCategoryTotal(x.category) * 100/ total)
-                  ).filter(z => z <= 5)
-                  .reduce((a, b)=> a + b , 0) != 0
-                  ? [category.map(x => 
-                    (getCategoryTotal(x.category) * 100/ total)
-                  ).filter(z => z <= 5).reduce((a, b)=> a + b , 0)]
-                  : []
-                  ]
-                }
-                colorScale={
-                  [...category.filter(x => 
-                    getCategoryTotal(x.category) * 100/ total > 5
-                  ).map(x => x.color),
-                  ...category.map(x => 
-                    (getCategoryTotal(x.category) * 100/ total)
-                  ).filter(z => z <= 5)
-                  .reduce((a, b)=> a + b , 0) != 0
-                  ? ["#fbd203"]
-                  : []
-                  ]
-                }
-                labels={
-                  [...(category.filter(x => 
-                    getCategoryTotal(x.category) * 100/ total > 5
-                  ).map(x => 
-                    x.category
-                    + "\n" 
-                    + (getCategoryTotal(x.category) * 100/ total)
-                      .toFixed(2)
-                      .toString()
-                    + "%"
-                  )),
-                  ...category.map(x => 
-                    (getCategoryTotal(x.category) * 100/ total
-                    )
-                  ).filter(z => z <= 5)
-                  .reduce((a, b)=> a + b , 0) != 0 
-                  ? ["Other\n" 
-                    + category.map(x => 
+          ?  <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
+          : isPie 
+            ? 
+              <View> 
+                <Text> PieChart </Text>
+                <TouchableOpacity
+                  onPress={() => setIsPie(!isPie)}
+                > 
+                  <Text> Change </Text> 
+                </TouchableOpacity>
+                <VictoryPie
+                  data={
+                    [...category.filter(x => 
+                      getCategoryTotal(x.category) * 100/ total > 5
+                    ).map(x => 
+                      getCategoryTotal(x.category) * 100/ total
+                    ),
+                    ...category.map(x => 
                       (getCategoryTotal(x.category) * 100/ total)
-                    ).filter(z => z <= 5).reduce((a, b)=> a + b, 0).toFixed(2).toString()
-                    + "%"]
-                  : []
-                  ]
-                }
+                    ).filter(z => z <= 5)
+                    .reduce((a, b)=> a + b , 0) != 0
+                    ? [category.map(x => 
+                      (getCategoryTotal(x.category) * 100/ total)
+                    ).filter(z => z <= 5).reduce((a, b)=> a + b , 0)]
+                    : []
+                    ]
+                  }
+                  colorScale={
+                    [...category.filter(x => 
+                      getCategoryTotal(x.category) * 100/ total > 5
+                    ).map(x => x.color),
+                    ...category.map(x => 
+                      (getCategoryTotal(x.category) * 100/ total)
+                    ).filter(z => z <= 5)
+                    .reduce((a, b)=> a + b , 0) != 0
+                    ? ["#fbd203"]
+                    : []
+                    ]
+                  }
+                  labels={
+                    [...(category.filter(x => 
+                      getCategoryTotal(x.category) * 100/ total > 5
+                    ).map(x => 
+                      x.category
+                      + "\n" 
+                      + (getCategoryTotal(x.category) * 100/ total)
+                        .toFixed(2)
+                        .toString()
+                      + "%"
+                    )),
+                    ...category.map(x => 
+                      (getCategoryTotal(x.category) * 100/ total
+                      )
+                    ).filter(z => z <= 5)
+                    .reduce((a, b)=> a + b , 0) != 0 
+                    ? ["Other\n" 
+                      + category.map(x => 
+                        (getCategoryTotal(x.category) * 100/ total)
+                      ).filter(z => z <= 5).reduce((a, b)=> a + b, 0).toFixed(2).toString()
+                      + "%"]
+                    : []
+                    ]
+                  }
                 // labelPlacement={({ text }) => text.length > 11
                 //   ? "perpendicular"
                 //   : "vertical"
                 // }
-                labelPlacement={"parallel"}
-                radius={SIZE.width * 0.3 - 10}
-                innerRadius={SIZE.width * 0.3 - 50}
-                labelRadius={SIZE.width * 0.4 - 33}
-                padAngle={2}
-                //labelComponent={<VictoryLabel angle={0}/>}
-                padding={{left: 50, top: 0, right: 50, bottom: 0}}
-              />
-            </View>
-          : 
-            <View> 
-              <Text> BarChart </Text>
-              <TouchableOpacity
-                onPress={() => setIsPie(!isPie)}
-              > 
-                <Text> Change </Text> 
-              </TouchableOpacity>
-              <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
-                <VictoryBar 
-                barWidth={11}
-                style={{data: {fill: ({ datum }) => datum.category == "Other" ? "#fbd203" :category.filter(y => datum.category == y.category)[0].color}}}
-                x= "category"
-                y= "eachTotal"
-                data= {
-                  [
-                    ...category.reduce((a,b) => {
-                      a.push(
+                  labelPlacement={"parallel"}
+                  radius={SIZE.width * 0.3 - 10}
+                  innerRadius={SIZE.width * 0.3 - 50}
+                  labelRadius={SIZE.width * 0.4 - 33}
+                  padAngle={2}
+                  //labelComponent={<VictoryLabel angle={0}/>}
+                  padding={{left: 50, top: 0, right: 50, bottom: 0}}
+                />
+              </View>
+            : 
+              <View> 
+                <Text> BarChart </Text>
+                <TouchableOpacity
+                  onPress={() => setIsPie(!isPie)}
+                >
+                  <Text> Change </Text> 
+                </TouchableOpacity>
+                <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
+                  <VictoryBar 
+                    barWidth={11}
+                    style={{data: {fill: ({ datum }) => datum.category == "Other" ? "#fbd203" :category.filter(y => datum.category == y.category)[0].color}}}
+                    x= "category"
+                    y= "eachTotal"
+                    data= {
+                      [
+                        ...category.reduce((a,b) => {
+                          a.push(
+                            {
+                              category: b.category, 
+                              eachTotal: 
+                                getCategoryTotal(b.category)
+                            }
+                          )
+                          return a;
+                        },[]).filter(x => x.eachTotal > 5 * total/100),
                         {
-                          category: b.category, 
+                          category: "Other",
                           eachTotal: 
-                            getCategoryTotal(b.category)
+                            category.map(x => 
+                              getCategoryTotal(x.category)
+                            ).filter(z => z <= total/20).reduce((a, b)=> a + b, 0)
                         }
-                      )
-                      return a;
-                    },[]).filter(x => x.eachTotal > 5 * total/100),
-                    {
-                      category: "Other",
-                      eachTotal: 
-                        category.map(x => 
-                          getCategoryTotal(x.category)
-                        ).filter(z => z <= total/20).reduce((a, b)=> a + b, 0)
+                      ] 
                     }
-                  ]
-                }
-              />
-              <VictoryAxis dependentAxis
-                
-              />
-              <VictoryAxis
-                style={{tickLabels: {angle : 340, fontSize: ({ text }) => text.length > 10 ? 9: 11}}}
-              />
-              </VictoryChart>    
-            </View>
-      }
+                  />
+                  <VictoryAxis dependentAxis/>
+                    <VictoryAxis
+                      style={{tickLabels: {angle : 340, fontSize: ({ text }) => text.length > 10 ? 9: 11}}}
+                    />
+                </VictoryChart>    
+              </View>
+        }
       <View>
         <Text 
           style={{
