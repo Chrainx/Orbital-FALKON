@@ -257,7 +257,7 @@ export default function Report() {
           }}
         > 
           Main 
-          <Text style={{fontWeight: 700}}>(Categories over 5%)</Text>
+          <Text style={{fontWeight: 700}}> (Categories over 5%)</Text>
         </Text>
         {category && 
           category.filter(x => 
