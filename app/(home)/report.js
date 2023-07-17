@@ -10,6 +10,7 @@ import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
 import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup, VictoryAxis, VictoryLabel} from 'victory-native'
 import Category from "./category";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 
 export default function Report() { 
@@ -51,6 +52,8 @@ export default function Report() {
   const [averageSetting, setAverageSetting] = useState("All");
   const [average, setAverage] = useState(0);
 
+  // For selecting graph
+  const [isPie, setIsPie] = useState(true);
 
   async function fetchData() {
     setLoading(true);
@@ -95,6 +98,10 @@ export default function Report() {
     setCategory(data);
   }
 
+  function getCategoryTotal( category ) {
+    return data.filter(x => x.category == category).reduce((a, b) => a + b.amount, 0);
+  }
+
   useEffect(() => {fetchData()}, []);
   useEffect(() => {if(isFocused) {fetchData()}}, [isFocused]);
   useEffect(() => {if(refresh) {fetchData()}}, [refresh]);
@@ -114,132 +121,96 @@ export default function Report() {
           <Text> SGD {(average).toFixed(2)}</Text>
         </View> */}
         {/* <Text> Yang this week masih salah, trus kyknya yang gw buat ni cocoknya di expense yang paling bawah </Text> */}
-
-
-      {/* <ScrollView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <Text style={styles.title}>Doughnut</Text>
-          {category && category.length == 0
-            ? <Text> You dont have any data </Text>
-            :<PieChart
-              widthAndHeight={widthAndHeight}
-              series={category.map(x => data.filter(y => y.category == x.category).length == 0 ? 0 : data.filter(y => y.category == x.category).reduce((a, b)=> a + b.amount , 0))}
-              sliceColor={category.map(x => x.color)}
-              coverRadius={0.45}
-              coverFill={'#FFF'}
-            />
-          }
-        </View>
-      </ScrollView> */}
-
       
-      {category && (total == 0 || category.length == 0)
-      ?  <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
-      : <View>
-      <View>
-          <VictoryPie
-          data={
-            [...category.filter(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 5
-            ).map(x => 
-              data
-              .filter(y => y.category == x.category)
-              .reduce((a, b)=> a + b.amount , 0) * 100/ total
-            ),
-            ...category.map(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              )
-            ).filter(z => z <= 5)
-            .reduce((a, b)=> a + b , 0) != 0
-            ? [category.map(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              )
-            ).filter(z => z <= 5).reduce((a, b)=> a + b , 0)]
-            : []
-            ]
-          }
-          colorScale={
-            [...category.filter(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 5
-            ).map(x => x.color),
-            ...category.map(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              )
-            ).filter(z => z <= 5)
-            .reduce((a, b)=> a + b , 0) != 0
-            ? ["#fbd203"]
-            : []
-            ]
-          }
-          labels={
-            [...(category.filter(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 5
-            ).map(x => 
-              x.category
-              + "\n" 
-              + (data
-                  .filter(y => y.category == x.category)
-                  .reduce((a, b)=> a + b.amount , 0) * 100/ total
-                ).toFixed(2)
-                .toString()
-              + "%"
-            )),
-            ...category.map(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              )
-            ).filter(z => z <= 5)
-            .reduce((a, b)=> a + b , 0) != 0 
-            ? ["Other\n" 
-              + category.map(x => 
-                (data
-                  .filter(y => y.category == x.category)
-                  .reduce((a, b)=> a + b.amount, 0) * 100/ total
-                )).filter(z => z <= 5).reduce((a, b)=> a + b, 0).toFixed(2).toString()
-              + "%"]
-            : []
-            ]
-            
-            
-          }
-          
-          // labelPlacement={({ text }) => text.length > 11
-          //   ? "perpendicular"
-          //   : "vertical"
-          // }
-          labelPlacement={"parallel"}
-          
-          radius={SIZE.width * 0.3 - 10}
-          innerRadius={SIZE.width * 0.3 - 50}
-          labelRadius={SIZE.width * 0.4 - 33}
-          padAngle={2}
 
-          //labelComponent={<VictoryLabel angle={0}/>}
-          padding={{left: 50, top: 0, right: 50, bottom: 0}}
-          
-          />
-          
-          <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
-              <VictoryBar 
-                
+        {category && (total == 0 || category.length == 0)
+      ?  <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
+      : isPie 
+          ? 
+            <View> 
+              <Text> PieChart </Text>
+              <TouchableOpacity
+                onPress={() => setIsPie(!isPie)}
+              > 
+                <Text> Change </Text> 
+              </TouchableOpacity>
+              <VictoryPie
+                data={
+                  [...category.filter(x => 
+                    getCategoryTotal(x.category) * 100/ total > 5
+                  ).map(x => 
+                    getCategoryTotal(x.category) * 100/ total
+                  ),
+                  ...category.map(x => 
+                    (getCategoryTotal(x.category) * 100/ total)
+                  ).filter(z => z <= 5)
+                  .reduce((a, b)=> a + b , 0) != 0
+                  ? [category.map(x => 
+                    (getCategoryTotal(x.category) * 100/ total)
+                  ).filter(z => z <= 5).reduce((a, b)=> a + b , 0)]
+                  : []
+                  ]
+                }
+                colorScale={
+                  [...category.filter(x => 
+                    getCategoryTotal(x.category) * 100/ total > 5
+                  ).map(x => x.color),
+                  ...category.map(x => 
+                    (getCategoryTotal(x.category) * 100/ total)
+                  ).filter(z => z <= 5)
+                  .reduce((a, b)=> a + b , 0) != 0
+                  ? ["#fbd203"]
+                  : []
+                  ]
+                }
+                labels={
+                  [...(category.filter(x => 
+                    getCategoryTotal(x.category) * 100/ total > 5
+                  ).map(x => 
+                    x.category
+                    + "\n" 
+                    + (getCategoryTotal(x.category) * 100/ total)
+                      .toFixed(2)
+                      .toString()
+                    + "%"
+                  )),
+                  ...category.map(x => 
+                    (getCategoryTotal(x.category) * 100/ total
+                    )
+                  ).filter(z => z <= 5)
+                  .reduce((a, b)=> a + b , 0) != 0 
+                  ? ["Other\n" 
+                    + category.map(x => 
+                      (getCategoryTotal(x.category) * 100/ total)
+                    ).filter(z => z <= 5).reduce((a, b)=> a + b, 0).toFixed(2).toString()
+                    + "%"]
+                  : []
+                  ]
+                }
+                // labelPlacement={({ text }) => text.length > 11
+                //   ? "perpendicular"
+                //   : "vertical"
+                // }
+                labelPlacement={"parallel"}
+                radius={SIZE.width * 0.3 - 10}
+                innerRadius={SIZE.width * 0.3 - 50}
+                labelRadius={SIZE.width * 0.4 - 33}
+                padAngle={2}
+                //labelComponent={<VictoryLabel angle={0}/>}
+                padding={{left: 50, top: 0, right: 50, bottom: 0}}
+              />
+            </View>
+          : 
+            <View> 
+              <Text> BarChart </Text>
+              <TouchableOpacity
+                onPress={() => setIsPie(!isPie)}
+              > 
+                <Text> Change </Text> 
+              </TouchableOpacity>
+              <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
+                <VictoryBar 
                 barWidth={11}
-                
                 style={{data: {fill: ({ datum }) => datum.category == "Other" ? "#fbd203" :category.filter(y => datum.category == y.category)[0].color}}}
                 x= "category"
                 y= "eachTotal"
@@ -250,8 +221,7 @@ export default function Report() {
                         {
                           category: b.category, 
                           eachTotal: 
-                            data.filter(y => b.category == y.category)
-                            .reduce((n ,m) => n + m.amount, 0)
+                            getCategoryTotal(b.category)
                         }
                       )
                       return a;
@@ -260,10 +230,7 @@ export default function Report() {
                       category: "Other",
                       eachTotal: 
                         category.map(x => 
-                          (data
-                            .filter(y => y.category == x.category)
-                            .reduce((a, b)=> a + b.amount, 0)
-                          )
+                          getCategoryTotal(x.category)
                         ).filter(z => z <= total/20).reduce((a, b)=> a + b, 0)
                     }
                   ]
@@ -273,52 +240,126 @@ export default function Report() {
                 
               />
               <VictoryAxis
-                
                 style={{tickLabels: {angle : 340, fontSize: ({ text }) => text.length > 10 ? 9: 11}}}
-  />
-          </VictoryChart>        
-      </View>
+              />
+              </VictoryChart>    
+            </View>
+      }
       <View>
-        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Main <Text style={{fontWeight: 700}}>(Categories over 5%)</Text></Text>
-      {category && category.filter(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
-              ) > 5
-            ).map(x =>  
-        <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center', }}>
-          {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
-            <View style={{justifyContent: 'center'}}>
-              <Text style={{marginLeft: 0, fontSize: 17, fontWeight: 800, justifyContent: 'center', color: 'white' }}> {x.category} </Text>
-            </View>
-            {/* {data 
-              ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
-              : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
-            } */}
+        <Text 
+          style={{
+            fontSize: 20,
+            fontWeight: 800,
+            marginLeft: 17
+          }}
+        > 
+          Main 
+          <Text style={{fontWeight: 700}}>(Categories over 5%)</Text>
+        </Text>
+        {category && 
+          category.filter(x => 
+            getCategoryTotal(x.category) * 100/ total > 5
+          ).map(x =>  
+            <View 
+              style={{
+                height: 40,
+                borderRadius: 10,
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                marginHorizontal: SIZE.width * 0.05,
+                marginVertical: 5,
+                backgroundColor: x.color, 
+                borderWidth: 1,
+              }} 
+              key={x.id}
+            >
+              <View 
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+              {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
+                <View style={{justifyContent: 'center'}}>
+                  <Text 
+                    style={{
+                      marginLeft: 0,
+                      fontSize: 17,
+                      fontWeight: 800,
+                      justifyContent: 'center',
+                      color: 'white'
+                    }}
+                  > 
+                    {x.category} 
+                  </Text>
+                </View>
+                {/* {data 
+                  ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
+                  : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
+                } */}
+              </View>
+              <View style={{justifyContent: 'center'}}>
+                <Text 
+                  style={{
+                    color: 'white',
+                    fontSize: 17,
+                    alignItems: 'center',
+                    fontWeight:800,
+                  }}
+                > 
+                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
+              </View>
           </View>
-            <View style={{justifyContent: 'center'}}>
-            
-              <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total).toFixed(2)}%</Text>
-            </View>
-        </View>
-        
-      )}
+        )}
       </View>
-      </View>}
       <View style={{marginTop: 5}}></View>
-        <Text style={{fontSize: 20, fontWeight: 800, marginLeft: 17}}> Other<Text style={{fontWeight: 700}}> (Categories up to 5%)</Text> </Text>
+        <Text 
+          style={{
+            fontSize: 20,
+            fontWeight: 800,
+            marginLeft: 17
+          }}> 
+            Other
+            <Text style={{fontWeight: 700}}> (Categories up to 5%)</Text> 
+        </Text>
         {category && category.filter(x => 
-              (data
-                .filter(y => y.category == x.category)
-                .reduce((a, b)=> a + b.amount, 0) * 100/ total
+              (getCategoryTotal(x.category) * 100/ total
               ) <= 5
             ).map(x => 
-        <View style={{ height: 40, borderRadius: 10, paddingHorizontal: 10, flexDirection: 'row', marginHorizontal: SIZE.width * 0.05, marginVertical: 5, backgroundColor: x.color, borderWidth: 1,}} key={x.id}>
-          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+        <View 
+          style={{
+            height: 40,
+            borderRadius: 10,
+            paddingHorizontal: 10,
+            flexDirection: 'row',
+            marginHorizontal: SIZE.width * 0.05,
+            marginVertical: 5,
+            backgroundColor: x.color,
+            borderWidth: 1,}
+          }
+          key={x.id}
+        >
+          <View 
+            style={{ 
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center'
+            }}
+          >
           {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
             <View style={{justifyContent: 'center'}}>
-              <Text style={{marginLeft: 0, fontSize: 17, fontWeight: 800, justifyContent: 'center', color: 'white' }}> {x.category} </Text>
+              <Text 
+                style={{
+                  marginLeft: 0,
+                  fontSize: 17,
+                  fontWeight: 800,
+                  justifyContent: 'center',
+                  color: 'white'
+                }}
+              > 
+                {x.category} 
+              </Text>
             </View>
             {/* {data 
               ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
@@ -326,14 +367,20 @@ export default function Report() {
             } */}
           </View>
             <View style={{justifyContent: 'center'}}>
-              <Text style={{color: 'white', fontSize: 17, alignItems: 'center', fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total).toFixed(2)}%</Text>
+              <Text 
+                style={{
+                  color: 'white',
+                  fontSize: 17,
+                  alignItems: 'center',
+                  fontWeight: 800,
+                }}
+              > 
+                {(100*(getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
             </View>
-          </View>
+        </View>
       )}
-      
       {loading && <ActivityIndicator />}
-    </ScrollView>
-    
+    </ScrollView> 
   );
 }
 
