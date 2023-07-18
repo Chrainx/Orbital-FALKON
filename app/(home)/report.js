@@ -130,7 +130,7 @@ export default function Report() {
                   <TouchableOpacity
                     onPress={() => setIsPie(!isPie)}
                   > 
-                    <Text style={style.change}> Change </Text> 
+                    <Text style={style.change}> Change to Bar Chart </Text> 
                   </TouchableOpacity>
                 </View>
                 <VictoryPie
@@ -285,11 +285,17 @@ export default function Report() {
                   : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
                 } */}
               </View>
-              <View style={{justifyContent: 'center',}}>
-                  <Text style={style.categoryList}> 
-                    {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}% {'\n'}
-                    <Text style={style.amount}>(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
-                  </Text>
+              <View 
+                style={{ flexDirection: 'column',justifyContent: 'center', alignItems: 'center'}}
+              >
+                <Text 
+                  style={style.categoryList}
+                > 
+                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%
+                </Text>
+                <Text 
+                  style={style.amount}
+                >(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
               </View>
           </View>
         )}
@@ -334,11 +340,17 @@ export default function Report() {
                   : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
                 } */}
               </View>
-              <View style={{justifyContent: 'center',}}>
-                  <Text style={style.categoryList}> 
-                    {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}% {'\n'}
-                  <Text style={style.amount}>(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
-                  </Text>
+              <View 
+                style={{ flexDirection: 'column',justifyContent: 'center', alignItems: 'center'}}
+              >
+                <Text 
+                  style={style.categoryList}
+                > 
+                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%
+                </Text>
+                <Text 
+                  style={style.amount}
+                >(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
               </View>
             </View>
       )}
