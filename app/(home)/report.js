@@ -274,19 +274,15 @@ export default function Report() {
                   alignItems: 'center',
                 }}
               >
-              {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
                 <View style={{justifyContent: 'center'}}>
                   <Text style={style.categoryList}> 
                     {x.category} 
                   </Text>
                 </View>
-                {/* {data 
-                  ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
-                  : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
-                } */}
               </View>
               <View 
-                style={{marginVertical : 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
+                style={{
+                  marginVertical : 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
               >
                 <Text 
                   style={style.categoryList}
@@ -300,48 +296,46 @@ export default function Report() {
           </View>
         )}
       </View>
-      <View style={{marginTop: 5}}></View>
-        <Text
-          style={style.subheader}> 
-            Other
-            <Text style={{fontWeight: 700}}> (Categories up to 5%)</Text> 
+
+      <View>
+        <Text 
+          style={style.subheader}
+        > 
+          Other
+          <Text style={{fontWeight: 700}}> (Categories up to 5%)</Text>
         </Text>
         {category && category.filter(x => 
             getCategoryTotal(x.category) * 100/ total <= 5
-          ).map(x => 
+          ).map(x =>  
             <View 
               style={{
-                height: 40,
+                //height: 60,
                 borderRadius: 10,
                 paddingHorizontal: 10,
                 flexDirection: 'row',
                 marginHorizontal: SIZE.width * 0.05,
                 marginVertical: 5,
-                backgroundColor: x.color,
-                borderWidth: 1,}
-              }
+                backgroundColor: x.color, 
+                borderWidth: 1,
+              }} 
               key={x.id}
             >
               <View 
-                style={{ 
+                style={{
                   flex: 1,
                   flexDirection: 'row',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
-              {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
                 <View style={{justifyContent: 'center'}}>
                   <Text style={style.categoryList}> 
                     {x.category} 
                   </Text>
                 </View>
-                {/* {data 
-                  ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
-                  : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
-                } */}
               </View>
               <View 
-                style={{ marginVertical: 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
+                style={{
+                  marginVertical : 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
               >
                 <Text 
                   style={style.categoryList}
@@ -352,8 +346,9 @@ export default function Report() {
                   style={style.amount}
                 >SGD {(getCategoryTotal(x.category)).toFixed(2)}</Text>
               </View>
-            </View>
-      )}
+          </View>
+        )}
+      </View>
       {loading && <ActivityIndicator />}
     </ScrollView>
   );

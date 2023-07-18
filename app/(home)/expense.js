@@ -369,7 +369,6 @@ export default function Expense() {
       {loading && <ActivityIndicator />}
       <Text style={{fontSize: 20, fontWeight: 600, textAlign:'left', borderBottomWidth: 0, borderWidth: 1, backgroundColor:'#b4cbf0'}}> Total: <Text style={{fontSize: 13}}> SGD </Text>{Total.toFixed(2)}</Text>
     </View>
-    
   );
 }
 
