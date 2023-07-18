@@ -344,13 +344,16 @@ export default function Expense() {
                       }}>
                     <Text style={{fontSize: 15, fontWeight: 700, marginLeft: 7, marginVertical: '2%'}}>{item.name} </Text>
                     <Text 
-                    style={{
-                      fontSize: 15, 
-                      fontWeight: 700,
-                      marginLeft: 7, 
-                      //backgroundColor:'yellow',
-                      color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
-                  }}>{item.category} </Text>
+                      style={{
+                        fontSize: 15, 
+                        fontWeight: 700,
+                        marginLeft: 7, 
+                        //backgroundColor:'yellow',
+                        color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
+                      }}
+                    > 
+                      {item.category}
+                    </Text>
                     
                   </View>
               
