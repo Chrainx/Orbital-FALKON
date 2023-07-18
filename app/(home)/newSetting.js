@@ -18,7 +18,6 @@ export const NewSetting = props => {
       <Text style = {{color: props.isDestructive? '#ff0000' : 'white', fontWeight: 800, fontSize: 17}}> {props.title} </Text>
       {props.icon && <View>{props.icon}</View>}
       </TouchableOpacity>
-      {props.detail}
 
     </View>
   );

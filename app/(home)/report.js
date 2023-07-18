@@ -127,7 +127,7 @@ export default function Report() {
       
 
         {category && (total == 0 || category.length == 0)
-          ?  <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
+          ? <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
           : isPie 
             ? 
               <View> 
@@ -257,8 +257,7 @@ export default function Report() {
           Main 
           <Text style={{fontWeight: 700}}> (Categories over 5%)</Text>
         </Text>
-        {category && 
-          category.filter(x => 
+        {category && category.filter(x => 
             getCategoryTotal(x.category) * 100/ total > 5
           ).map(x =>  
             <View 
@@ -309,7 +308,8 @@ export default function Report() {
                     fontWeight:800,
                   }}
                 > 
-                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
+                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})
+                </Text>
               </View>
           </View>
         )}
@@ -325,60 +325,60 @@ export default function Report() {
             <Text style={{fontWeight: 700}}> (Categories up to 5%)</Text> 
         </Text>
         {category && category.filter(x => 
-              (getCategoryTotal(x.category) * 100/ total
-              ) <= 5
-            ).map(x => 
-        <View 
-          style={{
-            height: 40,
-            borderRadius: 10,
-            paddingHorizontal: 10,
-            flexDirection: 'row',
-            marginHorizontal: SIZE.width * 0.05,
-            marginVertical: 5,
-            backgroundColor: x.color,
-            borderWidth: 1,}
-          }
-          key={x.id}
-        >
-          <View 
-            style={{ 
-              flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center'
-            }}
-          >
-          {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
-            <View style={{justifyContent: 'center'}}>
-              <Text 
-                style={{
-                  marginLeft: 0,
-                  fontSize: 17,
-                  fontWeight: 800,
-                  justifyContent: 'center',
-                  color: 'white'
+            getCategoryTotal(x.category) * 100/ total <= 5
+          ).map(x => 
+            <View 
+              style={{
+                height: 40,
+                borderRadius: 10,
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                marginHorizontal: SIZE.width * 0.05,
+                marginVertical: 5,
+                backgroundColor: x.color,
+                borderWidth: 1,}
+              }
+              key={x.id}
+            >
+              <View 
+                style={{ 
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center'
                 }}
-              > 
-                {x.category} 
-              </Text>
+              >
+              {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
+                <View style={{justifyContent: 'center'}}>
+                  <Text 
+                    style={{
+                      marginLeft: 0,
+                      fontSize: 17,
+                      fontWeight: 800,
+                      justifyContent: 'center',
+                      color: 'white'
+                    }}
+                  > 
+                    {x.category} 
+                  </Text>
+                </View>
+                {/* {data 
+                  ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
+                  : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
+                } */}
+              </View>
+                <View style={{justifyContent: 'center'}}>
+                  <Text 
+                    style={{
+                      color: 'white',
+                      fontSize: 17,
+                      alignItems: 'center',
+                      fontWeight: 800,
+                    }}
+                  > 
+                    {(100*(getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})
+                  </Text>
+                </View>
             </View>
-            {/* {data 
-              ? <Text style={{color: 'white', fontSize: 17, fontWeight: 800, }}> {(100 * (data.filter(y => y.category == x.category).reduce((a, b) => a + b.amount, 0))/total.current).toFixed(2)} % </Text>
-              : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
-            } */}
-          </View>
-            <View style={{justifyContent: 'center'}}>
-              <Text 
-                style={{
-                  color: 'white',
-                  fontSize: 17,
-                  alignItems: 'center',
-                  fontWeight: 800,
-                }}
-              > 
-                {(100*(getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
-            </View>
-        </View>
       )}
       {loading && <ActivityIndicator />}
     </ScrollView> 
