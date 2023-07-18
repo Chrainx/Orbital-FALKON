@@ -134,6 +134,8 @@ export default function Report() {
                   </TouchableOpacity>
                 </View>
                 <VictoryPie
+                  startAngle={90}
+                  endAngle={450}
                   data={
                     [...category.filter(x => 
                       getCategoryTotal(x.category) * 100/ total > 5
@@ -268,11 +270,7 @@ export default function Report() {
               key={x.id}
             >
               <View 
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
+                style={style.categoryView}
               >
                 <View style={{justifyContent: 'center'}}>
                   <Text style={style.categoryList}> 
@@ -281,8 +279,7 @@ export default function Report() {
                 </View>
               </View>
               <View 
-                style={{
-                  marginVertical : 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
+                style={style.percentAmount}
               >
                 <Text 
                   style={style.categoryList}
@@ -309,7 +306,6 @@ export default function Report() {
           ).map(x =>  
             <View 
               style={{
-                //height: 60,
                 borderRadius: 10,
                 paddingHorizontal: 10,
                 flexDirection: 'row',
@@ -321,11 +317,7 @@ export default function Report() {
               key={x.id}
             >
               <View 
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                }}
+                style={style.categoryView}
               >
                 <View style={{justifyContent: 'center'}}>
                   <Text style={style.categoryList}> 
@@ -334,8 +326,7 @@ export default function Report() {
                 </View>
               </View>
               <View 
-                style={{
-                  marginVertical : 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
+                style={style.percentAmount}
               >
                 <Text 
                   style={style.categoryList}
@@ -360,10 +351,11 @@ const style = StyleSheet.create({
     fontWeight: 800,
     marginLeft: 17  
   },
+
   categoryList: {
     color: 'white',
     fontSize: 17,
-    //alignItems: 'center',
+    
     fontWeight: 800,
   },
 
@@ -388,6 +380,20 @@ const style = StyleSheet.create({
       fontSize: 15, 
       fontWeight: 600, 
       color: 'white',
-    }
+    },
+
+    percentAmount: {
+      marginVertical : 3, 
+      flexDirection: 'column',
+      justifyContent: 'center', 
+      alignItems: 'flex-end',
+    },
+
+    categoryView: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+
 })
 
