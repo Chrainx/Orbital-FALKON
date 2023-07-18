@@ -69,17 +69,18 @@ export default function Setting () {
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor:'#f0ffff'}}>
-        <Text></Text>
-        <NewSetting
-          title = 'Add Category'
-          icon = {<Image source={require('./tab-icons/addCategory.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
-          }
-          action = {
-            () => {
-            navigation.navigate("Category");
-
-            }
-          }
+      <NewSetting
+        title = 'Add Category'
+        icon = {
+          <Image 
+            source={require('./tab-icons/addCategory.png')}
+            resizeMode="contain"
+            style={{ width: 25, height: 25,}}
+        />
+        }
+        action = {() => 
+          {navigation.navigate("Category");}
+        }
         />
         {/* <NewSetting 
           title= 'Currency Type' 

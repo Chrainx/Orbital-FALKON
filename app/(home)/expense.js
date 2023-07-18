@@ -155,10 +155,8 @@ export default function Expense() {
     );
   }
 
-
   return (
     <View style={{flex: 1, flexDirecton: 'row',justifyContent: "space-between", backgroundColor: '#f0ffff'}}>
-
       <Modal
         animationType="slide"
         transparent={true}
@@ -182,19 +180,17 @@ export default function Expense() {
             height: 150,
             //position: 'absolute',
             top: '40%',
-
             left: '25%',
           }}
         >
           <Text style={{color: 'black', fontSize:20, marginTop: 5}}> Set the Daily Limit: </Text>
-          <View style={{flexDirection:'row', alignItems: 'center', }}>
+          <View style={{flexDirection:'row', alignItems: 'center',}}>
             <TextInput
               style={{marginTop: 5, marginLeft: 5,  width: 100}}
               mode="outlined"
               value={newLimit} 
               onChangeText={setNewLimit}
             />
-
             <TouchableOpacity
               style={{marginTop: 10, marginLeft: 10,}}
               onPress={
@@ -206,8 +202,7 @@ export default function Expense() {
             > 
               <Text style={{}}> Change </Text>
             </TouchableOpacity>
-          </View>
-          
+          </View>       
           <View 
             style={{flexDirection:'row', }}
           >
@@ -222,8 +217,11 @@ export default function Expense() {
             >
               <Text style= {{color: 'red', fontSize: 18,}}>Reset</Text>
             </TouchableOpacity>
-            <Text>              </Text>
-            <TouchableOpacity style= {{marginTop: 15, marginBottom: 5,}}
+            <TouchableOpacity 
+              style= {{
+                marginTop: 15,
+                marginBottom: 5,
+              }}
               onPress={() => setModalVisible(false)}
             >
             <Text style= {{color: 'red', fontSize: 18}}> Cancel </Text>
@@ -236,9 +234,16 @@ export default function Expense() {
 
       <View style={{flexDirection:'row', alignItems:'center',}}>
       <TouchableOpacity
-        style={{alignItems:'center', flex: 1.5, backgroundColor:'#bedaf7', borderTopWidth: 2, borderBottomWidth: 2, borderRightWidth:1}}
-        onPress={() => setModalVisible(true)}>
-
+        style={{
+          alignItems:'center',
+          flex: 1.5,
+          backgroundColor:'#bedaf7',
+          borderTopWidth: 2,
+          borderBottomWidth: 2,
+          borderRightWidth:1
+        }}
+        onPress={() => setModalVisible(true)}
+      >
         <Text style={{fontSize: 20, fontWeight: 700}}> Daily limit </Text>
         {limit && limit.length != 0 && limit[0].limit != null
           ? <Text style={{fontSize: 25, fontWeight: 500}}><Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit} </Text>
@@ -253,7 +258,7 @@ export default function Expense() {
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
               ? <Text style={{fontSize: 20, fontWeight: 700}}> Remaining Budget </Text>
-              : <Text style={{fontSize: 20, fontWeight: 700}}> Over Spent </Text>
+              : <Text style={{fontSize: 20, fontWeight: 700, color: 'red'}}> Over Spent </Text>
             : <Text></Text>
           : <Text style = {{fontSize: 20, fontWeight: 700}}> Total Spent Today </Text>
         }
@@ -261,18 +266,14 @@ export default function Expense() {
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit - today}.toFixed(2) </Text>  
-              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{-limit[0].limit + today}.toFixed(2) </Text>  
+              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{(limit[0].limit - today).toFixed(2)} </Text>  
+              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{(-limit[0].limit + today).toFixed(2)} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
-          : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{today}</Text>
+          : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{today.toFixed(2)}</Text>
         }
       </TouchableOpacity>
       </View>
-
-      
-      
-      <View style={{}}>
-
+      <View>
         <MultipleSelectList
             setSelected= {(val) => {setFilter(val); setRefresh(true)}}
             data={category} 
@@ -284,21 +285,24 @@ export default function Expense() {
             notFoundText="No category found"
             placeholder="Filter by Category"
             searchPlaceholder="Find Categories..."
-            boxStyles={{backgroundColor: '#90b1e7', 
-                        borderWidth: 2, 
-                        marginHorizontal: 15,
-                        marginTop: 8, 
-                        borderColor: 'black', }}
-            dropdownStyles={{backgroundColor: '#deecfb', 
-                             borderWidth: 2, 
-                             marginHorizontal: 15,
-                             marginTop: 8, 
-                             borderColor: 'black', }}
+            boxStyles={{
+              backgroundColor: '#90b1e7', 
+              borderWidth: 2, 
+              marginHorizontal: 15,
+              marginTop: 8, 
+              borderColor: 'black',
+            }}
+            dropdownStyles={{
+              backgroundColor: '#deecfb', 
+              borderWidth: 2, 
+              marginHorizontal: 15,
+              marginTop: 8, 
+              borderColor: 'black',
+            }}
             dropdownTextStyles={{fontWeight: 700}}
             badgeTextStyles={{fontWeight: 700}}
             labelStyles={{color: '#f0ffff', fontSize: 18}}
         />
-
       </View>
       
       <ScrollView>

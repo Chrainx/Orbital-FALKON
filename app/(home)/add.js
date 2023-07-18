@@ -284,14 +284,16 @@ export default function Add () {
           ? <Text style={{color: 'white'}}> {amount} </Text>
           : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
         }
-        action= { () => { 
-          if (amountDetail) {
-            setAmount('');
-            setAmountDetail(false);
-          } else {
-            setAmountDetail(true);
+        action= { () => 
+          { 
+            if (amountDetail) {
+              setAmount('');
+              setAmountDetail(false);
+            } else {
+              setAmountDetail(true);
+            }
           }
-        }}
+        }
         detail= {
           amountDetail 
           ? <View style = 

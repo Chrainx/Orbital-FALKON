@@ -9,8 +9,6 @@ import { MaskedViewComponent } from "react-native";
 import Expense from "./expense";
 import PieChart from 'react-native-pie-chart'
 import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup, VictoryAxis, VictoryLabel} from 'victory-native'
-import Category from "./category";
-import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 
 export default function Report() { 

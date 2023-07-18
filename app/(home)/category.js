@@ -69,93 +69,119 @@ export default function Category() {
   
   return (
     <View style = {{flex: 1, backgroundColor: '#f0ffff'}}>
-    <Modal
-        animationType="slide"
-        transparent={true}
-        visible={colorVisible}
-        onRequestClose={() => {
-          Alert.alert('Modal has been closed.');
-          setColorVisible(!colorVisible);
-        }}>
+      <Modal
+          animationType="slide"
+          transparent={true}
+          visible={colorVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setColorVisible(!colorVisible);
+          }}
+      >
         <View style={{flex: 1, backgroundColor:'white'}}>
             <ColorPicker
               color={color}
               onColorChange={color => setColor(fromHsv(color))}
               style={{ flex: 0.8, marginHorizontal: 25}}
             />
-            <Button style={{backgroundColor: '#368ce7', marginHorizontal: '35%', marginTop: 30}}
-              onPress={() => setColorVisible(!colorVisible)}>
+            <Button 
+              style={{backgroundColor: '#368ce7', marginHorizontal: '35%', marginTop: 30}}
+              onPress={() => setColorVisible(!colorVisible)}
+            >
               <Text style={{color: 'white', fontWeight: 800,}}>CLOSE</Text>
             </Button>
         </View>
       </Modal>
       <View>
-        <Image source={require('./tab-icons/MOMA.png')} 
-                resizeMode='contain'
-                style={{
-                  height: width, 
-                  width: width, 
-                  position: 'absolute', 
-                  top: 0,
-                  left: 0
-                }}/>
+        <Image 
+          source={require('./tab-icons/MOMA.png')} 
+          resizeMode='contain'
+          style={{
+            height: width, 
+            width: width, 
+            position: 'absolute', 
+            top: 0,
+            left: 0
+          }}
+        />
       </View>
       <ScrollView
         style = {{flex: 1 }}
       >
-      
         {data && data.map(
           item =>
-          <View key={item.category} 
-                style={{flexDirection:'row', 
-                        alignItems:'center', 
-                        borderWidth: 2,
-                        borderColor: '#1666ba',
-                        borderRadius: 8,
-                        marginTop: 10,
-                        marginHorizontal:5,
-                        marginVertical: 2,
-                        justifyContent:'space-between',
-                        backgroundColor: '#deecfb',
-                        
-                        
-                        }}>
-            
-            <Text style={{color: item.color, fontSize: 20, marginLeft: 5, fontWeight: 600}}> {item.category} </Text>
-            <Button onPress={() => alertDelete(item.category)}><Text  style={{fontWeight: 700,}}>Delete</Text></Button>
-            
-            
-          </View>
+            <View key={item.category} 
+              style={{
+                flexDirection:'row', 
+                alignItems:'center', 
+                borderWidth: 2,
+                borderColor: '#1666ba',
+                borderRadius: 8,
+                marginTop: 10,
+                marginHorizontal:5,
+                marginVertical: 2,
+                justifyContent:'space-between',
+                backgroundColor: '#deecfb',
+              }}
+            >
+              <Text 
+                style={{
+                  color: item.color,
+                  fontSize: 20,
+                  marginLeft: 5,
+                  fontWeight: 600
+                }}
+              > 
+                {item.category} 
+              </Text>
+              <Button 
+                onPress={() => alertDelete(item.category)}
+              >
+                <Text style={{fontWeight: 700,}}> Delete </Text>
+              </Button>
+            </View>
         )}
-        
         {error !== '' && <Text style={styles.error}>{error} </Text>}
       </ScrollView>
 
-      <View style = {{flexDirection: 'row', width: '100%', justifyContent: 'space-around', alignItems: 'center', marginBottom: 20}}>
+      <View 
+        style = {{
+          flexDirection: 'row',
+          width: '100%',
+          justifyContent: 'space-around',
+          alignItems: 'center',
+          marginBottom: 20
+        }}
+      >
         {/* <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button> */}
-        <TouchableOpacity style={{
-          backgroundColor: color, 
-          width: 30, 
-          height: 30, 
-          borderRadius: 15, 
-          marginLeft: 30,
-          marginRight: 25,
-          marginTop: 3,
-          borderWidth: 3}}
-          
+        <TouchableOpacity 
+          style={{
+            backgroundColor: color, 
+            width: 30, 
+            height: 30, 
+            borderRadius: 15, 
+            marginLeft: 30,
+            marginRight: 25,
+            marginTop: 3,
+            borderWidth: 3
+          }}
           onPress={() => setColorVisible(true)}>
-
         </TouchableOpacity>
-        <TextInput
-          style = {{justifyContent: 'flex-end', flex: 2, }}
-          mode='outlined'
-          maxLength={12}
-          placeholder='Insert category'
-          value={newCategory}
-          onChangeText={setNewCategory}
-          keyboardType= {'default'}
-        />
-        <Button style = {{width: 100}} onPress={handleAdd}><Text style={{fontWeight:700, color: '#368ce7'}}>ADD</Text></Button>
+          <TextInput
+            style = {{justifyContent: 'flex-end', flex: 2, }}
+            mode='outlined'
+            maxLength={12}
+            placeholder='Insert category'
+            value={newCategory}
+            onChangeText={setNewCategory}
+            keyboardType= {'default'}
+          />
+        <Button 
+          style = {{width: 100}} 
+          onPress={handleAdd}
+        >
+          <Text style={{fontWeight:700, color: '#368ce7'}}>ADD</Text>
+        </Button>
       </View>
     </View>
   );

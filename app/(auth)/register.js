@@ -60,12 +60,12 @@ export default function RegisterPage() {
     }
     setErrMsg("Confirmation has been sent to your email");
   }
+
   return (
     <SafeAreaView style = {{flex: 1, alignItems: 'center', backgroundColor:'#f0ffff'}}>
       <View style = {{flex: 1, justifyContent: 'center', width: 300}}>
         <Logo />
-        <Text></Text>
-        <Text style={{fontSize: 18, fontWeight:600}}> Email </Text>
+        <Text style={style.text}> Email </Text>
         <TextInput 
           style = {style.input}
           placeholder = 'Enter your email here'
@@ -73,9 +73,10 @@ export default function RegisterPage() {
           autoCapitalize="none"
           textContentType="emailAddress"
           value={email}
-          onChangeText={setEmail} />
-          {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
-        <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Password </Text>
+          onChangeText={setEmail} 
+        />
+        {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
+        <Text style = {style.text}> Password </Text>
         <TextInput
           style = {style.input}
           placeholder = 'Enter your password here'
@@ -84,9 +85,10 @@ export default function RegisterPage() {
           autoCapitalize="none"
           textContentType="password"
           value={password}
-          onChangeText={setPassword} />
-          {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
-          <Text style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}> Confirm your Password </Text>
+          onChangeText={setPassword} 
+        />
+        {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
+        <Text style = {style.text}> Confirm your Password </Text>
         <TextInput
           style = {style.input}
           placeholder = 'Please Confirm Your Password!'
@@ -96,10 +98,13 @@ export default function RegisterPage() {
           textContentType="password"
           value={password2}
           onChangeText={setPassword2} />
-          {errPasswordMsg2 !== "" && <Text style = {style.error}>{errPasswordMsg2} </Text>}
+        {errPasswordMsg2 !== "" && <Text style = {style.error}>{errPasswordMsg2} </Text>}
         <Button 
-        style={{marginVertical: '6%', backgroundColor: '#368ce7'}}
-        onPress = {handleRegister}><Text style= {{fontWeight: 800, color: 'white', }}>REGISTER</Text></Button>
+          style={style.button}
+          onPress = {handleRegister}
+        >
+          <Text style= {style.register}>REGISTER</Text>
+        </Button>
         {errMsg !== "" && <Text style = {style.error}>{errMsg}</Text>}
         {loading && <ActivityIndicator />}
       </View>
@@ -108,12 +113,9 @@ export default function RegisterPage() {
 }
 
 const style = StyleSheet.create({
-  input: {
-    marginBottom: '2%'
-  },
-
-  text: {
-    marginTop: 10
+  button: {
+    marginVertical: '6%',
+    backgroundColor: '#368ce7'
   },
 
   error: {
@@ -124,4 +126,20 @@ const style = StyleSheet.create({
     marginVertical: '3%',
     textAlign: 'center',
   },
+
+  input: {
+    marginBottom: '2%'
+  },
+
+  register: {
+    fontWeight: 800,
+    color: 'white'
+  },
+
+  text: {
+    fontSize: 18,
+    fontWeight:600,
+    marginTop: 20
+  },
+
 })
