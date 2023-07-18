@@ -1,6 +1,6 @@
 import { useState, useEffect} from "react";
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import { View, ScrollView, TouchableOpacity, Image, Modal, Alert, SafeAreaView} from "react-native";
+import { View, ScrollView, TouchableOpacity, Image, Modal, StyleSheet, Alert, SafeAreaView} from "react-native";
 import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
@@ -205,7 +205,7 @@ export default function Expense() {
                 }
               }
             >
-              <Text style= {{color: 'red', fontSize: 18,}}>Reset</Text>
+              <Text style= {style.resetCancel}>Reset</Text>
             </TouchableOpacity>
             <TouchableOpacity 
               style= {{
@@ -214,7 +214,7 @@ export default function Expense() {
               }}
               onPress={() => setModalVisible(false)}
             >
-            <Text style= {{color: 'red', fontSize: 18}}> Cancel </Text>
+            <Text style= {style.resetCancel}> Cancel </Text>
           </TouchableOpacity>
 
           </View>
@@ -234,10 +234,10 @@ export default function Expense() {
         }}
         onPress={() => setModalVisible(true)}
       >
-        <Text style={{fontSize: 20, fontWeight: 700}}> Daily limit </Text>
+        <Text style={style.header}> Daily limit </Text>
         {limit && limit.length != 0 && limit[0].limit != null
-          ? <Text style={{fontSize: 25, fontWeight: 500}}><Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit} </Text>
-          : <Text style={{fontSize: 25, fontWeight: 500}}> - </Text> 
+          ? <Text style={style.spentRemainLimit}><Text style={{fontSize: 18}}>SGD </Text>{limit[0].limit} </Text>
+          : <Text style={style.spentRemainLimit}> - </Text> 
         }
       </TouchableOpacity>
 
@@ -250,16 +250,16 @@ export default function Expense() {
               ? <Text style={{fontSize: 20, fontWeight: 700}}> Remaining Budget </Text>
               : <Text style={{fontSize: 20, fontWeight: 700, color: 'red'}}> Over Spent </Text>
             : <Text></Text>
-          : <Text style = {{fontSize: 20, fontWeight: 700}}> Total Spent Today </Text>
+          : <Text style = {style.header}> Total Spent Today </Text>
         }
 
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ?<Text style={{fontSize: 25, fontWeight:500}}> <Text style={{fontSize: 18}}>SGD </Text>{(limit[0].limit - today).toFixed(2)} </Text>  
-              :<Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{(-limit[0].limit + today).toFixed(2)} </Text>  
+              ?<Text style={style.spentRemainLimit}> <Text style={{fontSize: 18}}>SGD </Text>{(limit[0].limit - today).toFixed(2)} </Text>  
+              :<Text style={style.spentRemainLimit}> <Text style={{fontSize: 18}}>SGD </Text>{(-limit[0].limit + today).toFixed(2)} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
-          : data && <Text style={{fontSize: 25, fontWeight: 500}}> <Text style={{fontSize: 18}}>SGD </Text>{today.toFixed(2)}</Text>
+          : data && <Text style={style.spentRemainLimit}> <Text style={{fontSize: 18}}>SGD </Text>{today.toFixed(2)}</Text>
         }
       </TouchableOpacity>
       </View>
@@ -322,38 +322,30 @@ export default function Expense() {
               )}
               onSwipeableRight={() => handleDelete(item.id)}
               >
-                <View 
-                  style={{display: 'flex', 
-                    flexDirection: 'row', 
-                    marginBottom: 4,
-                    marginHorizontal: 15,
-                    backgroundColor: '#deecfb',
-                    justifyContent: 'space-between',
-                    borderColor: 'black',
-                    borderWidth: 1,
-                    borderRadius: 8,
-                  }}>
+                <View style={style.expenseList}>
                   <View 
                     style= {{width: '100%',
-                      display:'flex', 
-                      flexDirection: 'column', 
+                      display:'flex',  
                       marginBottom: 4,
-                      //backgroundColor:'skyblue',
+                      
                       justifyContent:'flex-end',
                       flex: 1,
                       }}>
-                    <Text style={{fontSize: 15, fontWeight: 700, marginLeft: 7, marginVertical: '2%'}}>{item.name} </Text>
+                    <Text style={{
+                      fontSize: 15, 
+                      fontWeight: 700, 
+                      marginLeft: 7, 
+                      marginVertical: '2%'
+                      }}
+                      > {item.name} </Text>
                     <Text 
                       style={{
                         fontSize: 15, 
                         fontWeight: 700,
                         marginLeft: 7, 
-                        //backgroundColor:'yellow',
                         color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
                       }}
-                    > 
-                      {item.category}
-                    </Text>
+                    > {item.category}</Text>
                     
                   </View>
               
@@ -380,3 +372,36 @@ export default function Expense() {
     
   );
 }
+
+const style = StyleSheet.create({
+  header: {
+    fontSize: 20, 
+    fontWeight: 700
+  }, 
+  
+  expenseList: {
+    display: 'flex', 
+    flexDirection: 'row', 
+    marginBottom: 4,
+    marginHorizontal: 15,
+    backgroundColor: '#deecfb',
+    justifyContent: 'space-between',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+
+  resetCancel: {
+    color: 'red', 
+    fontSize: 18,
+  },
+
+  spentRemainLimit: {
+    fontSize: 25, 
+    fontWeight:500
+  },
+
+  textList: {
+    fontSize: 15, fontWeight: 700, marginLeft: 7, 
+  }
+})

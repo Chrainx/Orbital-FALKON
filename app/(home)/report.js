@@ -130,13 +130,15 @@ export default function Report() {
           ? <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
           : isPie 
             ? 
-              <View> 
-                <Text> PieChart </Text>
-                <TouchableOpacity
-                  onPress={() => setIsPie(!isPie)}
-                > 
-                  <Text> Change </Text> 
-                </TouchableOpacity>
+              <View>
+                <View style={style.chartTitle}>
+                  <Text style={style.chart}> Pie Chart </Text>
+                  <TouchableOpacity
+                    onPress={() => setIsPie(!isPie)}
+                  > 
+                    <Text style={style.change}> Change </Text> 
+                  </TouchableOpacity>
+                </View>
                 <VictoryPie
                   data={
                     [...category.filter(x => 
@@ -204,13 +206,15 @@ export default function Report() {
                 />
               </View>
             : 
-              <View> 
-                <Text> BarChart </Text>
-                <TouchableOpacity
-                  onPress={() => setIsPie(!isPie)}
-                >
-                  <Text> Change </Text> 
-                </TouchableOpacity>
+              <View>
+                  <View style={style.chartTitle}>
+                    <Text style={style.chart}>  Bar Chart </Text>
+                    <TouchableOpacity
+                      onPress={() => setIsPie(!isPie)}
+                    >
+                      <Text style={style.change}> Change to Pie Chart </Text> 
+                    </TouchableOpacity>
+                </View>
                 <VictoryChart domainPadding={11} padding={{left: 65, top: 20, right: 40, bottom: 50}}>
                   <VictoryBar 
                     barWidth={11}
@@ -248,11 +252,7 @@ export default function Report() {
         }
       <View>
         <Text 
-          style={{
-            fontSize: 20,
-            fontWeight: 800,
-            marginLeft: 17
-          }}
+          style={style.subheader}
         > 
           Main 
           <Text style={{fontWeight: 700}}> (Categories over 5%)</Text>
@@ -262,7 +262,7 @@ export default function Report() {
           ).map(x =>  
             <View 
               style={{
-                height: 40,
+                //height: 60,
                 borderRadius: 10,
                 paddingHorizontal: 10,
                 flexDirection: 'row',
@@ -282,15 +282,7 @@ export default function Report() {
               >
               {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
                 <View style={{justifyContent: 'center'}}>
-                  <Text 
-                    style={{
-                      marginLeft: 0,
-                      fontSize: 17,
-                      fontWeight: 800,
-                      justifyContent: 'center',
-                      color: 'white'
-                    }}
-                  > 
+                  <Text style={style.categoryList}> 
                     {x.category} 
                   </Text>
                 </View>
@@ -299,28 +291,18 @@ export default function Report() {
                   : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
                 } */}
               </View>
-              <View style={{justifyContent: 'center'}}>
-                <Text 
-                  style={{
-                    color: 'white',
-                    fontSize: 17,
-                    alignItems: 'center',
-                    fontWeight:800,
-                  }}
-                > 
-                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})
-                </Text>
+              <View style={{justifyContent: 'center',}}>
+                  <Text style={style.categoryList}> 
+                    {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}% {'\n'}
+                    <Text style={style.amount}>(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
+                  </Text>
               </View>
           </View>
         )}
       </View>
       <View style={{marginTop: 5}}></View>
-        <Text 
-          style={{
-            fontSize: 20,
-            fontWeight: 800,
-            marginLeft: 17
-          }}> 
+        <Text
+          style={style.subheader}> 
             Other
             <Text style={{fontWeight: 700}}> (Categories up to 5%)</Text> 
         </Text>
@@ -349,15 +331,7 @@ export default function Report() {
               >
               {/* <View style={{width: 20, height: 20, backgroundColor: x.color, borderRadius: 5}}></View> */}
                 <View style={{justifyContent: 'center'}}>
-                  <Text 
-                    style={{
-                      marginLeft: 0,
-                      fontSize: 17,
-                      fontWeight: 800,
-                      justifyContent: 'center',
-                      color: 'white'
-                    }}
-                  > 
+                  <Text style={style.categoryList}> 
                     {x.category} 
                   </Text>
                 </View>
@@ -366,18 +340,12 @@ export default function Report() {
                   : <Text style={{color: 'white', fontSize: 17, fontWeight: 800}}> 0 </Text>
                 } */}
               </View>
-                <View style={{justifyContent: 'center'}}>
-                  <Text 
-                    style={{
-                      color: 'white',
-                      fontSize: 17,
-                      alignItems: 'center',
-                      fontWeight: 800,
-                    }}
-                  > 
-                    {(100*(getCategoryTotal(x.category))/total).toFixed(2)}%(SGD{(getCategoryTotal(x.category)).toFixed(2)})
+              <View style={{justifyContent: 'center',}}>
+                  <Text style={style.categoryList}> 
+                    {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}% {'\n'}
+                  <Text style={style.amount}>(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
                   </Text>
-                </View>
+              </View>
             </View>
       )}
       {loading && <ActivityIndicator />}
@@ -385,14 +353,40 @@ export default function Report() {
   );
 }
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//   },
-//   title: {
-//     fontSize: 24,
-//     margin: 10,
-//   },
-// })
+const style = StyleSheet.create({
+  subheader: {
+    fontSize: 20,
+    fontWeight: 800,
+    marginLeft: 17  
+  },
+  categoryList: {
+    color: 'white',
+    fontSize: 17,
+    //alignItems: 'center',
+    fontWeight: 800,
+  },
+
+  chart: {
+    fontSize: 20, 
+    fontWeight: 700,
+  },
+  chartTitle: {
+    marginTop: 10,
+    marginHorizontal: 30, 
+    flexDirection: 'row', 
+    justifyContent:'space-between'
+    },
+
+    change: {
+      fontSize: 20, 
+      fontWeight: 600,
+      color: 'red'
+    },
+
+    amount: {
+      fontSize: 15, 
+      fontWeight: 600, 
+      color: 'white',
+    }
+})
 
