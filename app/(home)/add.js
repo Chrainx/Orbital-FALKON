@@ -89,69 +89,6 @@ export default function Add () {
     if (isError.current) {
       return;
     }
-    // var amt = parseFloat(amount).toFixed(2);
-    // if (expense == '') {
-    //   setErrExpenseMsg("Expense cannot be empty!");
-    //   if (category == "") {
-    //     setErrCategoryMsg("Please select a category!\nyou can add your own category in setting!");
-    //     if (amount == '') {
-    //       setErrAmountMsg("Amount cannot be empty!");
-    //       return alertError();
-    //     }
-    //     if (isNaN(amt)) {
-    //       setErrAmountMsg("Amount must be a number!");
-    //       return alertError();
-    //     } 
-    //     if(amt < 0) {
-    //       setErrAmountMsg("Amount cannot be a negative value!");
-    //       return alertError();
-    //     }
-    //     return alertError();
-    //   }
-    //   if (amount == '') {
-    //     setErrAmountMsg("Amount cannot be empty!");
-    //     return alertError();
-    //   }
-    //   if (isNaN(amt)) {
-    //     setErrAmountMsg("Amount must be a number!");
-    //     return alertError();
-    //   } 
-    //   if(amt < 0) {
-    //     setErrAmountMsg("Amount cannot be a negative value!");
-    //     return alertError();
-    //   }
-    //   return alertError();
-    // }
-
-    // if (category == '') {
-    //   setErrCategoryMsg("Please select a category!\nyou can add your own category in setting!");
-    //   if (amount == '') {
-    //     setErrAmountMsg("Amount cannot be empty!");
-    //     return alertError();
-    //   }
-    //   if (isNaN(amt)) {
-    //     setErrAmountMsg("Amount must be a number!");
-    //     return alertError();
-    //   }
-    //   if(amt < 0) {
-    //     setErrAmountMsg("Amount cannot be a negative value!");
-    //     return alertError();
-    //   }
-    //   return alertError();
-    // }
-      
-    // if (amount == '') {
-    //   setErrAmountMsg("Amount cannot be empty!");
-    //   return alertError();
-    // }
-    // if (isNaN(amt)) {
-    //   setErrAmountMsg("Amount must be a number");
-    //   return alertError();
-    // }
-    // if(amt < 0) {
-    //   setErrAmountMsg("Amount cannot be a negative value");
-    //   return alertError();
-    // }
 
     var amt = parseFloat(amount).toFixed(2);
     const { error } = await supabase.from('data').

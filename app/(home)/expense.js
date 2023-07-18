@@ -120,12 +120,7 @@ export default function Expense() {
       return;
     }
     var amt = parseFloat(newLimit).toFixed(2);
-    let {data} =  await supabase.from('info').select('*');
-    if (data && data.length == 0) {
-      await supabase.from('info').insert({limit: amt, user_id: user.id}).select().single();
-    } else {
-      await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
-    }
+    await supabase.from('info').update({limit: amt}).eq("user_id", user.id);
     setLoading(false);
     setNewLimit("");
     setRefresh(true);
@@ -134,12 +129,7 @@ export default function Expense() {
   const handleReset = async () => {
     setLoading(true);
     let {data} =  await supabase.from('info').select('*');
-    if (data && data.length == 0) {
-      setLoading(false);
-      return;
-    } else {
-      await supabase.from('info').delete().eq("user_id", user.id);
-    }
+    await supabase.from('info').update({limit: null}).eq("user_id", user.id);
     setLoading(false);
     setNewLimit("");
     setRefresh(true);

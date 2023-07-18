@@ -58,7 +58,6 @@ export default function RegisterPage() {
       setErrMsg(error.message);
       return;
     }
-    setErrMsg("Confirmation has been sent to your email");
   }
 
   return (
