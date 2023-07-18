@@ -286,7 +286,7 @@ export default function Report() {
                 } */}
               </View>
               <View 
-                style={{ flexDirection: 'column',justifyContent: 'center', alignItems: 'center'}}
+                style={{marginVertical : 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
               >
                 <Text 
                   style={style.categoryList}
@@ -295,7 +295,7 @@ export default function Report() {
                 </Text>
                 <Text 
                   style={style.amount}
-                >(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
+                >SGD {(getCategoryTotal(x.category)).toFixed(2)}</Text>
               </View>
           </View>
         )}
@@ -341,7 +341,7 @@ export default function Report() {
                 } */}
               </View>
               <View 
-                style={{ flexDirection: 'column',justifyContent: 'center', alignItems: 'center'}}
+                style={{ marginVertical: 3, flexDirection: 'column',justifyContent: 'center', alignItems: 'flex-end'}}
               >
                 <Text 
                   style={style.categoryList}
@@ -350,7 +350,7 @@ export default function Report() {
                 </Text>
                 <Text 
                   style={style.amount}
-                >(SGD{(getCategoryTotal(x.category)).toFixed(2)})</Text>
+                >SGD {(getCategoryTotal(x.category)).toFixed(2)}</Text>
               </View>
             </View>
       )}

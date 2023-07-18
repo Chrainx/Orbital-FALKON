@@ -194,7 +194,7 @@ export default function Expense() {
             </TouchableOpacity>
           </View>       
           <View 
-            style={{flexDirection:'row', }}
+            style={{flexDirection:'row', width: '100%', justifyContent:'space-around'}}
           >
             <TouchableOpacity 
               style={{marginTop: 15, marginBottom: 5,}}
