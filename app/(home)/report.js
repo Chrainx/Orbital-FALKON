@@ -4,10 +4,6 @@ import { ActivityIndicator, Button, Text, TextInput } from "react-native-paper";
 import { useAuth } from "../../contexts/auth";
 import { supabase } from "../../lib/supabase";
 import { useIsFocused } from "@react-navigation/native";
-import { SelectList, MultipleSelectList } from 'react-native-dropdown-select-list'
-import { MaskedViewComponent } from "react-native";
-import Expense from "./expense";
-import PieChart from 'react-native-pie-chart'
 import { VictoryBar, VictoryPie, VictoryChart, VictoryGroup, VictoryAxis, VictoryLabel} from 'victory-native'
 
 
@@ -123,8 +119,6 @@ export default function Report() {
           />
           <Text> SGD {(average).toFixed(2)}</Text>
         </View> */}
-        {/* <Text> Yang this week masih salah, trus kyknya yang gw buat ni cocoknya di expense yang paling bawah </Text> */}
-      
 
         {category && (total == 0 || category.length == 0)
           ? <Text style={{textAlign:'center', fontSize: 20, fontWeight: 800}}> You dont have any data yet! </Text>
@@ -349,9 +343,9 @@ export default function Report() {
             </View>
       )}
       {loading && <ActivityIndicator />}
-    </ScrollView> 
+    </ScrollView>
   );
-}
+} 
 
 const style = StyleSheet.create({
   subheader: {
