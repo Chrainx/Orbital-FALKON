@@ -153,7 +153,7 @@ export default function Category() {
           marginBottom: 20
         }}
       >
-        {/* <Button style= {{flex: 1}}labelStyle={{color: color}} onPress={() => setColorVisible(true)}><Text style={{fontWeight: 700}}>COLOR</Text> </Button> */}
+      
         <TouchableOpacity 
           style={{
             backgroundColor: color, 

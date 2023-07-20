@@ -118,7 +118,7 @@ export default function Add () {
       <Text></Text>
       <NewAdd
         title= "Date"
-        icon= {<Text style={{color: 'white'}}> {date.toDateString()}</Text>}
+        icon= {<Text style={style.insertedData}> {date.toDateString()}</Text>}
         action={() => setDatePicker(true)}
       />
        <DateTimePickerModal
@@ -131,10 +131,12 @@ export default function Add () {
         title= 'Expense'
         icon= {
           expenseDetail 
-          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#ff0000'}}> Cancel </Text>
+          ? <Text style={style.cancel}> Cancel </Text>
           : expense != ''
-          ? <Text style={{color: 'white'}}> {expense} </Text>
-          : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
+          ? <Text style={style.insertedData}> {expense} </Text>
+          : <Image source={require('./tab-icons/arrowdown.png')} 
+            resizeMode="contain" 
+            style={style.picture}/>
         }
         action= { () => { 
           if (expenseDetail) {
@@ -178,13 +180,7 @@ export default function Add () {
                 backgroundColor:'#368cc7', borderRadius: 25}} 
                 onPress={() => setExpenseDetail(false)}>
 
-                <Text style = {{
-                  color: 'white', 
-                  fontSize:15, 
-                  marginVertical: 5, 
-                  marginHorizontal:8,
-                  fontWeight: 700
-                  }}>
+                <Text style = {style.insert}>
                     Insert
                 </Text>
               </TouchableOpacity>
@@ -206,8 +202,10 @@ export default function Add () {
         title= 'Category'
         icon={
           visible || category != ''
-          ? <Text style = {{color: 'white'}}>{category}</Text>
-          : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
+          ? <Text style = {style.insertedData}>{category}</Text>
+          : <Image source={require('./tab-icons/arrowdown.png')} 
+            resizeMode="contain" 
+            style={style.picture}/>
         }
         action={() => {setVisible(true)}}
       />
@@ -216,10 +214,12 @@ export default function Add () {
         title= 'Amount'
         icon= {
           amountDetail 
-          ? <Text style={{color: 'white', fontWeight: 800, fontSize: 17, color: '#ff0000'}}> Cancel </Text>
+          ? <Text style={style.cancel}> Cancel </Text>
           : amount != ''
-          ? <Text style={{color: 'white'}}> {amount} </Text>
-          : <Image source={require('./tab-icons/arrowdown.png')} resizeMode="contain" style={{ width: 25, height: 25, }}/>
+          ? <Text style={style.insertedData}> {amount} </Text>
+          : <Image source={require('./tab-icons/arrowdown.png')} 
+            resizeMode="contain" 
+            style={style.picture}/>
         }
         action= { () => 
           { 
@@ -241,14 +241,12 @@ export default function Add () {
                 marginTop: 1,
                 marginHorizontal: 15,
                 marginBottom: 8,
-                //width: '100%',
                 justifyContent:'space-between', 
                 backgroundColor:'#81B1D5'
                   }}
             >
               <TextInput
                 placeholder= 'Insert Amount'
-                //textColor='white'
                 placeholderTextColor='white'
                 value={amount} 
                 onChangeText={setAmount}
@@ -264,22 +262,10 @@ export default function Add () {
                 backgroundColor:'#368cc7', borderRadius: 25}} 
                 onPress={() => setAmountDetail(false)}>
 
-                <Text style = {{
-                  color: 'white', 
-                  fontSize:15, 
-                  marginVertical: 5, 
-                  marginHorizontal:8,
-                  fontWeight: 700
-                  }}>
+                <Text style = {style.insert}>
                     Insert
                 </Text>
-              </TouchableOpacity>
-              {/* <Button 
-              onPress={() => setAmountDetail(false)}
-              textColor='white'
-              buttonColor='#6699CC'
-              > Insert </Button> */}
-              
+              </TouchableOpacity>      
             </View>
 
           : undefined 
@@ -294,19 +280,23 @@ export default function Add () {
         
       </TouchableOpacity>
       </View>
-      
-      {/* <View style = {{alignItems: 'center'}}>
-      {errAmountMsg && <Text style= {style.warning}> {errAmountMsg} </Text>}
-      {errExpenseMsg && <Text style= {style.warning}> {errExpenseMsg} </Text>}
-      {errCategoryMsg && <Text style= {style.warning}> {errCategoryMsg} </Text>}
-      </View> */}
 
       <BottomSheet
         isVisible = {visible}
         modalProps ={{}}
         containerStyle={{color:'black', height: 100}}
       >
-        <Text style = {{color:'white', borderWidth: 2, borderColor: '#1666ba', backgroundColor:'#368cc7', fontSize: 20, fontWeight: 700, textAlign:'center', paddingVertical: 5}}> Please Select a Category </Text>
+        <Text style = {{
+          color:'white', 
+          borderWidth: 2, 
+          borderColor: '#1666ba', 
+          backgroundColor:'#368cc7', 
+          fontSize: 20, 
+          fontWeight: 700, 
+          textAlign:'center', 
+          paddingVertical: 5
+          }}> Please Select a Category 
+          </Text>
         <View
           style = {{backgroundColor: '#A0C0D4', borderWidth: 0, justifyContent: 'center', alignItems: 'center'}}
         >
@@ -321,25 +311,8 @@ export default function Add () {
             }}>
           <Text style={{color: item.color, fontSize: 18, marginVertical: 8}}>{item.category}</Text>
         </TouchableOpacity>,
-        {/* <Button 
-            key={item.category} 
-            textColor={item.color}
-            onPress={ ()=> {
-              setVisible(false);
-              setCategory(item.category);
-            }}
-          >
-            {item.category}
-          </Button> */}
         )}   
     
-        
-        {/* <Button 
-          textColor= {'white'}
-          onPress={() => {
-            setVisible(false);
-            setCategory('');  
-          }}> Close </Button> */}
         <TouchableOpacity 
             onPress={() => {
               setVisible(false);
@@ -390,4 +363,28 @@ const style = StyleSheet.create({
   warning: {
     color: 'red',
   },
+
+  insertedData: {
+    color: 'white',
+  },
+
+  picture: {
+    width: 25, 
+    height: 25,
+  },
+
+  cancel: {
+    color: 'white', 
+    fontWeight: 800, 
+    fontSize: 17, 
+    color: '#ff0000',
+  },
+
+  insert: {
+    color: 'white', 
+    fontSize:15, 
+    marginVertical: 5, 
+    marginHorizontal:8,
+    fontWeight: 700,
+  }
 })

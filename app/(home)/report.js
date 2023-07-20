@@ -188,16 +188,11 @@ export default function Report() {
                     : []
                     ]
                   }
-                // labelPlacement={({ text }) => text.length > 11
-                //   ? "perpendicular"
-                //   : "vertical"
-                // }
                   labelPlacement={"parallel"}
                   radius={SIZE.width * 0.3 - 10}
                   innerRadius={SIZE.width * 0.3 - 50}
                   labelRadius={SIZE.width * 0.4 - 33}
                   padAngle={2}
-                  //labelComponent={<VictoryLabel angle={0}/>}
                   padding={{left: 50, top: 0, right: 50, bottom: 0}}
                 />
               </View>

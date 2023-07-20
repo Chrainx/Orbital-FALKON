@@ -190,7 +190,7 @@ export default function Expense() {
                 }
               }
             > 
-              <Text style={{}}> Change </Text>
+              <Text> Change </Text>
             </TouchableOpacity>
           </View>       
           <View 
@@ -256,8 +256,8 @@ export default function Expense() {
         {isRemaining 
           ? data && limit && limit.length != 0 && limit[0].limit != null
             ? limit[0].limit - data.filter(x => new Date(x.inserted_at).toDateString() == new Date().toDateString()).reduce((a,b) => a + b.amount, 0) >= 0
-              ?<Text style={style.spentRemainLimit}> <Text style={{fontSize: 18}}>SGD </Text>{(limit[0].limit - today).toFixed(2)} </Text>  
-              :<Text style={style.spentRemainLimit}> <Text style={{fontSize: 18}}>SGD </Text>{(-limit[0].limit + today).toFixed(2)} </Text>  
+              ?<Text style={style.spentRemainLimit}> <Text style={style.sgdHeader}>SGD </Text>{(limit[0].limit - today).toFixed(2)} </Text>  
+              :<Text style={style.spentRemainLimit}> <Text style={style.sgdHeader}>SGD </Text>{(-limit[0].limit + today).toFixed(2)} </Text>  
             : <Text style={{fontSize: 17, textAlign:'center', bottom: '10%'}}> Please Set Your Daily Limit{'\n'}First </Text>
           : data && <Text style={style.spentRemainLimit}> <Text style={{fontSize: 18}}>SGD </Text>{today.toFixed(2)}</Text>
         }
@@ -267,8 +267,7 @@ export default function Expense() {
         <MultipleSelectList
             setSelected= {(val) => {setFilter(val); setRefresh(true)}}
             data={category} 
-            save="value"
-            //onSelect={() => alert(filter)} 
+            save="value" 
             label="Categories Selected"
             badgeStyles= {{backgroundColor: '#1666ba'}}
             checkBoxStyles={{backgroundColor: '#f0ffff'}}
@@ -300,7 +299,8 @@ export default function Expense() {
           <View key={date}>
             <View style={{flexDirection:'row',justifyContent:'space-between', marginTop: '2%'}}>
               <Text style={{marginLeft: 16, marginVertical: 5, fontWeight: 600}}> {date} </Text>
-              <Text style={{marginRight: 18, marginVertical: 5, fontWeight: 600}}> Daily Total: <Text style={{fontSize: 11}}> SGD</Text> <Text style={{fontWeight: 700}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
+              <Text style={{marginRight: 18, marginVertical: 5, fontWeight: 600}}> Daily Total: <Text style={{fontSize: 11}}>SGD </Text> 
+              <Text style={{fontWeight: 700}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
             </View>
 
               {data && data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
@@ -343,7 +343,9 @@ export default function Expense() {
                         fontSize: 15, 
                         fontWeight: 700,
                         marginLeft: 7, 
-                        color: color.filter(a => a.category == item.category).length == 0 ? 'black' : color.filter(a => a.category == item.category)[0].color
+                        color: color.filter(a => a.category == item.category).length == 0 
+                        ? 'black' 
+                        : color.filter(a => a.category == item.category)[0].color
                       }}
                     > {item.category}</Text>
                     
@@ -352,7 +354,6 @@ export default function Expense() {
                   <View 
                     style= {{width: '100%',
                       display:'flex',
-                      //backgroundColor:'red',
                       flex:1,
                       alignItems:'flex-end',
                       justifyContent:'center'
@@ -402,5 +403,9 @@ const style = StyleSheet.create({
 
   textList: {
     fontSize: 15, fontWeight: 700, marginLeft: 7, 
-  }
+  },
+
+  sgdHeader: {
+    fontSize: 18
+  },
 })

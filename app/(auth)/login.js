@@ -46,7 +46,7 @@ export default function LoginPage() {
       <View style = {{flex: 1, justifyContent: 'center', width: 300,}}>
         <Logo />
         <Text></Text>
-        <Text style={{fontSize: 18, fontWeight: 600}}>  Email </Text>
+        <Text style={{fontSize: 18, fontWeight: 600}}>Email</Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
@@ -58,7 +58,7 @@ export default function LoginPage() {
           onChangeText={setEmail} />
           {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
         <Text 
-        style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}>  Password</Text>
+        style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}>Password</Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
