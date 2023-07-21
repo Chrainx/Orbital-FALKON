@@ -96,6 +96,48 @@ export default function Report() {
     return data.filter(x => x.category == category).reduce((a, b) => a + b.amount, 0);
   }
 
+  function renderDetail( array ) {
+    return array.map(x =>  
+      <View 
+        style={{
+          borderRadius: 10,
+          paddingHorizontal: 10,
+          flexDirection: 'row',
+          marginHorizontal: SIZE.width * 0.05,
+          marginVertical: 5,
+          backgroundColor: x.color, 
+          borderWidth: 1,
+        }} 
+        key={x.id}
+      >
+        <View 
+          style={style.categoryView}
+        >
+          <View style={{justifyContent: 'center'}}>
+            <Text style={style.categoryList}> 
+              {x.category} 
+            </Text>
+          </View>
+        </View>
+        <View 
+          style={style.percentAmount}
+        >
+          <Text 
+            style={style.categoryList}
+          > 
+            {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%
+          </Text>
+          <Text 
+            style={style.amount}
+          >
+            SGD {(getCategoryTotal(x.category)).toFixed(2)}
+          </Text>
+        </View>
+      </View>
+    )
+  }
+
+
   useEffect(() => {fetchData()}, []);
   useEffect(() => {if(isFocused) {fetchData()}}, [isFocused]);
   useEffect(() => {if(refresh) {fetchData()}}, [refresh]);
@@ -248,45 +290,11 @@ export default function Report() {
           Main 
           <Text style={{fontWeight: 700}}> (Categories over 5%)</Text>
         </Text>
-        {category && category.filter(x => 
+        {category && 
+          renderDetail(category.filter(x => 
             getCategoryTotal(x.category) * 100/ total > 5
-          ).map(x =>  
-            <View 
-              style={{
-                //height: 60,
-                borderRadius: 10,
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                marginHorizontal: SIZE.width * 0.05,
-                marginVertical: 5,
-                backgroundColor: x.color, 
-                borderWidth: 1,
-              }} 
-              key={x.id}
-            >
-              <View 
-                style={style.categoryView}
-              >
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={style.categoryList}> 
-                    {x.category} 
-                  </Text>
-                </View>
-              </View>
-              <View 
-                style={style.percentAmount}
-              >
-                <Text 
-                  style={style.categoryList}
-                > 
-                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%
-                </Text>
-                <Text 
-                  style={style.amount}
-                >SGD {(getCategoryTotal(x.category)).toFixed(2)}</Text>
-              </View>
-          </View>
-        )}
+          ))
+        }
       </View>
 
       <View>
@@ -296,44 +304,11 @@ export default function Report() {
           Other
           <Text style={{fontWeight: 700}}> (Categories up to 5%)</Text>
         </Text>
-        {category && category.filter(x => 
+        {category && 
+          renderDetail(category.filter(x => 
             getCategoryTotal(x.category) * 100/ total <= 5
-          ).map(x =>  
-            <View 
-              style={{
-                borderRadius: 10,
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                marginHorizontal: SIZE.width * 0.05,
-                marginVertical: 5,
-                backgroundColor: x.color, 
-                borderWidth: 1,
-              }} 
-              key={x.id}
-            >
-              <View 
-                style={style.categoryView}
-              >
-                <View style={{justifyContent: 'center'}}>
-                  <Text style={style.categoryList}> 
-                    {x.category} 
-                  </Text>
-                </View>
-              </View>
-              <View 
-                style={style.percentAmount}
-              >
-                <Text 
-                  style={style.categoryList}
-                > 
-                  {(100 * (getCategoryTotal(x.category))/total).toFixed(2)}%
-                </Text>
-                <Text 
-                  style={style.amount}
-                >SGD {(getCategoryTotal(x.category)).toFixed(2)}</Text>
-              </View>
-          </View>
-        )}
+          ))
+        }
       </View>
       {loading && <ActivityIndicator />}
     </ScrollView>

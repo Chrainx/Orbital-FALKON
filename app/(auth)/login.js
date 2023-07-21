@@ -38,27 +38,25 @@ export default function LoginPage() {
         setErrMsg("Wrong Email or Password!")
       }
       return;
-      }
+    }
   }
 
   return (
-    <SafeAreaView style= {{flex: 1, alignItems: 'center', backgroundColor:'#f0ffff'}}>
+    <SafeAreaView style= {style.background}>
       <View style = {{flex: 1, justifyContent: 'center', width: 300,}}>
         <Logo />
-        <Text></Text>
-        <Text style={{fontSize: 18, fontWeight: 600}}>Email</Text>
+        <Text style={style.text}>Email</Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
-          
           placeholder = 'Enter your email here'
           autoCapitalize="none"
           textContentType="emailAddress"
           value={email}
-          onChangeText={setEmail} />
-          {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
-        <Text 
-        style = {{fontSize: 18, fontWeight: 600, marginTop: 20}}>Password</Text>
+          onChangeText={setEmail} 
+        />
+        {errEmailMsg !== "" && <Text style = {style.error}>{errEmailMsg} </Text>}
+        <Text style={style.text}>Password</Text>
         <TextInput 
           style = {style.input}
           mode = 'outlined'
@@ -67,17 +65,34 @@ export default function LoginPage() {
           autoCapitalize="none"
           textContentType="password"
           value={password}
-          onChangeText={setPassword} />
-          {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
+          onChangeText={setPassword} 
+        />
+        {errPasswordMsg !== "" && <Text style = {style.error}>{errPasswordMsg} </Text>}
         <Button 
-          style={{marginVertical: '6%', backgroundColor: '#368ce7'}}
-          onPress = {handleLogin}><Text style= {{fontWeight:800, color: 'white', }}>LOGIN</Text></Button>
+          style={style.button}
+          onPress = {handleLogin}
+        >
+          <Text 
+            style= {{fontWeight:800, color: 'white'}}>LOGIN</Text>
+        </Button>
         {loading && <ActivityIndicator />}
         {errMsg !== "" && <Text style = {style.error}>{errMsg} </Text>}
-        <View style={{flexDirection: 'row', justifyContent : 'center', alignItems: 'center'}}>
-          <Text style={{fontSize: 15, fontWeight: 600}}> Don't have an account? </Text>
-          <Link href="/register">
-            <Text style={{fontSize: 15, color: "rgb(0,125,250)", fontWeight: 600}}> Register Here. </Text>
+        <View 
+          style={{
+            flexDirection: 'row',
+            justifyContent : 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text 
+            style={{fontSize: 15, fontWeight: 600}}
+          >
+            Don't have an account? 
+          </Text>
+          <Link 
+            href="/register"
+          >
+            <Text style={style.register}> Register Here. </Text>
           </Link>
         </View>
       </View>
@@ -86,8 +101,15 @@ export default function LoginPage() {
 }
 
 const style = StyleSheet.create({
-  input: {
-    marginBottom: '2%'
+  background: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor:'#f0ffff'
+  },
+
+  button: {
+    marginVertical: '6%',
+    backgroundColor: '#368ce7'
   },
 
   error: {
@@ -98,4 +120,21 @@ const style = StyleSheet.create({
     marginVertical: '3%',
     textAlign: 'center'
   },
+
+  input: {
+    marginBottom: '2%'
+  },
+
+  register: {
+    fontSize: 15,
+    color: "rgb(0,125,250)",
+    fontWeight: 600
+  },
+
+  text: {
+    fontSize: 18,
+    fontWeight:600,
+    marginTop: 20
+  },
+
 })

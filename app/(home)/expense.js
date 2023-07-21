@@ -352,12 +352,14 @@ export default function Expense() {
                   </View>
               
                   <View 
-                    style= {{width: '100%',
+                    style= {{
+                      width: '100%',
                       display:'flex',
                       flex:1,
                       alignItems:'flex-end',
                       justifyContent:'center'
-                      }}>
+                    }}
+                  >
                   <Text style={{fontSize: 20, fontWeight: 700, marginRight: 2}}><Text style={{fontSize: 15}}>SGD</Text> {item.amount} </Text>
                       
               </View>

@@ -47,7 +47,7 @@ export default function RegisterPage() {
     }
 
     if (password2 !== password) {
-      setErrPasswordMsg2("Your password is not the same!")
+      setErrPasswordMsg2("The passwords did not match!")
       return;
     }
 
