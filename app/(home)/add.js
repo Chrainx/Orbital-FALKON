@@ -11,8 +11,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 export default function Add () {
   //For supabase
   const {user} = useAuth();
-
-  //For Refresh
+  
+  //For Refreshing
   const isFocused = useIsFocused()
   
   //For Date
