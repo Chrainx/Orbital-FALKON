@@ -343,9 +343,10 @@ export default function Expense() {
                         fontSize: 15, 
                         fontWeight: 700,
                         marginLeft: 7, 
-                        color: color.filter(a => a.category == item.category).length == 0 
-                        ? 'black' 
-                        : color.filter(a => a.category == item.category)[0].color
+                        color: 
+                          color.filter(a => a.category == item.category).length == 0 
+                          ? 'black' 
+                          : color.filter(a => a.category == item.category)[0].color
                       }}
                     > {item.category}</Text>
                     
