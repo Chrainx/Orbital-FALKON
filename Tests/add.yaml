@@ -1,12 +1,10 @@
 appId: com.moma
 ---
-- launchApp
-- tapOn: "Enter your email here"
-- inputText: "testing@gmail.com"
-- tapOn: "Enter your password here"
-- inputText: "test123"
-- tapOn:
-    id: "button"
+- runFlow: login.yaml
+- runFlow:
+    when:
+      visible: "Wrong Email or Password! "
+    file: register.yaml
 - tapOn: "add"
 - tapOn: " SUBMIT "
 - assertVisible:
@@ -16,12 +14,14 @@ appId: com.moma
 - tapOn: " Expense "
 - tapOn: "Insert expense"
 - inputText: "Lunch"
+- hideKeyboard
 - tapOn: "Insert"
 - tapOn: " Category "
 - tapOn: "Food"
 - tapOn: " Amount "
 - tapOn: "Insert Amount"
 - inputText: "10.50"
+- hideKeyboard
 - tapOn: "Insert"
 - tapOn: " SUBMIT "
 - tapOn: "Expense"

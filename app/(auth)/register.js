@@ -24,20 +24,17 @@ export default function RegisterPage() {
       setErrEmailMsg("Email cannot be empty!");
       if (password == "") {
         setErrPasswordMsg("Password cannot be empty!");
-        if (password2 == "") {
-          setErrPasswordMsg2("Please confirm your password")
-        }
+        setErrPasswordMsg2("Please fill in your password first!");
+        return;
       }
       if (password2 == "") {
-        setErrPasswordMsg2("Please confirm your password")
+        setErrPasswordMsg2("Please confirm your password!")
       }
       return;
     }
     if (password == "") {
       setErrPasswordMsg("Password cannot be empty!");
-      if (password2 == "") {
-        setErrPasswordMsg2("Please confirm your password")
-      }
+      setErrPasswordMsg2("Please fill in your password first!");
       return;
     }
 

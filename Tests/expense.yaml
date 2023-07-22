@@ -1,0 +1,25 @@
+appId: com.moma
+---
+- runFlow: login.yaml
+- runFlow:
+    when:
+      visible: "Wrong Email or Password! "
+    file: register.yaml
+- assertVisible: " Daily limit "
+- assertVisible: " Total Spent Today "
+- tapOn: " - "
+- assertVisible: " Set the Daily Limit: "
+- assertVisible: " Change "
+- assertVisible: "Reset"
+- assertVisible: " Cancel "
+- tapOn:
+    id: "text-input-outlined"
+- inputText: "100"
+- hideKeybaord
+- tapOn: " Change "
+- assertVisible: "SGD 100 "
+- tapOn: "Filter by Category"
+- assertVisible: "Food"
+- assertVisible: "Transport"
+- tapOn: "Food"
+- assertVisible: "Selected"
