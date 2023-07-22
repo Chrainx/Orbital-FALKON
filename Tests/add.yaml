@@ -1,0 +1,30 @@
+appId: com.moma
+---
+- launchApp
+- tapOn: "Enter your email here"
+- inputText: "testing@gmail.com"
+- tapOn: "Enter your password here"
+- inputText: "test123"
+- tapOn:
+    id: "button"
+- tapOn: "add"
+- tapOn: " SUBMIT "
+- assertVisible:
+    "Expense cannot be empty!\n\nPlease select a category!\n -You can\
+    \ add your own category in Settings!-\n\nAmount cannot be empty!"
+- tapOn: "OK"
+- tapOn: " Expense "
+- tapOn: "Insert expense"
+- inputText: "Lunch"
+- tapOn: "Insert"
+- tapOn: " Category "
+- tapOn: "Food"
+- tapOn: " Amount "
+- tapOn: "Insert Amount"
+- inputText: "10.50"
+- tapOn: "Insert"
+- tapOn: " SUBMIT "
+- tapOn: "Expense"
+- assertVisible: " Lunch "
+- assertVisible: " Food"
+- assertVisible: "SGD 10.5 "
