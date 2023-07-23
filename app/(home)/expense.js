@@ -111,12 +111,17 @@ export default function Expense() {
     setLoading(true);
     if (newLimit == "") {
       setLoading(false);
-      alertError("Daily limit cannot change to empty");
+      alertError("Daily limit cannot change to empty!");
       return;
     }
     if (isNaN(newLimit)) {
       setLoading(false);
       alertError("Daily limit must be a number!");
+      return;
+    }
+    if (newLimit<0) {
+      setLoading(false);
+      alertError("Daily limit cannot be a negative number!");
       return;
     }
     var amt = parseFloat(newLimit).toFixed(2);
@@ -299,8 +304,11 @@ export default function Expense() {
           <View key={date}>
             <View style={{flexDirection:'row',justifyContent:'space-between', marginTop: '2%'}}>
               <Text style={{marginLeft: 16, marginVertical: 5, fontWeight: 600}}> {date} </Text>
-              <Text style={{marginRight: 18, marginVertical: 5, fontWeight: 600}}> Daily Total: <Text style={{fontSize: 11}}>SGD </Text> 
-              <Text style={{fontWeight: 700}}>{data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)}</Text></Text>
+              <Text style={{marginRight: 18, marginVertical: 5, fontWeight: 600}}> 
+                Daily Total: 
+                <Text style={{fontSize: 11}}>SGD </Text> 
+                <Text style={{fontWeight: 700}}>{(data.filter(b => new Date(b.inserted_at).toDateString() == date).reduce((a,b) => a + b.amount,0)).toFixed(2)}</Text>
+              </Text>
             </View>
 
               {data && data.filter(b => new Date(b.inserted_at).toDateString() == date).map(item => 
@@ -361,7 +369,7 @@ export default function Expense() {
                       justifyContent:'center'
                     }}
                   >
-                  <Text style={{fontSize: 20, fontWeight: 700, marginRight: 2}}><Text style={{fontSize: 15}}>SGD</Text> {item.amount} </Text>
+                  <Text style={{fontSize: 20, fontWeight: 700, marginRight: 2}}><Text style={{fontSize: 15}}>SGD</Text> {(item.amount).toFixed(2)} </Text>
                       
               </View>
             </View>
