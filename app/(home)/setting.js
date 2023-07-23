@@ -25,7 +25,7 @@ export default function Setting () {
             onPress: async () => { 
               await supabase.from('data').delete().eq("user_id", user.id);
               await supabase.from('category').delete().eq("user_id", user.id);
-              await supabase.from('info').delete().eq("user_id", user.id)
+              await supabase.from('info').update({limit: null}).eq("user_id", user.id)
             } 
           },
         ]
@@ -43,7 +43,7 @@ export default function Setting () {
           onPress: async () => { 
             await supabase.from('data').delete().eq("user_id", user.id);
             await supabase.from('category').delete().eq("user_id", user.id);
-            await supabase.from('info').delete().eq("user_id", user.id);
+            await supabase.from('info').update({limit: null}).eq("user_id", user.id);
             await supabase.auth.admin.deleteUser(user.id);
             await supabase.auth.signOut();
           } 

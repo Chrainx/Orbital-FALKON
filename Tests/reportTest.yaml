@@ -1,0 +1,27 @@
+appId: com.moma
+---
+- launchApp
+- runFlow:
+    when:
+      visible:
+        text: "login"
+        index: 0
+    file: login.yaml
+- tapOn: "Report"
+- assertVisible: "Main (Categories over 5%)"
+- assertVisible: "Other (Categories up to 5%)"
+- runFlow:
+    when:
+      visible: " You dont have any data yet! "
+    file: add.yaml
+- tapOn: "Report"
+- assertVisible: "Main (Categories over 5%)"
+- assertVisible: "Other (Categories up to 5%)"
+- assertVisible: " Pie Chart "
+- assertVisible: " Change to Bar Chart "
+- tapOn: " Change to Bar Chart "
+- assertVisible: "  Bar Chart "
+- assertVisible: " Change to Pie Chart "
+- tapOn: " Change to Pie Chart "
+- assertVisible: " Pie Chart "
+- assertVisible: " Change to Bar Chart "

@@ -1,6 +1,18 @@
 appId: com.moma
 ---
+- launchApp
+- runFlow:
+    when:
+      visible:
+        text: "login"
+        index: 0
+    file: login.yaml
 - tapOn: "add"
+- tapOn: " SUBMIT "
+- assertVisible:
+    "Expense cannot be empty!\n\nPlease select a category!\n -You can\
+    \ add your own category in Settings!-\n\nAmount cannot be empty!"
+- tapOn: "OK"
 - tapOn: " Expense "
 - tapOn: "Insert expense"
 - inputText: "Lunch"

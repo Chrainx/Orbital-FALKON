@@ -1,38 +1,14 @@
 appId: com.moma
 ---
-- launchApp
-- assertVisible: "Email"
-- assertVisible: "Password"
-- assertVisible: "Enter your email here"
-- assertVisible: "Enter your password here"
-- assertVisible: "LOGIN"
-- assertVisible: "Don't have an account?"
-- assertVisible: " Register Here. "
-- tapOn:
-    id: "button"
-- assertVisible: "Email cannot be empty! "
-- assertVisible: "Password cannot be empty! "
 - tapOn: "Enter your email here"
 - inputText: "testing@gmail.com"
 - hideKeyboard
-- tapOn:
-    id: "button"
-- assertVisible: "Password cannot be empty! "
-- eraseText
 - tapOn: "Enter your password here"
 - inputText: "test123"
 - hideKeyboard
 - tapOn:
     id: "button"
-- assertVisible: "Email cannot be empty! "
-- tapOn: "Enter your email here"
-- inputText: "test123@gmail.com"
-- hideKeyboard
-- tapOn:
-    id: "button"
-- assertVisible: "Wrong Email or Password! "
-- eraseText
-- inputText: "testing@gmail.com"
-- hideKeyboard
-- tapOn:
-    id: "button"
+- runFlow:
+    when:
+      visible: "Wrong Email or Password! "
+    file: register.yaml

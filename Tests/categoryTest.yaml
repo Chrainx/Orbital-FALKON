@@ -1,0 +1,22 @@
+appId: com.moma
+---
+- launchApp
+- runFlow:
+    when:
+      visible:
+        text: "login"
+        index: 0
+    file: login.yaml
+- tapOn: "Settings"
+- tapOn: " Add Category "
+- assertVisible: "Insert category"
+- assertVisible: "ADD"
+- tapOn: "Insert category"
+- inputText: "New category"
+- hideKeyboard
+- tapOn: "ADD"
+- assertVisible: "New category"
+- tapOn: "Navigate up"
+- tapOn: "add"
+- tapOn: " Category "
+- assertVisible: "New category"

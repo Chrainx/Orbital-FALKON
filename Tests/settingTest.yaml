@@ -1,0 +1,31 @@
+appId: com.moma
+---
+- launchApp
+- runFlow:
+    when:
+      visible:
+        text: "login"
+        index: 0
+    file: login.yaml
+- tapOn: "Settings"
+- assertVisible: " Add Category "
+- assertVisible: " Erase all data "
+- assertVisible: " Logout "
+- assertVisible: " Delete Your Account "
+- tapOn: " Erase all data "
+- assertVisible: "Are you sure you want to erase all data?"
+- assertVisible: "This action is irreversible."
+- assertVisible: "ERASE"
+- assertVisible: "CANCEL"
+- tapOn: "CANCEL"
+- tapOn: " Logout "
+- assertVisible: "Are you sure want to logout?"
+- assertVisible: "CANCEL"
+- assertVisible: "LOGOUT"
+- tapOn: "CANCEL"
+- tapOn: " Delete Your Account "
+- assertVisible: "Are you sure you want to delete your account?"
+- assertVisible: "This action is irreversible."
+- assertVisible: "CANCEL"
+- assertVisible: "DELETE"
+- tapOn: "CANCEL"
